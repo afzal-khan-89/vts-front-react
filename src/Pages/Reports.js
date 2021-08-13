@@ -1,6 +1,10 @@
 import React, {  useState, useRef, useEffect }  from 'react'
 import axios from 'axios'
 import ReportHeader from '../Components/ReportHeader'
+import TimeOfPreDefined from '../Components/TimeOfPreDefined'
+import TimeBetweenTwoDays from '../Components/TimeOfPreDefined'
+import TimeOfSpeacificDay from '../Components/TimeOfSpeacificDay'
+import TimeOfCustomSelection from '../Components/TimeOfCustomSelection'
 
 const Reports = ()=>{
 
@@ -9,12 +13,12 @@ const Reports = ()=>{
     const [endTime, setEndTime] = useState();
     const [startTimeToshow, setStartTimeToShow] = useState();
     const [endTimeToShow, setEndTimeToShow] = useState();
-    const [currentTimeSelected, setCurrentTimeSelected] = useState('current-hour');
+    const [selectedTimeinterval, setSelectedTimeinterval] = useState('current-hour');
 
     useEffect(() => {
         axios.get('http://localhost:8080/spring/api/report/time-filter', {
             params: {
-                filterTime: currentTimeSelected
+                filterTime: selectedTimeinterval
             }
           })
           .then(function (response) {
@@ -30,11 +34,11 @@ const Reports = ()=>{
           .then(function () {
             
           });
-    }, [currentTimeSelected])
+    }, [selectedTimeinterval])
 
     const timeSeletionChange =(e)=>{
-        setCurrentTimeSelected(e.target.value)
-        console.log('time selection changed ' + currentTimeSelected);
+        setSelectedTimeinterval(e.target.value)
+        console.log('time selection changed ' + selectedTimeinterval);
 
     }
     const formatTime=()=>{
@@ -55,6 +59,12 @@ const Reports = ()=>{
                 
               });
         }
+    }
+    const timeIntervalFunction = (values)=>{
+        console.log(values.startTime)
+        console.log(values.endTime)
+        console.log(values.startTimeToShow)
+        console.log(values.endTimeToShow)
     }
     const generateReort = ()=>{
         axios.get('http://localhost:8080/spring/api/report/raw-data', {
@@ -78,16 +88,6 @@ const Reports = ()=>{
             
           });
     }
-
-
-
-
-
-
-
-
-
-
 
     return(
         <div className = "fixed  w-screen flex flex-wrap m-auto  h-5/6  bg-gray-100">            
@@ -135,9 +135,9 @@ const Reports = ()=>{
                     </div>
                 </div>   
                 <div class="flex flex-col gap-4 p-2 bg-white border-gray-400 h-screen">
-                    <div className="w-full">
+                    <div className="flex flex-col">
                         <span className = "text-sm text-gray-600">Select Time</span>
-                        <select class="w-full bg-white border border-gray-400  p-2 rounded cursor-pointer text-gray-800" name="time_period" id="time_period" onChange={ timeSeletionChange }>
+                        <select class="w-1/2 bg-white border border-gray-400  p-2 rounded cursor-pointer text-gray-800" name="time_period" id="time_period" onChange={ timeSeletionChange }>
                             <option value="current-hour">Current Hour</option>
                             <option value="last-hour">Last Hour</option>
                             <option value="last-2-hour">Last 2 Hour</option>
@@ -151,64 +151,18 @@ const Reports = ()=>{
                             <option value="this-month">This Month</option>
                             <option value="last-month">Last Month</option>
                             <option value="specific-day">Specific Day</option>
-                            <option value="specific-period">Between Days</option>
+                            <option value="between-two-days">Between Days</option>
                             <option value="custom">Custom</option>
                         </select>
                     </div>
-                    <div className="flex flex-row gap-4 bg-white  border-gray-200">
-                        <div className = "flex-1">
-                            <label class="block text-gray-700 text-sm font-bold mb-2">
-                                Start time
-                            </label>
-                            <input class="read-only shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" value={ startTimeToshow } />
-                        </div>
-                        <div className = "flex-1">
-                            <label className="block text-gray-700 text-sm font-bold mb-2">
-                                End time
-                            </label>
-                            <input className="read-only shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username" />
-                        </div>
-                    </div> 
-                    <div className="flex flex-row gap-4 bg-white  border-gray-200">
-                        <div className = "flex-1">
-                            <span className = "text-sm text-gray-600">Start Day</span>
-                            <select class="w-full bg-white border border-gray-400  p-2 rounded cursor-pointer">
-                                <option selected>Start time</option>
-                                <option value="1">User 0</option>
-                            </select>
-                        </div>
-                        <div className = "flex-1">
-                            <span className = "text-sm text-gray-600">End Day</span>
-                            <select class="w-full bg-white border border-gray-400  p-2 rounded cursor-pointer">
-                                <option selected>End Time</option>
-                                <option value="1">User 0</option>
-                            </select>
-                        </div>
-                    </div> 
-                    <div className="gap-4 bg-white  border-gray-200">
-                        <span className = "text-sm text-gray-600">Select Day</span>
-                        <select class="w-full bg-white border border-gray-400  p-2 rounded cursor-pointer text-gray-800" 
-                            name="time_period" id="time_period">
-                            <option value="current-hour">we ew ew</option>
-                        </select>
-                    </div> 
-                    <div className="flex flex-row flex-wrap bg-white  border-gray-200" id="fuel_consumption">
-                        <div className = "w-2/4">
-                            <span className = "text-sm text-gray-600">Fuel Consumption: { 0.2 }</span>
-                        </div>
-                        <div className = "w-1/4">
-                            <select class="w-full bg-white border border-gray-400  rounded cursor-pointer" name="litter_gallon" id="litter_gallon">
-                                <option value="Liter">Liter</option>
-                                <option value="Gallon">Gallon</option>
-                                <option value="CFT">CNG Unit(CFT)</option>
-                            </select>
-                        </div>
-                        <div className = "flex flex-row justify-center w-1/4">
-                            <div>
-                                <span className = "text-sm text-gray-600"> km </span>
-                            </div>
-                        </div>
-                    </div> 
+         
+                    {(()=>{
+                        if(selectedTimeinterval.includes('custom')) return <TimeOfCustomSelection  cb={timeIntervalFunction}/>
+                        else if(selectedTimeinterval.includes('between-two-days')) return  <TimeBetweenTwoDays cb={timeIntervalFunction}/>
+                        else if(selectedTimeinterval.includes('specific-day')) return <TimeOfSpeacificDay cb={timeIntervalFunction}/>
+                        else return  <TimeOfPreDefined start = { startTimeToshow } end={ endTimeToShow } />
+                    })()}
+                    
                     <div className="w-full flex justify-center">
                         <button className="border border-gray-200 p-4 rounded-lg bg-green-600 text-white"  onClick={generateReort}>Generate Report</button>
                     </div>

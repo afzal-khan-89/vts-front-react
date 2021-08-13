@@ -51,10 +51,8 @@ const Reports = ()=>{
         console.log('report type '+ e.target.value);
     }
     const onCustomTimeSelect = (values)=>{
-        console.log(values.startTime)
-        console.log(values.endTime)
-        console.log(values.startTimeToShow)
-        console.log(values.endTimeToShow)
+        console.log('selected start date '+values.startDate)
+        console.log('selected end date' +values.endDate)
     }
     const generateReort = ()=>{
         axios.get('http://localhost:8080/spring/api/report/raw-data', {
@@ -81,7 +79,7 @@ const Reports = ()=>{
 
     return(
         <div className = "fixed  w-screen flex flex-wrap m-auto  h-5/6  bg-gray-100">            
-            <div className="left-panel w-1/4 flex  space-y-2 flex-col h-screen"> 
+            <div className="left-panel w-1/4 flex  space-y-2 flex-col h-screen shadow-xl"> 
                 {(()=>{
                     if(userType.includes('admin')) return(
                         <div class="p-4 bg-white  border-b border-gray-200">

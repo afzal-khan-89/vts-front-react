@@ -44,7 +44,7 @@ const Tracking = ()=>{
     }
     return(
         <div className = "fixed  w-screen flex flex-wrap m-auto  h-5/6  bg-gray-100">            
-            <div className="left-panel w-1/5 flex  space-y-2 flex-col h-5/6">    
+            <div className="left-panel w-1/5 flex  shadow-2xl space-y-2 flex-col h-5/6">    
                         <div class="w-full p-4 bg-white  border-b border-gray-200">
                             <div class="w-full">
                                 <select class="w-full bg-white border border-gray-200  p-2 rounded cursor-pointer">

@@ -2,9 +2,10 @@ import React, {  useState, useRef, useEffect }  from 'react'
 import axios from 'axios'
 import ReportHeader from '../Components/ReportHeader'
 import TimeOfPreDefined from '../Components/TimeOfPreDefined'
-import TimeBetweenTwoDays from '../Components/TimeOfPreDefined'
+import TimeBetweenTwoDays from '../Components/TimeBetweenTwoDays'
 import TimeOfSpeacificDay from '../Components/TimeOfSpeacificDay'
 import TimeOfCustomSelection from '../Components/TimeOfCustomSelection'
+import FuelSelectoinComponent from '../Components/FuelSelectoinComponent'
 
 const Reports = ()=>{
 
@@ -14,6 +15,10 @@ const Reports = ()=>{
     const [startTimeToshow, setStartTimeToShow] = useState();
     const [endTimeToShow, setEndTimeToShow] = useState();
     const [selectedTimeinterval, setSelectedTimeinterval] = useState('current-hour');
+
+    const [reportType, setReportType] = useState('raw_data_report')
+
+    const userType = 'vodai'
 
     useEffect(() => {
         axios.get('http://localhost:8080/spring/api/report/time-filter', {
@@ -36,31 +41,16 @@ const Reports = ()=>{
           });
     }, [selectedTimeinterval])
 
-    const timeSeletionChange =(e)=>{
+    const onTimeSelectonChange =(e)=>{
         setSelectedTimeinterval(e.target.value)
         console.log('time selection changed ' + selectedTimeinterval);
 
     }
-    const formatTime=()=>{
-        const generateReort = ()=>{
-            axios.get('http://localhost:8080/spring/api/report/raw-data', {
-                params: {
-                    filterTime:'current-hour'
-                }
-              })
-              .then(function (response) {
-                setRawData(response.data)
-                console.log(response);
-              })
-              .catch(function (error) {
-                console.log(error);
-              })
-              .then(function () {
-                
-              });
-        }
+    const onReportTypeChange=(e)=>{
+        setReportType(e.target.value)
+        console.log('report type '+ e.target.value);
     }
-    const timeIntervalFunction = (values)=>{
+    const onCustomTimeSelect = (values)=>{
         console.log(values.startTime)
         console.log(values.endTime)
         console.log(values.startTimeToShow)
@@ -91,17 +81,21 @@ const Reports = ()=>{
 
     return(
         <div className = "fixed  w-screen flex flex-wrap m-auto  h-5/6  bg-gray-100">            
-            <div className="left-panel w-1/4 flex  space-y-2 flex-col h-screen">    
-                <div class="p-4 bg-white  border-b border-gray-200">
-                    <select class="w-full bg-white border border-gray-200  p-2 rounded cursor-pointer">
-                        <option selected>Select User</option>
-                        <option value="1">User 0</option>
-                        <option value="2">User 1</option>
-                        <option value="3">User 2</option>
-                        <option value="4">User 3</option>
-                        <option value="5">User 4</option>
-                    </select>
-                </div>  
+            <div className="left-panel w-1/4 flex  space-y-2 flex-col h-screen"> 
+                {(()=>{
+                    if(userType.includes('admin')) return(
+                        <div class="p-4 bg-white  border-b border-gray-200">
+                            <select class="w-full bg-white border border-gray-200  p-2 rounded cursor-pointer">
+                                <option selected>Select User</option>
+                                <option value="1">User 0</option>
+                                <option value="2">User 1</option>
+                                <option value="3">User 2</option>
+                                <option value="4">User 3</option>
+                                <option value="5">User 4</option>
+                            </select>
+                        </div> 
+                    )
+                })()}    
                 <div class="flex flex-row gap-4 p-2 bg-white  border-b border-gray-200">
                         <select class="w-full bg-white border border-gray-200  p-2 rounded cursor-pointer">
                             <option selected>Select Vehicle</option>
@@ -116,11 +110,11 @@ const Reports = ()=>{
                     <div className="flex-1">
                         <span className = "p-0 text-sm text-gray-600">Report type</span>
                         <select className="w-full bg-white border border-gray-400 focus:outline-none p-2 rounded cursor-pointer text-gray-800"
-                                name="report_type" id="report_type">                  
+                                name="report_type" id="report_type" onChange={ onReportTypeChange }>                  
                             <option value="daily_distance">Distance Report</option>
                             <option value="speed_location_distance_report">Trip Report in Details</option>
                             <option value="trip_report_summary">Trip Report Summary</option>
-                            <option value="start_stop_report">Engine Start/Stop Report</option>
+                            <option value="engine_start_stop_report">Engine Start/Stop Report</option>
                             <option value="over_speed_report">Over Speeding Report</option>
                             <option value="ac_start_stop_report">AC On-OFF Report</option>
                             <option value="raw_data_report">Raw Data</option>
@@ -137,7 +131,8 @@ const Reports = ()=>{
                 <div class="flex flex-col gap-4 p-2 bg-white border-gray-400 h-screen">
                     <div className="flex flex-col">
                         <span className = "text-sm text-gray-600">Select Time</span>
-                        <select class="w-1/2 bg-white border border-gray-400  p-2 rounded cursor-pointer text-gray-800" name="time_period" id="time_period" onChange={ timeSeletionChange }>
+                        <select class="w-1/2 bg-white border border-gray-400  p-2 rounded cursor-pointer text-gray-800" 
+                                name="time_period" id="time_period" onChange={ onTimeSelectonChange }>
                             <option value="current-hour">Current Hour</option>
                             <option value="last-hour">Last Hour</option>
                             <option value="last-2-hour">Last 2 Hour</option>
@@ -157,14 +152,22 @@ const Reports = ()=>{
                     </div>
          
                     {(()=>{
-                        if(selectedTimeinterval.includes('custom')) return <TimeOfCustomSelection  cb={timeIntervalFunction}/>
-                        else if(selectedTimeinterval.includes('between-two-days')) return  <TimeBetweenTwoDays cb={timeIntervalFunction}/>
-                        else if(selectedTimeinterval.includes('specific-day')) return <TimeOfSpeacificDay cb={timeIntervalFunction}/>
+                        if(selectedTimeinterval.includes('custom')) return <TimeOfCustomSelection  cb={ onCustomTimeSelect }/>
+                        else if(selectedTimeinterval.includes('between-two-days')) return  <TimeBetweenTwoDays cb={ onCustomTimeSelect }/>
+                        else if(selectedTimeinterval.includes('specific-day')) return <TimeOfSpeacificDay cb={ onCustomTimeSelect }/>
                         else return  <TimeOfPreDefined start = { startTimeToshow } end={ endTimeToShow } />
                     })()}
+                    {(()=>{
+                        if(reportType.includes('engine_start_stop_report') 
+                                        || reportType.includes('trip_report_summary' )
+                                        || reportType.includes('speed_location_distance_report' )
+                                        || reportType.includes('daily_distance' )){
+                                            return <FuelSelectoinComponent />
+                                        }
+                    })()}
                     
-                    <div className="w-full flex justify-center">
-                        <button className="border border-gray-200 p-4 rounded-lg bg-green-600 text-white"  onClick={generateReort}>Generate Report</button>
+                    <div className="w-full flex justify-center mt-8">
+                        <button className="border border-gray-200 p-2 rounded-lg bg-green-400 text-white"  onClick={generateReort}>Generate Report</button>
                     </div>
                 </div>      
             </div>           

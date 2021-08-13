@@ -1,26 +1,33 @@
-import React from 'react'
-import TimeBetweenTwoDays from './TimeBetweenTwoDays'
+import React, { useState } from 'react'
+import DatePicker from "react-datepicker";
+
 
 const TimeOfCustomSelection = () =>{
+
+    const [startTime, setStartTime] = useState(new Date())
+    const [endTime, setEndTime] = useState(new Date)
+    const onStartTimeChange=(date)=>{
+        setStartTime(date)
+    }
+
+    
+
     return(
         <>
-            <div className="flex flex-row flex-wrap bg-white  border-gray-200" id="fuel_consumption">
-                <div className = "w-2/4">
-                    <span className = "text-sm text-gray-600">Fuel Consumption: { 0.2 }</span>
+            <div className="flex flex-row flex-wrap gap-4 bg-white  border-gray-200">
+                <div className = "flex-1">
+                    <span className = "text-sm text-gray-600">Start Day</span>
+                    <DatePicker dateFormat="MMMM d, yyyy h:mm aa"  showTimeInput  className="w-full  bg-white border border-gray-300 shadow p-1 px-2
+                            rounded cursor-pointer text-gray-800" selected={startTime} onChange={(date) => setStartTime(date)} />
+ 
                 </div>
-                <div className = "w-1/4">
-                    <select class="w-full bg-white border border-gray-400  rounded cursor-pointer" name="litter_gallon" id="litter_gallon">
-                        <option value="Liter">Liter</option>
-                        <option value="Gallon">Gallon</option>
-                        <option value="CFT">CNG Unit(CFT)</option>
-                    </select>
+                <div className = "flex-1">
+                <span className = "text-sm text-gray-600">Start Day</span>
+                    <DatePicker dateFormat="MMMM d, yyyy h:mm aa"  showTimeInput  className="w-full bg-white border border-gray-300 shadow p-1 px-2
+                            rounded cursor-pointer text-gray-800" selected={endTime} onChange={(date) => setEndTime(date)} />
+ 
                 </div>
-                <div className = "flex flex-row justify-center w-1/4">
-                     <div>
-                        <span className = "text-sm text-gray-600"> km </span>
-                    </div>
-                </div>
-            </div>      
+            </div>    
         </>
 
     )

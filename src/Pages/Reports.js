@@ -6,6 +6,7 @@ import TimeBetweenTwoDays from '../Components/TimeBetweenTwoDays'
 import TimeOfSpeacificDay from '../Components/TimeOfSpeacificDay'
 import TimeOfCustomSelection from '../Components/TimeOfCustomSelection'
 import FuelSelectoinComponent from '../Components/FuelSelectoinComponent'
+import UserSelectionView from '../Components/UserSelectonView'
 
 const Reports = ()=>{
 
@@ -55,7 +56,7 @@ const Reports = ()=>{
         console.log('selected end date' +values.endDate)
     }
     const generateReort = ()=>{
-        axios.get('http://localhost:8080/spring/api/report/raw-data', {
+        axios.get('http://localhost:8080/spring/api/report/${reportType}', {
             params: {
               vehicleId:'85691231231234',
 			  startTime:'2021-08-10 02:30:08',
@@ -80,20 +81,9 @@ const Reports = ()=>{
     return(
         <div className = "fixed  w-screen flex flex-wrap m-auto  h-5/6  bg-gray-100">            
             <div className="left-panel w-1/4 flex  space-y-2 flex-col h-screen shadow-xl"> 
-                {(()=>{
-                    if(userType.includes('admin')) return(
-                        <div class="p-4 bg-white  border-b border-gray-200">
-                            <select class="w-full bg-white border border-gray-200  p-2 rounded cursor-pointer">
-                                <option selected>Select User</option>
-                                <option value="1">User 0</option>
-                                <option value="2">User 1</option>
-                                <option value="3">User 2</option>
-                                <option value="4">User 3</option>
-                                <option value="5">User 4</option>
-                            </select>
-                        </div> 
-                    )
-                })()}    
+                <div className = "w-full flex flex-row">
+                    <UserSelectionView userType = {"dealer"} /> 
+                </div>   
                 <div class="flex flex-row gap-4 p-2 bg-white  border-b border-gray-200">
                         <select class="w-full bg-white border border-gray-200  p-2 rounded cursor-pointer">
                             <option selected>Select Vehicle</option>
@@ -107,7 +97,7 @@ const Reports = ()=>{
                 <div class="flex flex-row gap-4 p-2 pb-2 bg-white  border-b border-gray-200">
                     <div className="flex-1">
                         <span className = "p-0 text-sm text-gray-600">Report type</span>
-                        <select className="w-full bg-white border border-gray-400 focus:outline-none p-2 rounded cursor-pointer text-gray-800"
+                        <select className="w-full bg-white border border-gray-400 focus:outline-none p-2 rounded cursor-pointer text-gray-800 focus:ring-2 focus:ring-purple-600"
                                 name="report_type" id="report_type" onChange={ onReportTypeChange }>                  
                             <option value="daily_distance">Distance Report</option>
                             <option value="speed_location_distance_report">Trip Report in Details</option>

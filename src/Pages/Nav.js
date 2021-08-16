@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom'
 
 const Nav = ()=>{
     return(
-        <div className="bg-white border-b">
+        <div className="bg-white border-b bg-green-200">
             <div className="mx-auto flex flex-wrap p-0 flex-col md:flex-row px-2 border-b bg-yellow-1200">
                 <a href="#" className="flex title-font font-medium items-center  md:mb-0 ">
-                    <img className="w-90 h-70" src={logo}  alt=""  />    
+                    <img className="w-90 h-70" alt=""  />    
                 </a>
                 <div class="md:ml-auto flex flex-wrap items-center text-base justify-center">
                     <a class="flex items-center text-base ml-5 text-link hover:text-linkhover" href="mailto:info@test.com">
@@ -26,20 +26,10 @@ const Nav = ()=>{
                     </a>
                 </div>
             </div>
-            <div class="mx-auto  px-3 py-1 flex  flex-row items-center  sm:flex-nowrap flex-wrap "> 
+            <div class="mx-auto  px-3 py-4 flex  flex-row items-center  sm:flex-nowrap flex-wrap "> 
                 <div className="w-1/3 flex flex-row justify-items-stretch">
                     <div className="w-1/2">
-                        <span class="w-full text-2xltext-base text-green-800">Hi Mr asdfasfdsdf sdfdsa John Doe</span>
-                    </div>
-                    <div className="w-1/2 mr-12">
-                        <select class="w-full mx-8 h-8 text-sm bg-white border border-green-500 rounded cursor-pointer">
-                            <option selected>---Select Dealer---</option>
-                            <option value="1">Badsha</option>
-                            <option value="2">Raja</option>
-                            <option value="3">Nobab</option>
-                            <option value="4">Gulam</option>
-                            <option value="5">Iskapon</option>
-                        </select> 
+                        <span class="w-full text-2xltext-base text-yellow-600">Hi Mr  John Doe</span>
                     </div>
                 </div>
                 <div className="w-2/3 flex flex-row justify-between mx-5">
@@ -59,6 +49,11 @@ const Nav = ()=>{
                     <div> 
                         <ul className ="flex flex-row justify-end gap-x-12" >
                             <li>Admin</li>
+                            <li>Accounts</li>
+                            <li>Service-charge</li>
+                            <Link to="/opeartion">
+                                <li>Opearation</li>
+                            </Link>
                             <li>Settings</li>
                             <li>Logout</li>
                         </ul>

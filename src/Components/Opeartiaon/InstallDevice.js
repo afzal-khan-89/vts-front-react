@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 const InstallDevice = ()=>{
@@ -11,9 +11,53 @@ const InstallDevice = ()=>{
     const [installPlace, setInstallPlace] = useState('')
     const [installType, setInstallType] = useState('')
 
+    const [users, setUsers] = useState([])
+    const [usersVehicle, setUsersVehicle] = useState([])
+    const [selectedUser, setSelectedUser] = useState('')
+
+
+    useEffect(() => {        
+        setUsers([]) 
+        axios.get('http://localhost:8080/spring/api/user/all').then(function (response) {
+            console.log(response);
+          
+            response.data.map((item)=>{
+                console.log('item value '+item.user_name)
+                setUsers(prevUsers=>[...prevUsers, item.user_name])
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+        .then(function () {
+            setSelectedUser(users[0])
+        });
+
+    }, [])
+    useEffect(() => {
+        setUsersVehicle([])
+        axios.get(`http://localhost:8080/spring/api/asset-group/${selectedUser}/all`).then(function (response) {
+            console.log(response.data.assets);
+            console.log(response.data);
+            response.data.map(item=>{
+                console.log('it: '+item.groupName)
+                item.assets.map(it=>{
+                    console.log('asset'+ it.number_plate)
+                    setUsersVehicle(vehicle=>[...vehicle, it.number_plate])
+                })
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+    }, [selectedUser])
+    const onUserSelect=(e)=>{
+        console.log('selected ...: '+e.target.value)
+        setSelectedUser(e.target.value)
+        console.log('selectedUser ...: '+selectedUser)
+    }
     const onFormSubmit=(e)=>{
-        
-       axios.post('http://localhost:8080/spring/api/asset/install-device', {
+       axios.post('http://localhost:8080/spring/api/asset/install-device', { 
 
         asset_id: vehicle,
 	    device_id: device,
@@ -60,13 +104,20 @@ const InstallDevice = ()=>{
             <div class="flex mb-4 md:flex ">
                 <div class="flex-1  mx-4">
                     <label class="block mb-1 text-sm font-bold text-gray-700" for="firstName">
+                    Select User
+                    </label>
+                    <select className="w-full bg-white border border-gray-400 focus:outline-none p-2 rounded cursor-pointer text-gray-800 focus:ring-2 focus:ring-purple-600"
+                            name="vehicle_select" id="vehicle_select" onChange={ onUserSelect }>    
+                            {users.map((e)=>(<option value={e}>{e}</option>))}
+                    </select>
+                </div>
+                <div class="flex-1  mx-4">
+                    <label class="block mb-1 text-sm font-bold text-gray-700" for="firstName">
                     Select Vehicle
                     </label>
                     <select className="w-full bg-white border border-gray-400 focus:outline-none p-2 rounded cursor-pointer text-gray-800 focus:ring-2 focus:ring-purple-600"
                             name="vehicle_select" id="vehicle_select" onChange={ onSelectVehicle }>                  
-                        <option value="babu">babu</option>
-                        <option value="aro">aro</option>
-                        <option value="zaman">zaman</option>
+                            {usersVehicle.map(item=>(<option value={item}>{item}</option>))}
                     </select>
                 </div>
                 <div class="flex-1 mx-4">
@@ -75,16 +126,6 @@ const InstallDevice = ()=>{
                     </label>
                     <select className="w-full bg-white border border-gray-400 focus:outline-none p-2 rounded cursor-pointer text-gray-800 focus:ring-2 focus:ring-purple-600"
                             name="select_device" id="select_device" onChange={ onSelectDevice }>                  
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                </div>
-                <div class="flex-1 mx-4">
-                    <label class="block mb-1 text-sm font-bold text-gray-700" for="lastName">
-                        Is Active
-                    </label>
-                    <select className="w-full bg-white border border-gray-400 focus:outline-none p-2 rounded cursor-pointer text-gray-800 focus:ring-2 focus:ring-purple-600"
-                            name="select_device" id="select_device" onChange={ onSetActiveOrInactive }>                  
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                     </select>
@@ -106,6 +147,14 @@ const InstallDevice = ()=>{
                         id="install_place" type="text" onChange={ onSetInstallPlace } />
                 </div>
                 <div class="flex-1 mx-4">
+                    <label class="block mb-1 text-sm font-bold text-gray-700" for="lastName">
+                        Is Active
+                    </label>
+                    <select className="w-full bg-white border border-gray-400 focus:outline-none p-2 rounded cursor-pointer text-gray-800 focus:ring-2 focus:ring-purple-600"
+                            name="select_device" id="select_device" onChange={ onSetActiveOrInactive }>                  
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
                 </div>
             </div>  
             <div class="flex  md:flex md:justify-between  mb-4 ">

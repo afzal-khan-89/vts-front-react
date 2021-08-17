@@ -6,32 +6,21 @@ const InstallDevice = ()=>{
     const [vehicle, setVehicle] = useState('')
     const [device, seteDevice] = useState('')
     const [isActive, setIsActive] = useState('')
-    const [oldDevice, setOldDevice] = useState('')
+    const [oldDevice, setOldDevice] = useState("")
     const [technician, setTechnician] = useState('')
     const [installPlace, setInstallPlace] = useState('')
     const [installType, setInstallType] = useState('')
 
     const [users, setUsers] = useState([])
     const [usersVehicle, setUsersVehicle] = useState([])
-    const [selectedUser, setSelectedUser] = useState('')
+    const [allDevice, setAllDevice] = useState([])
+    const [selectedUser, setSelectedUser] = useState('babu')
 
 
     useEffect(() => {        
         setUsers([]) 
-        axios.get('http://localhost:8080/spring/api/user/all').then(function (response) {
-            console.log(response);
-          
-            response.data.map((item)=>{
-                console.log('item value '+item.user_name)
-                setUsers(prevUsers=>[...prevUsers, item.user_name])
-            })
-        })
-        .catch(function (error) {
-            console.log(error);
-        })
-        .then(function () {
-            setSelectedUser(users[0])
-        });
+        getAllUsers();
+        getUnInstalledDevice();
 
     }, [])
     useEffect(() => {
@@ -43,7 +32,9 @@ const InstallDevice = ()=>{
                 console.log('it: '+item.groupName)
                 item.assets.map(it=>{
                     console.log('asset'+ it.number_plate)
-                    setUsersVehicle(vehicle=>[...vehicle, it.number_plate])
+                    if(it.device===null){
+                        setUsersVehicle(vehicle=>[...vehicle, it.number_plate])
+                    }
                 })
             })
         })
@@ -57,15 +48,24 @@ const InstallDevice = ()=>{
         console.log('selectedUser ...: '+selectedUser)
     }
     const onFormSubmit=(e)=>{
+       console.log("on form submit ")
+       console.log('vehicle:'+vehicle)
+       console.log('device:'+ device)
+       console.log('installType:'+installType)
+       console.log('oldDevice:'+oldDevice)
+       console.log('date_time:'+'2021-06-28 15:41:50')
+       console.log('technician:'+technician)
+       console.log('installPlace:'+installPlace)
+       
        axios.post('http://localhost:8080/spring/api/asset/install-device', { 
-
         asset_id: vehicle,
 	    device_id: device,
 	    status:installType,
 	    old_device:oldDevice,
-	    date_time:"2021-06-28 15:41:50",
+	    date_time:'2021-06-28 15:41:50',
 	    technician:technician,
 	    install_place:installPlace
+
       })
       .then(function (response) {
         console.log(response);
@@ -75,6 +75,35 @@ const InstallDevice = ()=>{
       })
        e.preventDefault();
     }
+
+    const getAllUsers=()=>{
+        axios.get('http://localhost:8080/spring/api/user/all').then(function (response) {
+            console.log(response);
+          
+            response.data.map((item)=>{
+                console.log('item value '+item.user_name)
+                setUsers(prevUsers=>[...prevUsers, item.user_name])
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+    }
+    const getUnInstalledDevice=()=>{
+        axios.get('http://localhost:8080/spring/api/device/un-mapped/all').then(function (response) {
+            console.log(response);
+          
+            response.data.map((item)=>{
+                console.log('item value '+item.imei)
+                setAllDevice(prevDevice=>[...prevDevice, item.imei])
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+    }
+
+
     const onSelectDevice=(d)=>{
         seteDevice(d.target.value)
     }
@@ -100,7 +129,7 @@ const InstallDevice = ()=>{
     return(
         <div className="font-mono">
         <h3 class="p-8 text-2xl text-center">Install Device</h3>
-        <form class="mx-48 p-8 bg-white rounded" onSubmit={onFormSubmit}>
+        <form class="mx-48 md:mx-12 sm:mx-4 p-8 bg-white rounded" onSubmit={onFormSubmit}>
             <div class="flex mb-4 md:flex ">
                 <div class="flex-1  mx-4">
                     <label class="block mb-1 text-sm font-bold text-gray-700" for="firstName">
@@ -126,8 +155,7 @@ const InstallDevice = ()=>{
                     </label>
                     <select className="w-full bg-white border border-gray-400 focus:outline-none p-2 rounded cursor-pointer text-gray-800 focus:ring-2 focus:ring-purple-600"
                             name="select_device" id="select_device" onChange={ onSelectDevice }>                  
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                            {allDevice.map(item=>(<option value={item}>{item}</option>))}
                     </select>
                 </div>
             </div> 

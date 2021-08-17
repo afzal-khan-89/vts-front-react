@@ -1,17 +1,28 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import NewDevice from '../Components/Opeartiaon/NewDevice'
 import NewVehicle from '../Components/Opeartiaon/NewVehicle'
+import LeftMenu from '../Components/Opeartiaon/LeftMenu'
+import InstallDevice from '../Components/Opeartiaon/InstallDevice'
 
 const Opearation=()=>{
-    //<NewVehicle />
+
+    const [content, setContent]=useState('device')
+
+    const onContentSelect=(value)=>{
+        setContent(value)
+    }
+    const pageContent=()=>{
+        if(content.includes('device'))  return <NewDevice /> 
+        if(content.includes('vehicle')) return <NewVehicle /> 
+        if(content.includes('install')) return <InstallDevice /> 
+    }
     return(
         <div className="fixed w-full h-screen flex">
-            <div className="w-1/4 bg-gray-400">
-
+            <div className="w-1/4">
+                <LeftMenu cb={onContentSelect}/>
             </div>
             <div className="w-3/4 flex flex-col bg-gray-100">
-                <NewDevice /> 
- 
+                {pageContent()}
             </div>
         </div>
  

@@ -1,10 +1,11 @@
-//import Nav from './Components/Navbar/Nav';
-//import Tracking from './Components/Tracking/Tracking';
-import Nav from './Pages/Nav';
+//import Nav from './Pages/Nav';
+//import Nav from './Components/Nav/Nav'
+import NavRnd from './Components/Nav/NavRnd'
 import Tracking from './Pages/Tracking';
 import Home from './Pages/Home'
 import Reports from './Pages/Reports';
 import Opearation from './Pages/Opearation'
+
 
 import { BrowserRouter as Router, Switch, router, Route }  from 'react-router-dom'
 
@@ -13,7 +14,7 @@ function App() {
   return (
     <Router>
         <div className="App">
-            <Nav />
+            <NavRnd />
                 <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/tracking" component={Tracking} />

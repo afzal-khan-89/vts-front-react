@@ -40,7 +40,7 @@ const NewDevice = ()=>{
 
     return(
         <div className="font-mono">
-            <h3 class="p-8 text-2xl text-center">Create  Vehicle</h3>
+            <h3 class="p-8 text-2xl text-center">Create  Device</h3>
             <form class="mx-48 p-8 bg-white rounded" onSubmit={onFormSubmit}>
                 <div class="flex  gap-6 md:flex md:justify-between  mb-4 ">
                     <div class="flex-1 md:mr-2 md:mb-0">

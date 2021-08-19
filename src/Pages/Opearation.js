@@ -3,6 +3,7 @@ import NewDevice from '../Components/Opeartiaon/NewDevice'
 import NewVehicle from '../Components/Opeartiaon/NewVehicle'
 import LeftMenu from '../Components/Opeartiaon/LeftMenu'
 import InstallDevice from '../Components/Opeartiaon/InstallDevice'
+import Vehicle from '../Components/Opeartiaon/Vehicle'
 
 const Opearation=()=>{
 
@@ -13,8 +14,9 @@ const Opearation=()=>{
     }
     const pageContent=()=>{
         if(content.includes('device'))  return <NewDevice /> 
-        if(content.includes('vehicle')) return <NewVehicle /> 
-        if(content.includes('install')) return <InstallDevice /> 
+        if(content.includes('vehicle')) return <Vehicle /> 
+        if(content.includes('install-new')) return <InstallDevice /> 
+        if(content.includes('install-log')) return <InstallDevice /> 
     }
     return(
         <div className="fixed w-full h-screen flex">

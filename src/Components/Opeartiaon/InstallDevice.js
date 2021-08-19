@@ -48,15 +48,6 @@ const InstallDevice = ()=>{
         console.log('selectedUser ...: '+selectedUser)
     }
     const onFormSubmit=(e)=>{
-       console.log("on form submit ")
-       console.log('vehicle:'+vehicle)
-       console.log('device:'+ device)
-       console.log('installType:'+installType)
-       console.log('oldDevice:'+oldDevice)
-       console.log('date_time:'+'2021-06-28 15:41:50')
-       console.log('technician:'+technician)
-       console.log('installPlace:'+installPlace)
-       
        axios.post('http://localhost:8080/spring/api/asset/install-device', { 
         asset_id: vehicle,
 	    device_id: device,
@@ -77,6 +68,7 @@ const InstallDevice = ()=>{
     }
 
     const getAllUsers=()=>{
+
         axios.get('http://localhost:8080/spring/api/user/all').then(function (response) {
             console.log(response);
           
@@ -192,14 +184,14 @@ const InstallDevice = ()=>{
                     </label>
                     <select className="w-full bg-white border border-gray-400 focus:outline-none p-2 rounded cursor-pointer text-gray-800 focus:ring-2 focus:ring-purple-600"
                             name="install_status" id="install_status" onChange={ onChangeInstallStatus }>                  
-                        <option value="install">Install</option>
-                        <option value="repair">Repair</option>
-                        <option value="replace">Replace</option>
+                        <option value="Install">Install</option>
+                        <option value="Repair">Repair</option>
+                        <option value="Replace">Replace</option>
                     </select>
                 </div>
                 <div class="flex-1 mx-4">
                     {(()=>{
-                        if(installType.includes('replace')){
+                        if(installType.includes('Replace')){
                             return(
                                 <div>
                                     <label class="block mb-1 text-sm font-bold text-gray-700" for="firstName">

@@ -14,7 +14,7 @@ const Tracking = ()=>{
                 <TrackingLeftMenu />
             </div>        
             <div className="content-panel w-4/5  ">
-                   <TrOpenStreetMap />
+                <TrOpenStreetMap />
             </div>
         </div>
     )

@@ -1,6 +1,4 @@
-//import Nav from './Pages/Nav';
-//import Nav from './Components/Nav/Nav'
-import NavRnd from './Components/Nav/NavRnd'
+import Nav from './Pages/Nav';
 import Tracking from './Pages/Tracking';
 import Home from './Pages/Home'
 import Reports from './Pages/Reports';
@@ -14,7 +12,7 @@ function App() {
   return (
     <Router>
         <div className="App">
-            <NavRnd />
+            <Nav />
                 <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/tracking" component={Tracking} />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import threeDot from '../../img/three-dots.png'
+import UserSelectionView from '../UserSelectonView';
 
 const TrackingLeftMenu = ()=>{
     const [userAsset, setUserAsset] = useState([])
@@ -40,24 +41,15 @@ const TrackingLeftMenu = ()=>{
     }
     return(
         <div>    
-            <div class="w-full p-4 bg-white  border-b border-gray-200">
-                <div class="w-full">
-                    <select class="w-full bg-white border border-gray-200  p-2 rounded cursor-pointer">
-                        <option selected>Select User </option>
-                        <option value="1">Afghanistan</option>
-                        <option value="2">Albania</option>
-                        <option value="3">Algeria</option>
-                        <option value="4">Bangladesh</option>
-                        <option value="5">India</option>
-                    </select>
-                </div>
-                </div>
-                <div class="btn-group w-full p-4 text-center bg-white  border-t border-gray-200 border-b border-gray-200 ">
-                    <button type="button" class="px-4 py-1 mx-1 border border-orange rounded">btn</button>
-                    <button type="button" class="px-4 py-1 mx-1 border border-orange rounded">btn</button>
-                    <button type="button" class="px-4 py-1 mx-1 border border-orange rounded">btn</button>
-                </div>             
-                <div class="h-5/6 flex flex-col md:h-full w-full p-4 bg-white border-t border-fuchsia-400  ">
+            <div className = "w-full flex flex-row">
+                <UserSelectionView userType = {"admin"} /> 
+            </div> 
+            <div class="btn-group w-full p-4 text-center bg-white  border-t border-gray-200 border-b border-gray-200 ">
+                <button type="button" class="px-4 py-1 mx-1 border border-orange rounded">btn</button>
+                <button type="button" class="px-4 py-1 mx-1 border border-orange rounded">btn</button>
+                <button type="button" class="px-4 py-1 mx-1 border border-orange rounded">btn</button>
+            </div>             
+            <div class="h-5/6 flex flex-col md:h-full w-full p-4 bg-white border-t border-fuchsia-400  ">
                             <div class="flex flex-row  content-end w-full mb-4 gap-4">
                                 <div className="w-1/2">
                                     <select className="bg-white border border-gray-200 focus:outline-none p-2 rounded cursor-pointer">

@@ -5,7 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { Icon } from "leaflet";
 import '../Components/Tracking/TrMap.css'
 
-import  TrackingLeftMenu from '../Components/Tracking/TrackingLeftMenu'
+import  TrackingLeftMenu from '../Components/Tracking/LeftMenu/TrackingLeftMenu'
 
 
 const Tracking = ()=>{

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 const Nav=()=>{
     return(
         <div className="w-full font-mono flex flex-row border-b-2 bg-green-600 ">
-            <div className="w-3/12   flex flex-row justify-start items-center gap-10 bg-gray-700 rounded-br-3xl">
+            <div className="w-3/12   flex flex-row justify-start items-center gap-10 bg-nav-left rounded-br-3xl">
                 <div className="">
                     <div className="ml-2">
                         <img src= {logo}  className="w-70 h-14" alt=""  />  

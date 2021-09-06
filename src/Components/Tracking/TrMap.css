@@ -1,4 +1,10 @@
 .leaflet-container {
-    width: 100%;
-    height: 100vh;
-  }
+  width: 100%;
+  height: calc(100vh - 60px);
+}
+.content-panel {
+  height: calc(100vh - 60px);
+}
+.tracking-container {
+  height: calc(100vh - 60px);
+}

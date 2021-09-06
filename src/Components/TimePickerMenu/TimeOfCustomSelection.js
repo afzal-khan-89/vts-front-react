@@ -28,18 +28,16 @@ const TimeOfCustomSelection = props =>{
 
     return(
         <>
-            <div className="py-5 flex flex-col flex-wrap gap-4 bg-white  border-gray-200">
+            <div className="py-5 flex flex-row flex-wrap gap-4 bg-white  border-gray-200">
                 <div className = "flex-1">
-                    <span className = "text-xs text-gray-600">Start Day</span>
-                        <DatePicker dateFormat="MMMM d, yyyy h:mm aa"  showTimeInput  className="w-full  text-sm bg-white border border-gray-300 shadow p-1.5 px-2
+                    <span className = "text-xs text-yellow-600">Start Day</span>
+                    <DatePicker dateFormat="MMMM d, yyyy h:mm aa"  showTimeInput  className="w-full  text-sm font-light bg-white border border-gray-300  p-1.5 
                             rounded cursor-pointer text-gray-800" selected={startTime} onChange={ onStartTimeSelect } />
-
                 </div>
                 <div className = "flex-1">
-                    <span className = "text-xs text-gray-600">End Day</span>
-                        <DatePicker dateFormat="MMMM d, yyyy h:mm aa"  showTimeInput  className="w-full text-sm bg-white border border-gray-300 shadow p-1.5 px-2
+                    <span className = "text-xs text-yellow-600">End Day</span>
+                    <DatePicker dateFormat="MMMM d, yyyy h:mm aa"  showTimeInput  className="w-full  text-sm font-light bg-white border border-gray-300  p-1.5 
                             rounded cursor-pointer text-gray-800" selected={endTime} onChange={ onEndDateSelect } />
- 
                 </div>
             </div>    
         </>

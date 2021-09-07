@@ -14,7 +14,7 @@ module.exports = {
       },
       colors: {
         'nav-left': '#262626',
-        'nav-left-1':'#cf2323',
+        'nav-left-1':'#381111',
         'warmGray-50':'#FAFAF9',
         'warmGray-100':'#F5F5F4',
         'warmGray-200':'#E7E5E4',

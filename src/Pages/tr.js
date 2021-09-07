@@ -15,6 +15,7 @@ const Tr = ()=>{
     const[trackintOption, setTrackingOption]=useState('monitor');
     const [position, setPosition] = useState([23.809405, 90.361806])
 
+    let userType = 'user'
     let nextTask ;
     let vehicleArray=[]
     
@@ -89,7 +90,7 @@ const Tr = ()=>{
     }
 
     return(
-        <div className = "tracking-container fixed  w-screen  m-auto  bg-gray-100"   style={{  }}>    
+        <div className = "tracking-container fixed  w-screen  m-auto">    
             <MapContainer center={position} zoom={10} scrollWheelZoom={true}>
                 <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' 
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
@@ -99,12 +100,7 @@ const Tr = ()=>{
                     </Popup>
                 </Marker>
             </MapContainer> 
-            <div  className="inline-block bg-white absolute  z-10000  w-2/9  h-20 mt-4 p-2 rounded-t-sm inset-y-0 left-0">
-                <div className = "w-full">
-                    <UserSelectionView  userType = {"admin"} /> 
-                </div> 
-            </div> 
-            <div  className=" inline-block absolute  z-10000  w-2/9 rounded-t-lg inset-y-28 left-0 bg-white">              
+            <div  className="inline-block absolute  z-10000  w-1/5 rounded-t-lg inset-y-28 left-0 bg-white border border-gray-200 shadow-xl">              
                 <div class="flex  rounded-lg text-sm gap-0.5" role="group">
                         <button class="flex-1 bg-warmGray-200 text-red-500 hover:bg-warmGray-300 hover:red-500  px-4  py-2  rounded-tl-lg outline-none focus:shadow-outline"
                             onClick={()=>{setTrackingOption('monitor')}}>Monitor</button>
@@ -113,7 +109,18 @@ const Tr = ()=>{
                         <button class="flex-1 bg-warmGray-200 text-red-500 hover:bg-warmGray-300 hover:red-500  px-4  py-1.5  rounded-tr-lg outline-none focus:shadow-outline"
                             onClick={()=>{setTrackingOption('notifications')}}>Noitfications</button>
                 </div>
-                <div class="w-full pt-1 px-2">
+                {(()=>{
+                    if(userType.includes('user')){
+                        return (
+                            <div  className="bg-white pl-2 pt-2 pr-2">
+                                <div className = "w-full">
+                                    <UserSelectionView  userType = {"admin"} /> 
+                                </div> 
+                            </div> 
+                        )
+                    }
+                })()}
+                <div class="w-full px-2 ">
                     {(()=>{
                         if(trackintOption.includes('monitor')){
                             return  <Monitor cb={cbFromMonitor}/>
@@ -125,7 +132,7 @@ const Tr = ()=>{
                     })()}
                 </div>  
             </div>  
-            <div className="inline-block bg-white absolute  z-10000  w-2/5 mx-48 p-5 rounded-t-md inset-x-96 bottom-2" >
+            <div className="inline-block bg-white absolute  z-10000  w-2/5 mx-48 p-5 rounded-t-md inset-x-96 bottom-2 border border-gray-200 shadow-xl" >
                     <span className="text-sm font-light ">Vehicle: {vehicleArray}</span>
                     <hr />
                     <span className="text-sm font-light ">Location: {vehicleArray}</span>

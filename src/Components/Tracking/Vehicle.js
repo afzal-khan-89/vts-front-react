@@ -13,9 +13,9 @@ const Vehicle =(props)=> {
         console.log(`vehicle follow button clicked`)
     }
     return (
-        <div class="flex items-center mb-2 justify-between gap-10">
+        <div class="flex items-center justify-between gap-2">
             <label class="inline-block cursor-pointer " >
-                <input type="checkbox" class="m-1" onClick={handleVehicleclick} />
+                <input type="checkbox" onClick={handleVehicleclick} />
                 <button class="bg-red-600 rounded-full w-3 h-3 mx-2" /> 
                 <div class="inline-block align-top text-sm"> 
                     {props.item.number_plate}
@@ -28,7 +28,7 @@ const Vehicle =(props)=> {
                 <span>0.00Km/h</span>                                
             </div>
             <button className="" onClick={onFollowButtonClick}>
-                <span><img className="w-12 h-6" src={follow} /></span>
+                <span><img className="w-10 h-6" src={follow} /></span>
             </button>
         </div>
     )

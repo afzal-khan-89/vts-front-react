@@ -61,32 +61,32 @@ const Monitor = (props)=> {
         }
     }
     return (
-        <div class="flex flex-col justify-content w-full bg-white border-fuchsia-400 flex-wrap">
-            <div className="flex-none  w-1/2 flex flex-col mt-5">
+        <div class="flex flex-col justify-content w-full bg-white flex-wrap">
+            <div className="flex-none flex flex-col border border-gray-200 p-4">
                 <span className="ml-1 text-xs text-yellow-600">Select Group</span>
                 <select className="text-gray-800 text-sm bg-white border border-gray-200 focus:outline-none p-1.5 rounded cursor-pointer">
                     <option value="1">group x</option>
                     <option value="1">group y</option>
                 </select>
-            </div>
-            <div class="flex-none   flex flex-row items-end  border-b border-gray-600 border-black pb-3 mb-2 mt-5">
-                <label class="cursor-pointer font-light w-1/3">
-                    <input type="checkbox" class="text-sm mr-2" id="checkAll" /> Select All
-                </label>
-                <input class="w-2/3 bg-white border border-gray-400 rounded py-1  px-2 ml-10 text-gray-800 text-sm  focus:outline-none" 
-                    id="search" type="text" placeholder="Search vehicle" onChange={vehicleSearch} />
-            </div>        
-            <div className="flex-grow">
-                <div className = "h-96 overflow-y-auto mb-2">
-                {assets.map(item=>(
-                    <Vehicle key={item.id} item={item} cbVehicleClick={callFromVehicleClick} cbVehicleFollowClick={callFromVehicleFollowClick}/>
-                ))}
+            </div>       
+            <div className="flex-grow border-l border-r border-b border-gray-200 p-2">
+                <div class="flex-none  flex flex-row items-end  border-b border-gray-400  pb-2">
+                    <label class="cursor-pointer font-light w-1/3">
+                        <input type="checkbox" class="text-sm " id="checkAll" /> Select All
+                    </label>
+                    <input class="w-2/3 bg-white border border-gray-200 rounded p-1.5 ml-10 text-gray-800 text-sm  focus:outline-none" 
+                        id="search" type="text" placeholder="Search vehicle" onChange={vehicleSearch} />
+                </div> 
+                <div className = "h-80 overflow-y-auto mt-4">
+                    {assets.map(item=>(
+                        <Vehicle key={item.id} item={item} cbVehicleClick={callFromVehicleClick} cbVehicleFollowClick={callFromVehicleFollowClick}/>
+                    ))}
                                 {assets.map(item=>(
                     <Vehicle key={item.id} item={item} cbVehicleClick={callFromVehicleClick} cbVehicleFollowClick={callFromVehicleFollowClick}/>
-                ))}
+                    ))}
                                 {assets.map(item=>(
                     <Vehicle key={item.id} item={item} cbVehicleClick={callFromVehicleClick} cbVehicleFollowClick={callFromVehicleFollowClick}/>
-                ))}
+                    ))}
                 </div>
             </div>
         </div>

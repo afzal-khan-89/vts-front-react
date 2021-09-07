@@ -15,6 +15,7 @@ const Tracking = ()=>{
     const[trackintOption, setTrackingOption]=useState('monitor');
     const [position, setPosition] = useState([23.809405, 90.361806])
 
+    let userType = 'user';
     let nextTask ;
     let vehicleArray=[]
     
@@ -91,9 +92,15 @@ const Tracking = ()=>{
     return(
         <div className = "tracking-container fixed  w-screen flex flex-wrap m-auto  bg-gray-100"   style={{  }}>    
             <div className="left-panel lg:w-2/9  md:w-1/3 flex  shadow-2xl space-y-2 flex-col h-full">
-                <div className = "w-full">
-                    <UserSelectionView  userType = {"admin"} /> 
-                </div> 
+                {(()=>{
+                    if(userType.includes('admin')){
+                        return (
+                            <div className = "w-full">
+                                <UserSelectionView  userType = {"admin"} /> 
+                            </div> 
+                        )
+                    }
+                })()}
                 <div class="w-full mt-4 pt-1 bg-white">
                     <div class="flex  rounded-lg text-sm p-2" role="group">
                         <button class="flex-1 bg-white text-green-500 hover:bg-green-500 hover:text-white border border-r-0 border-green-500 rounded-l-lg px-4  mx-0 outline-none focus:shadow-outline"

@@ -22,33 +22,34 @@ const TimePickerView=()=> {
     return (
         <div>
             <div className="flex flex-col">
-                        <span className = "text-xs text-gray-600">Select Time</span>
-                        <select class="w-1/2 text-sm bg-white border border-gray-400  p-1.5 rounded cursor-pointer text-gray-800" 
-                                name="time_period" id="time_period" onChange={ onTimeSelectonChange }>
-                            <option value="current-hour">Current Hour</option>
-                            <option value="last-hour">Last Hour</option>
-                            <option value="last-2-hour">Last 2 Hour</option>
-                            <option value="last-3-hour">Last 3 Hour</option>
-                            <option value="last-6-hour">Last 6 Hour</option>
-                            <option value="last-12-hour">Last 12 Hour</option>
-                            <option value="today">Today</option>
-                            <option value="yesterday">Yesterday</option>
-                            <option value="this-week">This Week</option>
-                            <option value="last-week">Last Week</option>
-                            <option value="this-month">This Month</option>
-                            <option value="last-month">Last Month</option>
-                            <option value="specific-day">Specific Day</option>
-                            <option value="between-two-days">Between Days</option>
-                            <option value="custom">Custom</option>
-                        </select>
-                    </div>
-         
-                    {(()=>{
-                        if(timeSelectionOption.includes('custom')) return <TimeOfCustomSelection  cb={ onCustomTimeSelect }/>
-                        else if(timeSelectionOption.includes('between-two-days')) return  <TimeBetweenTwoDays cb={ onCustomTimeSelect }/>
-                        else if(timeSelectionOption.includes('specific-day')) return <TimeOfSpeacificDay cb={ onCustomTimeSelect }/>
-                        else return  <TimeOfPreDefined start = { startTimeToshow } end={ endTimeToShow } />
-                    })()}
+                <span className="ml-1 text-xs text-yellow-600">Select Time</span>
+                <select className="text-gray-800 text-sm bg-white border border-gray-200 focus:outline-none p-1.5 rounded cursor-pointer"
+                            name="time_period" id="time_period" onChange={ onTimeSelectonChange }>
+                    <option value="current-hour">Current Hour</option>
+                    <option value="last-hour">Last Hour</option>
+                    <option value="last-2-hour">Last 2 Hour</option>
+                    <option value="last-3-hour">Last 3 Hour</option>
+                    <option value="last-6-hour">Last 6 Hour</option>
+                    <option value="last-12-hour">Last 12 Hour</option>
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="this-week">This Week</option>
+                    <option value="last-week">Last Week</option>
+                    <option value="this-month">This Month</option>
+                    <option value="last-month">Last Month</option>
+                    <option value="specific-day">Specific Day</option>
+                    <option value="between-two-days">Between Days</option>
+                    <option value="custom">Custom</option>
+                </select>
+            </div>
+            <div className="mt-3">
+                {(()=>{
+                    if(timeSelectionOption.includes('custom')) return <TimeOfCustomSelection  cb={ onCustomTimeSelect }/>
+                    else if(timeSelectionOption.includes('between-two-days')) return  <TimeBetweenTwoDays cb={ onCustomTimeSelect }/>
+                    else if(timeSelectionOption.includes('specific-day')) return <TimeOfSpeacificDay cb={ onCustomTimeSelect }/>
+                    else return  <TimeOfPreDefined start = { startTimeToshow } end={ endTimeToShow } />
+                })()}
+            </div>
         </div>
     )
 }

@@ -25,16 +25,16 @@ const TimeBetweenTwoDays=props=>{
     }
     return(
         <>
-            <div className="flex flex-row gap-4 bg-white  border-gray-200">
+            <div className="flex flex-row gap-2 bg-white  border-gray-200">
                 <div className = "flex-1">
-                    <span className = "text-sm text-gray-600">Start Day</span>
-                    <DatePicker dateFormat="y-MM-dd" className="w-full bg-white border border-gray-300 shadow p-1 px-2
-                            rounded cursor-pointer text-gray-800" selected={startDate} onChange={ onStartDateSelect } />
+                    <span className = "ml-1 text-xs text-yellow-600">Start Day</span>
+                    <DatePicker dateFormat="y-MM-dd" className="text-gray-800 text-sm bg-white border border-gray-200 
+                        focus:outline-none rounded cursor-pointer w-full py-1.5 px-3" selected={startDate} onChange={ onStartDateSelect } />
                 </div>
                 <div className = "flex-1">
-                    <span className = "text-sm text-gray-600">End Day</span>
-                    <DatePicker dateFormat="y-MM-dd" className="w-full bg-white border border-gray-300 shadow p-1 px-2
-                            rounded cursor-pointer text-gray-800" selected={endDate} onChange={ onEndDateSelect } />
+                    <span className = "ml-1 text-xs text-yellow-600">End Day</span>
+                    <DatePicker dateFormat="y-MM-dd" className="text-gray-800 text-sm bg-white border border-gray-200 
+                        focus:outline-none rounded cursor-pointer w-full py-1.5 px-3" selected={endDate} onChange={ onEndDateSelect } />
                 </div>
             </div>         
         </>

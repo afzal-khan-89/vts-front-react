@@ -3,6 +3,7 @@ import Tracking from './Pages/Tracking';
 import Home from './Pages/Home'
 import Reports from './Pages/Reports';
 import Opearation from './Pages/Opearation'
+import Tr from './Pages/tr';
 
 
 import { BrowserRouter as Router, Switch, router, Route }  from 'react-router-dom'
@@ -15,7 +16,7 @@ function App() {
             <Nav />
                 <Switch>
                     <Route path="/" exact component={Home} />
-                    <Route path="/tracking" component={Tracking} />
+                    <Route path="/tracking" component={Tr} />
                     <Route path="/reports" component={Reports} />
                     <Route path="/opeartion" component={Opearation} />
               </Switch>

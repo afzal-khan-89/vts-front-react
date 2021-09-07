@@ -11,7 +11,7 @@ import History from '../Components/Tracking/LeftMenu/History';
 import Notifications from '../Components/Tracking/LeftMenu/Notificatons';
 
 
-const Tracking = ()=>{
+const Tr = ()=>{
     const[trackintOption, setTrackingOption]=useState('monitor');
     const [position, setPosition] = useState([23.809405, 90.361806])
 
@@ -89,49 +89,49 @@ const Tracking = ()=>{
     }
 
     return(
-        <div className = "tracking-container fixed  w-screen flex flex-wrap m-auto  bg-gray-100"   style={{  }}>    
-            <div className="left-panel lg:w-2/9  md:w-1/3 flex  shadow-2xl space-y-2 flex-col h-full">
+        <div className = "tracking-container fixed  w-screen  m-auto  bg-gray-100"   style={{  }}>    
+            <MapContainer center={position} zoom={10} scrollWheelZoom={true}>
+                <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' 
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+                <Marker position={position}>
+                    <Popup>
+                            A pretty CSS3 popup. <br /> Easily customizable.
+                    </Popup>
+                </Marker>
+            </MapContainer> 
+            <div  className="inline-block bg-white absolute  z-10000  w-2/9  h-20 mt-4 p-2 rounded-t-sm inset-y-0 left-0">
                 <div className = "w-full">
                     <UserSelectionView  userType = {"admin"} /> 
                 </div> 
-                <div class="w-full mt-4 pt-1 bg-white">
-                    <div class="flex  rounded-lg text-sm p-2" role="group">
-                        <button class="flex-1 bg-white text-green-500 hover:bg-green-500 hover:text-white border border-r-0 border-green-500 rounded-l-lg px-4  mx-0 outline-none focus:shadow-outline"
+            </div> 
+            <div  className=" inline-block absolute  z-10000  w-2/9 rounded-t-lg inset-y-28 left-0 bg-white">              
+                <div class="flex  rounded-lg text-sm gap-0.5" role="group">
+                        <button class="flex-1 bg-warmGray-200 text-red-500 hover:bg-warmGray-300 hover:red-500  px-4  py-2  rounded-tl-lg outline-none focus:shadow-outline"
                             onClick={()=>{setTrackingOption('monitor')}}>Monitor</button>
-                        <button class="flex-1 bg-white text-green-500 hover:bg-green-500 hover:text-white border border-green-500  px-8 py-1.5 mx-0 outline-none focus:shadow-outline"
+                        <button class="flex-1 bg-warmGray-200 text-red-500 hover:bg-warmGray-300 hover:red-500  px-4  py-1.5  outline-none focus:shadow-outline"
                             onClick={()=>{setTrackingOption('history')}}>History</button>
-                        <button class="flex-1 bg-white text-green-500 hover:bg-green-500 hover:text-white border border-l-0 border-green-500 rounded-r-lg px-4 mx-0 outline-none focus:shadow-outline"
+                        <button class="flex-1 bg-warmGray-200 text-red-500 hover:bg-warmGray-300 hover:red-500  px-4  py-1.5  rounded-tr-lg outline-none focus:shadow-outline"
                             onClick={()=>{setTrackingOption('notifications')}}>Noitfications</button>
-                    </div>
+                </div>
+                <div class="w-full pt-1 px-2">
+                    {(()=>{
+                        if(trackintOption.includes('monitor')){
+                            return  <Monitor cb={cbFromMonitor}/>
+                        }else if(trackintOption.includes('history')){
+                            return  <History cb={cbFromHistory}/>
+                        }else{
+                            return  <Notifications cb={cbFromNotification}/>
+                        }
+                    })()}
                 </div>  
-                {(()=>{
-                    if(trackintOption.includes('monitor')){
-                        return  <Monitor cb={cbFromMonitor}/>
-                    }else if(trackintOption.includes('history')){
-                        return  <History cb={cbFromHistory}/>
-                    }else{
-                        return  <Notifications cb={cbFromNotification}/>
-                    }
-                })()}
-            </div>        
-            <div className="content-panel relative lg:w-7/9 md:w-2/3 " >
-                <div className="inline-block bg-white absolute  z-10000  w-2/3 ml-48 mr-48 p-5 rounded-t-xl bottom-0 mb-2" >
+            </div>  
+            <div className="inline-block bg-white absolute  z-10000  w-2/5 mx-48 p-5 rounded-t-md inset-x-96 bottom-2" >
                     <span className="text-sm font-light ">Vehicle: {vehicleArray}</span>
                     <hr />
                     <span className="text-sm font-light ">Location: {vehicleArray}</span>
                     <hr />
-                </div>
-                <MapContainer center={position} zoom={10} scrollWheelZoom={true}>
-                    <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' 
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-                    <Marker position={position}>
-                        <Popup>
-                            A pretty CSS3 popup. <br /> Easily customizable.
-                        </Popup>
-                    </Marker>
-                </MapContainer>
-            </div>
+            </div>     
         </div>    
     )
 }
-export default Tracking
+export default Tr

@@ -15,7 +15,7 @@ const Tr = ()=>{
     const[trackintOption, setTrackingOption]=useState('monitor');
     const [position, setPosition] = useState([23.809405, 90.361806])
 
-    let userType = 'user'
+    let userType = 'admin'
     let nextTask ;
     let vehicleArray=[]
     
@@ -110,13 +110,20 @@ const Tr = ()=>{
                             onClick={()=>{setTrackingOption('notifications')}}>Noitfications</button>
                 </div>
                 {(()=>{
-                    if(userType.includes('user')){
+                    if(userType.includes('admin')){
                         return (
                             <div  className="bg-white pl-2 pt-2 pr-2">
                                 <div className = "w-full">
                                     <UserSelectionView  userType = {"admin"} /> 
                                 </div> 
                             </div> 
+                        )
+                    }
+                    else{
+                        return(
+                            <div  className="bg-white p-1">
+           
+                            </div>
                         )
                     }
                 })()}

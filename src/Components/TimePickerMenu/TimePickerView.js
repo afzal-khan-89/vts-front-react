@@ -3,21 +3,40 @@ import TimeBetweenTwoDays from './TimeBetweenTwoDays';
 import TimeOfCustomSelection from './TimeOfCustomSelection';
 import TimeOfPreDefined from './TimeOfPreDefined';
 import TimeOfSpeacificDay from './TimeOfSpeacificDay';
+import axios from 'axios';
 
-
-const TimePickerView=()=> {
+const TimePickerView=(props)=> {
     const [timeSelectionOption, setTimeSelectionOption] = useState('current-hour');
-    const [startTimeToshow, setStartTimeToShow] = useState();
-    const [endTimeToShow, setEndTimeToShow] = useState();
+    const [predefTime, setPredefTime] = useState({ startTime : '' ,endTime : ''})
+
+    const formatTime=(value)=>{
+          axios.get('http://localhost:8080/spring/api/report/time-filter', {
+              params: {
+                'filterTime' : value
+              }
+          }).then(response=>{
+              console.log(response)
+              props.cb(response.data.start_time, response.data.end_time)
+
+              setPredefTime({
+                startTime:response.data.start_time_details, 
+                endTime: response.data.end_time_details
+              });
+          })
+    }
 
     const onTimeSelectonChange =(e)=>{
-        setTimeSelectionOption(e.target.value)
-        console.log('time selection changed ' + timeSelectionOption);
-
+        if(e.target.value.includes('custom') || e.target.value.includes('between-two-days') || e.target.value.includes('specific-day')){
+            setTimeSelectionOption(e.target.value)
+        }else{
+            console.log('TIME :: '+e.target.value)
+            formatTime(e.target.value)
+        }
     }
     const onCustomTimeSelect = (values)=>{
-        console.log('selected start date '+values.startDate)
-        console.log('selected end date' +values.endDate)
+        //console.log('TimePickerView start date==> '+values.startDate)
+        //console.log('TimePickerView end date  ==>' +values.endDate)
+        props.cb(values.startDate, values.endDate)
     }
     return (
         <div>
@@ -47,7 +66,7 @@ const TimePickerView=()=> {
                     if(timeSelectionOption.includes('custom')) return <TimeOfCustomSelection  cb={ onCustomTimeSelect }/>
                     else if(timeSelectionOption.includes('between-two-days')) return  <TimeBetweenTwoDays cb={ onCustomTimeSelect }/>
                     else if(timeSelectionOption.includes('specific-day')) return <TimeOfSpeacificDay cb={ onCustomTimeSelect }/>
-                    else return  <TimeOfPreDefined start = { startTimeToshow } end={ endTimeToShow } />
+                    else return  <TimeOfPreDefined start = { predefTime.startTime } end={ predefTime.endTime } />
                 })()}
             </div>
         </div>

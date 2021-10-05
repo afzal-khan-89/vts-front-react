@@ -1,8 +1,6 @@
 import React from 'react'
 
 const TimeOfPreDefined=(props)=>{
-
-
     return (
         <>
             <div className="flex flex-row gap-4 bg-white  border-gray-200">

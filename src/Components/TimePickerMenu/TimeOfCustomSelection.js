@@ -1,29 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import DatePicker from "react-datepicker";
-
+import moment from 'moment';
 
 const TimeOfCustomSelection = props =>{
 
     const [startTime, setStartTime] = useState(new Date())
-    const [endTime, setEndTime] = useState(new Date)
-
-    const mDate ={
+    const [endTime, setEndTime] = useState(new Date())
+ 
+    const pickerDate ={
         startDate:"",
         endDate:""
     };
 
-
-    useEffect(() => {
-        mDate.startDate = startTime;
-        mDate.endDate = endTime;
-        props.cb(mDate)
-    }, [startTime, endTime])
-
-    const onStartTimeSelect=(date)=>{
-        setStartTime(date)
+    const onStartTimeSelect=(d)=>{
+        pickerDate.startDate = ''+moment(d).format('YYYY-MM-DD hh:mm:ss')
+        //console.log("FORMATED :: "+pickerDate.startDate )
+        props.cb(pickerDate)
+        setStartTime(d)
     }
-    const onEndDateSelect=(date)=>{
-        setEndTime(date)
+    const onEndDateSelect=(d)=>{
+        pickerDate.endDate = ''+moment(d).format('YYYY-MM-DD hh:mm:ss')
+        //console.log("FORMATED :: "+pickerDate.endDate )
+        props.cb(pickerDate)
+        setEndTime(d)
     }
 
     return(

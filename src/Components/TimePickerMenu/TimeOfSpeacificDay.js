@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import DatePicker from "react-datepicker";
+import moment from 'moment'
 
 const TimeOfSpeacificDay = props =>{
 
     const [date, setDate]=useState(new Date())
-    const mDate = {
+
+    const pickerDate = {
         startDate:"",
         endDate:""
     }
-    useEffect(() => {
-        mDate.startDate = date;
-        mDate.endDate = "";
-        props.cb(mDate)
-    }, [date])
+
     const onDateSelect = (d)=>{
+        pickerDate.startDate = moment(d).startOf('day').format('YYYY-MM-DD hh:mm:ss')
+        pickerDate.endDate = moment(d).endOf('day').format('YYYY-MM-DD hh:mm:ss')
+       // console.log('START DAY : '+ pickerDate.startDate)
+       // console.log('END DAY : '+  pickerDate.endDate )
+        props.cb(pickerDate)
         setDate(d)
     }
     return(

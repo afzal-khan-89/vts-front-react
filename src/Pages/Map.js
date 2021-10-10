@@ -20,19 +20,27 @@ import ShowLastLocation from '../Components/Tracking/ShowLastLocation';
 
 
 const Tr = ()=>{
-    const[mapTask, setMapTask] = useState({action:'', data:[]})
+   
+    let[mapTask, setMapTask] = useState({action:'', currentLocation:[], previousLocation:[], historyData:[]})
+    const[recentData, setRecentData] = useState([])
     const[trackintOption, setTrackingOption]=useState('monitor');
+    const[intervalId, setIntervalId]=useState()
 
+
+    const NO_ACTION = ''
     const FOLLOW_VEHICLE = 'follow'
     const SHOW_LAST_LOCATION = 'last_location'
     const PLOT_HISTORY = 'plot_history'
     const SHOW_NOTIFICATIONS = 'show_notifications'
  
+    let intervalTimerStatus ;
     let userType = 'admin'
-    var nextTask = 'no_task'
+
     let vehicleArray=[]
     let locationDatas = []
     
+    console.log("+++++++++++++++++++RE RENDER ++++++++++++++++++++++++++++++++++" )
+
     const startPosition = [23.809405, 90.361806]
 
     const arrow = [
@@ -47,21 +55,12 @@ const Tr = ()=>{
         }
       ];
 
-    const lastLocation=()=>{
+    const lastLocation=(retFunction)=>{
         axios.post('http://localhost:8080/spring/api/location/last-location', {
             assets : vehicleArray
         })
         .then(function (response) {
-            console.log(response);
-            var lat = response.data.latitude
-            var lon = response.data.longitude
-            var coordinate = [lat, lon]
-            
-            console.log(`position :: ${coordinate}`)
-            setMapTask({
-                action:nextTask,
-                data:coordinate
-            })
+            retFunction(response)
         })
         .catch(function (error) {
             console.log(error);
@@ -80,10 +79,9 @@ const Tr = ()=>{
                 
                 locationDatas.push([item.latitude, item.longitude])
             })
-            console.log(nextTask + 'Position coord :: ')
             setMapTask({
-                action:nextTask,
-                data:locationDatas
+                action:PLOT_HISTORY,
+                historyData:locationDatas
             })
         }).catch()
     }
@@ -91,75 +89,111 @@ const Tr = ()=>{
 
     }
 
-    const followVehicle=(vehicle)=>{
-        lastLocation();
-        if(nextTask.includes(FOLLOW_VEHICLE)){
-            setTimeout(followVehicle, 10000);
-            console.log('live track refresh : 10 s')
-        }
+    useEffect(() => {
+        console.log('Action : '+ FOLLOW_VEHICLE)
+        console.log('LASTlocation : ' + mapTask.previousLocation)
+        console.log('CURRENTlocation : ' + mapTask.currentLocation)
+        var cLocation = mapTask.currentLocation
+        setMapTask({
+            action:FOLLOW_VEHICLE,
+            previousLocation :cLocation,
+            currentLocation : recentData
+        })
+    }, [recentData])
 
+    const followVehicle =(response)=>{
+        console.log('++++++++Follow++++++++++')
+        console.log(response);
+
+        var lat = response.data.latitude
+        var lon = response.data.longitude
+        var coord = [lat, lon]
+
+        console.log('??????????????????????????');
+
+        if(coord.length === 2){
+            setRecentData(coord)
+        } 
     }
-    const showVehicles=(vehicles)=>{
-        lastLocation();
+    const follow=()=>{
+        lastLocation(followVehicle)
     }
 
 
+
+    const  monitorVehicle = (response)=>{
+        console.log('++++++Monitor++++++++++++')
+        console.log(response)
+        var lat = response.data.latitude
+        var lon = response.data.longitude
+        var coordinate = [lat, lon]   
+        setMapTask({
+            action:SHOW_LAST_LOCATION,
+            lastLocation:coordinate
+        })
+    }
 
 
     const cbFromNotification=(vehicle)=>{
-        nextTask = SHOW_NOTIFICATIONS
+        clearInterval(intervalId)
+
     }
     const cbFromHistory=(historyParam)=>{
+        clearInterval(intervalId)
         console.log("in tracking : vehicle : "+historyParam.vehicle)
         console.log("in tracking : start time : "+historyParam.startTime)
         console.log("in tracking : end time : "+historyParam.endTime)
-        nextTask = PLOT_HISTORY
         loadHistoryData(historyParam)
     }
     const cbFromMonitor=(vehicles, message)=>{
-        vehicleArray = vehicles;
-        nextTask = message;
+        clearInterval(intervalId)
         if(message.includes('follow')){
             vehicleArray = [vehicles]
-            if(vehicleArray.length > 1){
-                alert('multiple vehicle selected !')
-            }else{
-                nextTask = FOLLOW_VEHICLE
-                followVehicle()
-            }
-            console.log('::Tracking : vehicleArray to track : '+vehicleArray.length)
+            intervalTimerStatus = setInterval(follow, 2000)
+            setIntervalId(intervalTimerStatus)
+            console.log('::Map : Vehicle to follow : '+vehicleArray)
         }else{
-            nextTask = SHOW_LAST_LOCATION ;
             vehicleArray = vehicles;
-            showVehicles()
+            console.log('::Map : vehicles to track : '+vehicleArray)
+            lastLocation(monitorVehicle);
         }
-        console.log('::Tracking : vehicles to track : '+vehicleArray)
     }
+
+
+
 
     return(
         <div className = "tracking-container fixed  w-screen  m-auto">    
             <MapContainer center={startPosition} zoom={10} scrollWheelZoom={true}>
                 <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' 
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-
                 {(()=>{
-                    console.log('Received Data ++++++++++=')
-                    console.log( mapTask.data)
+                    console.log("+++task:+++++"+mapTask.action)
+                    console.log('Received Data ++++++++++')
+                    console.log( mapTask.currentLocation)
                     if(mapTask.action.includes(SHOW_LAST_LOCATION)){
                         console.log('SHOW_LAST_LOCATION')
-                        return  <Marker position={mapTask.data}>
+                        return  <Marker position={mapTask.currentLocation}>
                                     <Popup>
                                         A pretty CSS3 popup. <br /> Easily customizable.
                                     </Popup>
                                 </Marker>
                     }
                     else if(mapTask.action.includes(PLOT_HISTORY)){
-                        if(mapTask.data.length > 0){
-                            return <PlotHistoryData patterns={arrow} positions={mapTask.data} />
+                        if(mapTask.historyData.length > 0){
+                            return <PlotHistoryData patterns={arrow} positions={mapTask.historyData} />
                         }
                     }
-                    else if(mapTask.action.includes(FOLLOW_VEHICLE)){
-                        console.log('FOLLOW_VEHICLE')
+                    else if(mapTask.action.includes(FOLLOW_VEHICLE)){       
+                        console.log('======IN JSX :: FOLLOW_VEHICLE=====')    
+                        console.log('jsx: cLoc : '+ mapTask.currentLocation)           
+                        console.log('jsx: lLoc : '+ mapTask.previousLocation)       
+                        if(mapTask.currentLocation != null && mapTask.previousLocation != null 
+                            && mapTask.currentLocation.length == 2 && mapTask.previousLocation.length == 2){
+                            return <PlotHistoryData patterns={arrow} positions={[mapTask.previousLocation, mapTask.currentLocation]} />   
+                        } 
+                                       
+                        
                     }
                 })()}                 
             </MapContainer> 

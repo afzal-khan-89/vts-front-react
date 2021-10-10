@@ -6,9 +6,9 @@ const Monitor = (props)=> {
     
     const [userAsset, setUserAsset] = useState([])
     const [assets, setAssets] = useState([]);
-    
 
-    let selectedAssets=[]
+    const[assetsQueue, setAssetsQueue] = useState([])
+
 
     useEffect(() => {
         getUserAssets()
@@ -28,21 +28,25 @@ const Monitor = (props)=> {
           })
     }
     const callFromVehicleClick=(vehicle)=>{
-        console.log('vehicle clicked '+ vehicle)
-        const index = selectedAssets.indexOf(vehicle);
+        var tempAssets = assetsQueue 
+        console.log('::Monitor :: last vehicle queue'+ tempAssets)
+        console.log('::Monitor ::vehicle clicked '+ vehicle)
+        const index = tempAssets.indexOf(vehicle);
         if (index > -1) {
-            selectedAssets.splice(index, 1);
-            console.log('vehicle removed '+ vehicle)
+            tempAssets.splice(index, 1);
+            console.log('::Monitor ::vvehicle removed '+ vehicle)
         }
         else{
-            selectedAssets.push(vehicle);
+            tempAssets.push(vehicle);
         }
-        props.cb(selectedAssets, 'track')
+        setAssetsQueue(tempAssets)
+        console.log('::Monitor ::vehicle to track  '+ tempAssets)
+        props.cb(assetsQueue, 'track')
 
     }
     const callFromVehicleFollowClick=(vehicle)=>{
-        selectedAssets=[vehicle]
-        console.log(`::Monitor-> callBack from follow button clicked . vehicle :: ${vehicle}`)
+        setAssetsQueue([])
+        console.log(`::Monitor ::vehicle to follow ${vehicle}`)
         props.cb(vehicle, 'follow')
     }
     const vehicleSearch = (e)=>{

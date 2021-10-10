@@ -3,7 +3,7 @@ import Tracking from './Pages/Tracking';
 import Home from './Pages/Home'
 import Reports from './Pages/Reports';
 import Opearation from './Pages/Opearation'
-import Tr from './Pages/tr';
+import Tr from './Pages/Map';
 
 
 import { BrowserRouter as Router, Switch, router, Route }  from 'react-router-dom'

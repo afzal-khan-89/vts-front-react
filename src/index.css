@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.leaflet-container {
+  width: 100%;
+  height: calc(100vh - 60px);
+}
+.content-panel {
+  height: calc(100vh - 60px);
+}
+.tracking-container {
+  height: calc(100vh - 60px);
+}
+.left-panel {
+  height: calc(100vh - 120px);
+}

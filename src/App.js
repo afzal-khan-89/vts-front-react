@@ -1,6 +1,6 @@
 import Nav from './Pages/Nav';
 import Tracking from './Pages/Tracking';
-import Home from './Pages/Home'
+import Home from './Pages/Home/Home'
 import Reports from './Pages/Reports';
 import Opearation from './Pages/Opearation'
 import Tr from './Pages/Map';

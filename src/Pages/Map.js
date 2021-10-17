@@ -206,7 +206,7 @@ const Tr = ()=>{
                             onClick={()=>{setTrackingOption('history')}}>History</button>
                         <button class="flex-1 bg-warmGray-200 text-red-500 hover:bg-warmGray-300 hover:red-500  px-4  py-1.5  rounded-tr-lg outline-none focus:shadow-outline"
                             onClick={()=>{setTrackingOption('notifications')}}>Noitfications</button>
-                </div>
+                 </div>
                 {(()=>{
                     if(userType.includes('admin')){
                         return (

@@ -163,7 +163,7 @@ const Tr = ()=>{
 
 
     return(
-        <div className = "tracking-container fixed  w-screen  m-auto">    
+        <div className = "tracking-container fixed  w-screen  m-auto mt-14">    
             <MapContainer center={startPosition} zoom={10} scrollWheelZoom={true}>
                 <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' 
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>

@@ -3,7 +3,7 @@ import React from 'react'
 const TimeOfPreDefined=(props)=>{
     return (
         <>
-            <div className="flex flex-row gap-4 bg-white  border-gray-200">
+            <div className="flex flex-row gap-2 bg-white  border-gray-200">
                 <div className = "flex-1">
                     <label class="ml-1 text-xs text-yellow-600"> Start time</label>
                     <input class="read-only text-gray-800 text-sm bg-white border border-gray-200 focus:outline-none rounded 

@@ -14,7 +14,7 @@ export default function VehicleInfo() {
       <div className="h-16 mt-2 mx-10">
         <span>Toal {tArray.length} vehicles</span>
       </div>
-      <div className="mx-10 border ">
+      <div className="mx-10 mb-5 border ">
         <table class="w-full border">
           <thead>
             <tr class="bg-gray-50 border-b">

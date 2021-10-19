@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 const Nav=()=>{
     return(
-        <div className="w-full font-mono flex flex-row border-b-2 bg-green-600 ">
+        <div className="w-full fixed font-mono flex flex-row border-b-2 bg-green-600 ">
             <div className="w-3/12   flex flex-row justify-start items-center gap-10 bg-nav-left-1 rounded-br-3xl">
                 <div className="">
                     <div className="ml-2">
@@ -24,16 +24,15 @@ const Nav=()=>{
                     </div>
                 </div>
             </div>
-            <div className="w-7/12 flex flex-col ">
+            <div className="w-7/12 pl-5 flex flex-col ">
                 <div className ="w-full h-full flex flex-wrap content-center">
                     <Link className="px-4 text-sm font-light text-white" to="/">Home</Link>
                     <Link className="px-4 text-sm font-light text-white" to="/tracking">Tracking</Link>
                     <Link className="px-4 text-sm font-light text-white" to="/reports">Reports</Link>
                     <Link className="px-4 text-sm font-light text-white" to="/opeartion">Opearation </Link>
-                    <Link className="px-4 text-sm font-light text-white" to="/opeartion">Admin</Link>
-                    <Link className="px-4 text-sm font-light text-white" to="/opeartion">Account</Link>
-                    <Link className="px-4 text-sm font-light text-white" to="/opeartion">Service-charge</Link>
-                    <Link className="px-4 text-sm font-light text-white" to="/opeartion">Opearation</Link>
+                    <Link className="px-4 text-sm font-light text-white" to="/admin">Admin</Link>
+                    <Link className="px-4 text-sm font-light text-white" to="/accounting">Accounting</Link>
+                    <Link className="px-4 text-sm font-light text-white" to="/service-charge">Service-charge</Link>
                 </div>
             </div>
             <div className="w-2/12 px-4 flex items-center justify-end">

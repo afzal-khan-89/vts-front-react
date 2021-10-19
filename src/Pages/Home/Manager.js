@@ -11,7 +11,7 @@ const Manager = () => {
 
   const createManager = () => {};
   return (
-    <div className="mx-10 mt-2 bg-gray-50 border-l border-r border-t border-gray-300 overflow-y-auto">
+    <div className="mx-10 mt-2  bg-gray-50 border-l border-r border-t border-gray-300 overflow-y-auto">
       <div className="mx-10 flex flex-col pt-3  text-gray-600 text-sm">
         <div className="flex flex-row justify-end  text-gray-600 text-sm">
           <button
@@ -27,7 +27,7 @@ const Manager = () => {
           Drivers
         </div>
       </div>
-      <div className="mx-10 border ">
+      <div className="mx-10 mb-10 border ">
         <table class="w-full border">
           <thead>
             <tr class="bg-gray-50 border-b">

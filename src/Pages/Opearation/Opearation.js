@@ -48,8 +48,8 @@ const Opearation = () => {
   };
 
   return (
-    <div className="w-screen bg-gray-100 flex flex-col items-center">
-      <div className="w-4/6  h-32  px-10 pt-4   mt-14 flex flex-col bg-white">
+    <div className="opearation-container  bg-gray-100 flex flex-col items-center">
+      <div className="w-4/6  h-32  px-6 pt-4   mt-14 flex flex-col bg-white">
         <div className="h-8 w-48  flex justify-start items-center bg-yellow-200">
           <span className="ml-2 text-green-800">Oparation</span>
         </div>
@@ -86,7 +86,7 @@ const Opearation = () => {
               Repair
             </button>
           </div>
-          <div className="w-1/4 h-full flex items-end gap-1 ">
+          <div className="w-1/4 h-full flex justify-end  items-end gap-1 ">
             <button
               class="w-32 bg-warmGray-200 text-sm  text-green-600 hover:bg-warmGray-300 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
               onClick={onDeviceLogClick}

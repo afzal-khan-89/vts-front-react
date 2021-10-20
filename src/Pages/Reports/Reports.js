@@ -7,6 +7,9 @@ import TimeOfSpeacificDay from "../../Components/TimePickerMenu/TimeOfSpeacificD
 import TimeOfCustomSelection from "../../Components/TimePickerMenu/TimeOfCustomSelection";
 import FuelSelectoinComponent from "../../Components/FuelSelectoinComponent";
 import UserSelectionView from "../../Components/UserSelectonView";
+import RawDataReport from "./RawDataReport";
+
+import './reports.css'
 
 const Reports = () => {
   const [rawDta, setRawData] = useState([]);
@@ -18,6 +21,7 @@ const Reports = () => {
 
   const [reportType, setReportType] = useState("raw_data_report");  
 
+  const RAW_DATA_REPORTS = 'raw_data_report'
   const REPORT_TYPE = [ {key:'Distance Report', value:'' },
                         {key:'Trip Report Summary', value:'' },
                         {key:'Engine Start/Stop Report', value: ''},
@@ -98,139 +102,120 @@ const Reports = () => {
   };
 
   return (
-    <div className="width-screen h-full flex  justify-center bg-gray-100">
-      <div className="w-3/5 h-full mt-12  flex flex-col items-center bg-white">
-        <div className="h-8 w-full px-10 mt-5 flex items-end ">
-          <div className="h-8 w-48 flex justify-start items-center bg-yellow-200">
-            <span className="ml-2 text-green-800">Dash Board</span>
-          </div>
+    <div className="report-container  flex  flex-col items-center bg-gray-100">
+        <div className="w-3/5 h-60 mt-12  flex flex-col items-center bg-white">
+            <div className="h-8 w-full px-5 mt-6 flex items-end ">
+                <div className="h-8 w-48 flex justify-start items-center bg-yellow-200">
+                    <span className="ml-2 text-green-800">Reports</span>
+                </div>
+            </div>
+            <div className="h-52 w-full flex flex-col ">
+                <div className="h-full mx-5 flex bg-gray-50 border border-gray-300">
+                    <div className="w-1/3 h-full border-r border-gray-200 flex flex-col justify-start">
+                        <div className="h-1/3 px-3 py-0.5 border-b border-gray-200 ">
+                            <div className="flex flex-col">
+                                <span className="text-xs text-yellow-600">Select User</span>
+                                <select className="text-gray-800 text-sm bg-gray-50 border border-gray-200 focus:outline-none p-1 rounded cursor-pointer">
+                                    <option value="1">User 0</option>
+                                    <option value="2">User 1</option>
+                                </select>
+                            </div>
+                        </div >
+                        <div className="h-1/3 px-3 py-0.5 border-b border-gray-200 ">
+                            <div className="flex flex-col">
+                                <span className="text-xs text-yellow-600">Select Group</span>
+                                <select className="text-gray-800 text-sm bg-gray-50 border border-gray-200 focus:outline-none p-1 rounded cursor-pointer">
+                                    <option selected>Select Group</option>
+                                    <option value="1">User 0</option>
+                                </select>
+                            </div>
+                        </div >
+                         <div className="h-1/3 px-3 py-0.5 ">
+                            <div className="flex flex-col">
+                                <span className="text-xs text-yellow-600">Select Vehicle</span>
+                                    <select className="text-gray-800 text-sm bg-gray-50 border border-gray-200 focus:outline-none p-1 rounded cursor-pointer">
+                                        <option selected>Select Group</option>
+                                        <option value="1">User 0</option>
+                                    </select>
+                            </div>
+                        </div >
+                    </div >
+                    <div  className="w-1/3 h-full border-r border-gray-200">
+                        <div className="h-1/3  px-3 py-0.5 border-b border-gray-200 ">
+                            <div className="flex flex-col">
+                                <span className="text-xs text-yellow-600">Reaport Type</span>
+                                <select className="text-gray-800 text-sm bg-gray-50 border border-gray-200 focus:outline-none p-1 rounded cursor-pointer"
+                                    name="report_format" id="report_format">
+                                    <option value="general_report">General Report</option>
+                                    <option value="graph_report">Graph Report</option>
+                                </select>
+                            </div>
+                        </div >
+                        <div className="h-1/3  px-3 py-0.5 border-b border-gray-200 ">
+                            <div className="flex-1 flex flex-col">
+                                <span className="text-xs text-yellow-600">Report type</span>
+                                <select className="text-gray-800 text-sm bg-gray-50 border border-gray-200 focus:outline-none p-1 rounded cursor-pointer"
+                                    name="report_type" id="report_type" onChange={onReportTypeChange}>
+                                    {REPORT_TYPE.map((item)=>(
+                                        <option value={item.value}>{item.key}</option>
+                                    ))}                
+                                </select>
+                            </div>
+                        </div >
+                         <div className="h-1/3 flex justify-center items-center">
+                            <button className="w-2/3 h-2/3 p-2 border border-gray-200 bg-gray-300">Generate Report</button>
+                        </div >
+                    </div>
+                    <div className="w-1/3 h-full ">
+                        <div className="h-1/3 px-3 py-0.5 border-b border-gray-200 ">
+                            <div className="flex flex-col">
+                                <span className="text-xs text-yellow-600">Select Time</span>
+                                <select className="text-gray-800 text-sm bg-gray-50 border border-gray-200 focus:outline-none p-1 rounded cursor-pointer"
+                                    name="time_period" id="time_period" onChange={onTimeSelectonChange} >
+                                    {TIME_SELECTION.map((item)=>(
+                                        <option value={item.value}>{item.key}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div >
+                        <div className="h-2/3  px-3 py-0.5  ">
+                            <div className="">
+                                {(() => {
+                                    if (selectedTimeinterval.includes("custom"))
+                                        return <TimeOfCustomSelection cb={onCustomTimeSelect} />;
+                                    else if (selectedTimeinterval.includes("between-two-days"))
+                                        return <TimeBetweenTwoDays cb={onCustomTimeSelect} />;
+                                    else if (selectedTimeinterval.includes("specific-day"))
+                                        return <TimeOfSpeacificDay cb={onCustomTimeSelect} />;
+                                    else
+                                        return ( <TimeOfPreDefined start={startTimeToshow} end={endTimeToShow}/>)
+                                })()}
+                                {(() => {
+                                    if (
+                                        reportType.includes("engine_start_stop_report") ||
+                                        reportType.includes("trip_report_summary") ||
+                                        reportType.includes("speed_location_distance_report") ||
+                                        reportType.includes("daily_distance")
+                                    ) {
+                                        return <FuelSelectoinComponent />;
+                                    }
+                                })()}
+                            </div>
+                        </div >
+                    </div>
+                </div>
+            </div>
         </div>
-        <div className="h-32 w-full px-10 flex items-end ">
-          <div className="h-full w-full p-3 flex flex-col  border border-gray-300 bg-gray-100">
-            <div className="w-full flex gap-4">
+        <div className="w-full h-full ">
 
-              <div className="flex-1 flex flex-col">
-                <div className="flex flex-col ">
-                  <span className="text-xs text-yellow-600">
-                     Select User
-                  </span>
-                  <select className="text-gray-800 text-sm bg-gray-50 border border-gray-200 focus:outline-none p-1.5 rounded cursor-pointer">
-                     <option value="1">User 0</option>
-                    <option value="2">User 1</option>
-                  </select>
-                </div>
-              </div>
-              <div className="flex-1 flex flex-col">
-                <span className="text-xs text-yellow-600">
-                  Select Group
-                </span>
-                <select className="text-gray-800 text-sm bg-gray-50 border border-gray-200 focus:outline-none p-1.5 rounded cursor-pointer">
-                  <option selected>Select Group</option>
-                  <option value="1">User 0</option>
-                </select>
-              </div>
-               <div className="flex-1 flex flex-col">
-                <span className="text-xs text-yellow-600">
-                  Select Vehicle
-                </span>
-                <select className="text-gray-800 text-sm bg-gray-50 border border-gray-200 focus:outline-none p-1.5 rounded cursor-pointer">
-                  <option selected>Select Group</option>
-                  <option value="1">User 0</option>
-                </select>
-              </div>
+                {(() => {
+                    if (reportType.includes(RAW_DATA_REPORTS)) {
+                        console.log("HOME_CONTENT_VEHICLE_STATUS");
+                        return <RawDataReport />;
+                    }
+                })()}
 
-              <div className="flex-1 flex flex-col">
-                <span className="text-xs text-yellow-600">Report type</span>
-
-                <select
-                  className="text-gray-800 text-sm bg-gray-50 border border-gray-200 focus:outline-none p-1.5 rounded cursor-pointer"
-                  name="report_type"
-                  id="report_type"
-                  onChange={onReportTypeChange}
-                >
-                {REPORT_TYPE.map((item)=>(
-                    <option value={item.value}>{item.key}</option>
-                ))}
-                  
-                </select>
-              </div>
-            </div>
-
-            <div className="w-full flex gap-2">
-                <div className="flex-1 flex flex-col">
-                    <span className="text-sm text-gray-600">Select Time</span>
-                        <select className="text-gray-800 text-sm bg-gray-50 border border-gray-200 focus:outline-none p-1.5 rounded cursor-pointer"
-                                name="report_format"
-                                id="report_format"
-                            >
-                            <option value="general_report">General Report</option>
-                            <option value="graph_report">Graph Report</option>
-                         </select>
-                </div>
-
-
-                <div className="flex-1 flex flex-col">
-                  <span className="text-sm text-gray-600">Select Time</span>
-                  <select
-                    className="text-gray-800 text-sm bg-gray-50 border border-gray-200 focus:outline-none p-1.5 rounded cursor-pointer"
-                    name="time_period"
-                    id="time_period"
-                    onChange={onTimeSelectonChange} >
-
-                      {TIME_SELECTION.map((item)=>(
-                          <option value={item.value}>{item.key}</option>
-                      ))}
-                  </select>
-                </div>
-                <div className="flex-1 ">
-                    {(() => {
-                        if (selectedTimeinterval.includes("custom"))
-                            return <TimeOfCustomSelection cb={onCustomTimeSelect} />;
-                        else if (selectedTimeinterval.includes("between-two-days"))
-                            return <TimeBetweenTwoDays cb={onCustomTimeSelect} />;
-                        else if (selectedTimeinterval.includes("specific-day"))
-                            return <TimeOfSpeacificDay cb={onCustomTimeSelect} />;
-                        else
-                            return ( <TimeOfPreDefined start={startTimeToshow} end={endTimeToShow}/>)
-                    })()}
-
-                    {(() => {
-                        if (
-                            reportType.includes("engine_start_stop_report") ||
-                            reportType.includes("trip_report_summary") ||
-                            reportType.includes("speed_location_distance_report") ||
-                            reportType.includes("daily_distance")
-                        ) {
-                            return <FuelSelectoinComponent />;
-                        }
-                     })()}
-                </div>
-            </div>
-
-            <div class="flex flex-col gap-4 bg-white border-gray-400 h-screen">
-                <div className="w-full flex justify-center mt-8">
-                  <button
-                    className="border border-gray-200 p-2 rounded-lg bg-green-400 text-white"
-                    onClick={generateReort}
-                  >
-                    Generate Report
-                  </button>
-                </div>
-            </div>
-            <div className="w-full flex gap-2">
-                <div className="table-height w-full">
-                    {(() => {
-                        console.log("CHECK ");
-                        // if (homeContent == 1) {
-                        //   console.log("HOME_CONTENT_VEHICLE_STATUS");
-                        //   return null;
-                        // }
-                    })()}
-                </div>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
   );
 };

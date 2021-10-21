@@ -2,96 +2,41 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./opearation.css";
 
-const CreateDevice = (props) => {
-  const [firstName, setFirstName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [addressLineOne, setAddressLineOne] = useState("");
-  const [addressLineTwo, setAddressLineTwo] = useState("");
-  const [addressLineThree, setAddressLineThree] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [userType, setUserType] = useState("");
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+const CreateDevice = (props) => {    const [imei, setImaei] = useState('')
+    const [model, setModel] = useState('')
+    const [origin, setOrigin] = useState('')
 
-  const onSetFirstName = (e) => {
-    setFirstName(e.target.value);
-  };
-  const onSetMiddleName = (e) => {
-    setMiddleName(e.target.value);
-  };
-  const onSetLastName = (e) => {
-    setLastName(e.target.value);
-  };
-  const onSetAddressLineOne = (e) => {
-    setAddressLineOne(e.target.value);
-  };
-  const onSetAddressLineTwo = (e) => {
-    setAddressLineTwo(e.target.value);
-  };
-  const onSetAddressLineThree = (e) => {
-    setAddressLineThree(e.target.value);
-  };
-  const onSetEmail = (e) => {
-    setEmail(e.target.value);
-  };
-  const onSetPhoneNo = (e) => {
-    setPhone(e.target.value);
-  };
-  const onSetUserType = (e) => {
-    setUserType(e.target.value);
-  };
-  const onSetUserName = (e) => {
-    setUserName(e.target.value);
-  };
-  const onSetPassword = (e) => {
-    setPassword(e.target.value);
-  };
-  const onSetConfirmPassword = (e) => {
-    setConfirmPassword(e.target.value);
-  };
 
-  const onFormSubmit = (e) => {
-    console.log(firstName);
-    console.log(lastName);
-    console.log(middleName);
-    console.log(email);
-    console.log(addressLineOne);
-    console.log(addressLineTwo);
-    console.log(addressLineThree);
-    console.log(userType);
-    console.log(password);
-    console.log(confirmPassword);
-    console.log(userName);
-    console.log(phone);
-    console.log("on form submit ");
-    console.log(e.name);
-    axios
-      .post("http://localhost:8080/spring/api/user/register", {
-        first_name: firstName,
-        last_name: lastName,
-        middle_name: middleName,
-        email: email,
-        address_line_one: addressLineOne,
-        address_line_two: addressLineTwo,
-        address_line_three: addressLineThree,
-        user_type: "Admin", //userType,
-        password: password,
-        confirm_password: confirmPassword,
-        user_name: userName,
-        phone: phone,
+    const onFormSubmit=(e)=>{
+        console.log(imei)
+        console.log(model)
+        console.log(origin)
+
+       axios.post('http://localhost:8080/spring/api/device/create', {
+        imei: imei,
+        model: model,
+        origin: origin
+
       })
       .then(function (response) {
-        props.cb();
         console.log(response);
+        props.cb()
       })
       .catch(function (error) {
         console.log(error);
-      });
-    e.preventDefault();
-  };
+      })
+
+       e.preventDefault();
+    }
+    const onChangeImei=(e)=>{
+        setImaei(e.target.value)
+    }
+    const onChangeOrigin=(e)=>{
+        setModel(e.target.value)
+    }
+    const onChangeModel=(e)=>{
+        setOrigin(e.target.value)
+    }
 
   return (
     <div className="w-full h-full  flex justify-center bg-gray-100">
@@ -101,124 +46,34 @@ const CreateDevice = (props) => {
       >
         <div className="flex justify-center gap-6">
           <div className="flex-1 flex flex-col">
-            <label className="text-xs  text-green-700">First Name</label>
+            <label className="text-xs  text-green-700">Imei</label>
             <input
               className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
               id="endtime"
               type="text"
-              onChange={onSetFirstName}
+              onChange={onChangeImei}
             />
           </div>
           <div className="flex-1 flex flex-col">
-            <span className="text-xs  text-green-700">Last Name</span>
+            <span className="text-xs  text-green-700">Origin</span>
             <input
               className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
               id="endtime"
               type="text"
-              onChange={onSetLastName}
+              onChange={onChangeOrigin}
             />
           </div>
           <div className="flex-1 flex flex-col">
-            <span className=" text-xs t text-green-700">Middle Name</span>
+            <span className=" text-xs t text-green-700">Model</span>
             <input
               className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
               id="endtime"
               type="text"
-              onChange={onSetMiddleName}
-            />
-          </div>
-        </div>
-        <div className="flex justify-center gap-6">
-          <div className="flex-1 flex flex-col">
-            <label className="text-xs text-green-700">Address_Line_one</label>
-            <input
-              className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
-              id="endtime"
-              type="text"
-              onChange={onSetAddressLineOne}
-            />
-          </div>
-          <div className="flex-1 flex flex-col">
-            <span className="text-xs  text-green-700">Address_Line_two</span>
-            <input
-              className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
-              id="endtime"
-              type="text"
-              onChange={onSetAddressLineTwo}
-            />
-          </div>
-          <div className="flex-1 flex flex-col">
-            <span className=" text-xs  text-green-700">Address_Line_three</span>
-            <input
-              className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
-              id="endtime"
-              type="text"
-              onChange={onSetAddressLineThree}
+              onChange={onChangeModel}
             />
           </div>
         </div>
-        <div className="flex justify-center gap-6">
-          <div className="flex-1 flex flex-col">
-            <span className="text-xs  text-green-700">Email</span>
-            <input
-              className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
-              id="endtime"
-              type="text"
-              onChange={onSetEmail}
-            />
-          </div>
-          <div className="flex-1 flex flex-col">
-            <span className="text-xs  text-green-700">Phone</span>
-            <input
-              className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
-              id="endtime"
-              type="text"
-              onChange={onSetPhoneNo}
-            />
-          </div>
-          <div className="flex-1 flex flex-col">
-            <span className="text-xs text-green-700">User Type</span>
-            <select
-              className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
-              name="user_type"
-              id="user_type"
-              onChange={onSetUserType}
-            >
-              <option value="general_report">ADMIN</option>
-              <option value="graph_report">USER</option>
-              <option value="graph_report">SEMIADMIN</option>
-            </select>
-          </div>
-        </div>
-        <div className="flex justify-center gap-6">
-          <div className="flex-1 flex flex-col">
-            <span className="text-xs text-green-600">User Name</span>
-            <input
-              className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
-              id="endtime"
-              type="text"
-              onChange={onSetUserName}
-            />
-          </div>
-          <div className="flex-1 flex flex-col">
-            <span className=" text-xs  text-green-700">Password</span>
-            <input
-              className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
-              id="endtime"
-              type="text"
-              onChange={onSetPassword}
-            />
-          </div>
-          <div className="flex-1 flex flex-col">
-            <span className="text-xs  text-green-700">Confirm Password</span>
-            <input
-              className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
-              id="endtime"
-              type="text"
-              onChange={onSetConfirmPassword}
-            />
-          </div>
-        </div>
+        
         <div className="flex justify-end gap-6">
           <button
             className="p-2 w-32  h-8 text-sm text-white bg-yellow-400 rounded-md"

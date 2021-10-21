@@ -8,7 +8,7 @@ import InstallLog from "./InstallLog";
 import "./opearation.css";
 import Repair from "./Repair";
 import Users from "./Users";
-import Vehicles from "./Vehicles";
+import Vehicles from "./Vehicle/Vehicle";
 
 // import Manager from "./Manager";
 // import Driver from "./Driver";

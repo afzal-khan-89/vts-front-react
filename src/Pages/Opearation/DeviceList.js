@@ -13,7 +13,7 @@ const DeviceList=(props)=> {
   const[newUserToCreate, setNewUserToCreate] = useState(0)
 
   useEffect(() => {
-    axios.get('http://localhost:8080/spring/api/user/all')
+    axios.get('http://localhost:8080/spring/api/device/all')
       .then(function (response) {
           let tempData=[]
           console.log(response);

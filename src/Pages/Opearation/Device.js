@@ -12,10 +12,10 @@ const Device = () => {
   const CONTENT_NEW_DEVICE=2
 
   const onClickCreateNewDevice=()=>{
-    
+    setPageContent(CONTENT_NEW_DEVICE)
   }
   const resFromCreateDEvice=()=>{
-
+    setPageContent(CONTENT_DEVICE_LIST)
   }
 
   

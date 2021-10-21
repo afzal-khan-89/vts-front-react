@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios'
-import "./opearation.css";
+import "./device.css";
 
-import editButton from "../../img/pre-apps-imag/edit.png";
-import deleteButton from "../../img/pre-apps-imag/delete.png";
+import editButton from "../../../img/pre-apps-imag/edit.png";
+import deleteButton from "../../../img/pre-apps-imag/delete.png";
 
 
 
@@ -25,15 +25,31 @@ const DeviceList=(props)=> {
 
   }, [])
 
-  return (
-   
-      
-            <div className=" border border-gray-300 flex flex-col">
-                <div className="">
+    const onDeviceStatusChange=()=>{
 
-                </div>
-               
-                    <table className="w-full h-full table-fixed">
+    }
+    const createDevice=()=>{
+        props.cb()
+    }
+  return (
+    <div className="mt-6 border border-gray-300 flex flex-col">
+        <div className="w-full h-12 px-3 pt-3 mb-10 flex justify-between gap-3">
+            <div className="w-24 flex flex-col">
+                <span className="ml-1 text-xs  text-green-700">Dealer</span>
+                <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
+                    name="user_type" id="user_type" onChange={ onDeviceStatusChange }>
+                    <option value="Car">All</option>
+                    <option value="Car">Installed</option>
+                    <option value="Car">Uninstalled</option>
+                </select>
+            </div>
+            <div className="h-20  flex justify-end items-start">
+              <button className="w-40 p-2 rounded text-sm text-white bg-yellow-400 " onClick={ createDevice }>Create New Device </button>
+            </div>
+        </div>
+        <div className="">
+            </div>
+                <table className="w-full h-full table-fixed">
                         <thead>
                             <tr className="h-8 bg-green-400 border-b">
                                 <th className="w-1/12 p-0.5  border-r cursor-pointer text-sm text-gray-600">

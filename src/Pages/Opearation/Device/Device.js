@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import "./opearation.css";
-import changeButton from "../../img/pre-apps-imag/edit.png";
+import "./device.css";
 import DeviceList from "./DeviceList";
 import CreateDevice from "./CreateDevice";
 
@@ -18,18 +17,13 @@ const Device = () => {
     setPageContent(CONTENT_DEVICE_LIST)
   }
 
-  
   return (
      <div className="w-full h-full flex justify-center bg-gray-100">
       <div className="w-4/6 h-full px-6 bg-white">
         <div className="h-full px-6 mt-3 bg-gray-100 border border-gray-300 flex flex-col">
-          <div className="h-20 mt-0 mx-6 flex justify-end items-start">
-            <button className="h-10 w-44 bg-yellow-400 text-sm text-white rounded-bl-md rounded-br-md" 
-                                onClick={ onClickCreateNewDevice }>Create Device </button>
-          </div>
-          <div className="mx-3 border border-gray-200">
+          <div>
               {(()=>{
-                  if(pageContent == CONTENT_DEVICE_LIST) return <DeviceList />
+                  if(pageContent == CONTENT_DEVICE_LIST) return <DeviceList cb={ onClickCreateNewDevice } />
                   else return <CreateDevice cb={resFromCreateDEvice}/>
               })()}
           </div>

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 
 import logBookIcon from "../../img/pre-apps-imag/logbook.png";
-import Device from "./Device";
-import Install from "./Install";
+import Device from "./Device/Device";
+import Install from "./Install/Install";
 import InstallLog from "./InstallLog";
 
 import "./opearation.css";
 import Repair from "./Repair";
-import Users from "./Users";
+import Uninstall from "./Uninstall/Uninstall";
+import Users from "./user/Users";
 import Vehicles from "./Vehicle/Vehicle";
 
 // import Manager from "./Manager";
@@ -21,9 +22,10 @@ const Opearation = () => {
   const OPEARATION_DEVICE = 1;
   const OPEARATION_VEHICLE = 2;
   const OPEARATION_INSTALL = 3;
-  const OPEARATION_REPAIR = 4;
-  const OPEARATION_DEVICE_INSTALL_LOG = 5;
-  const OPEARATION_VEHICLE_INSTALL_LOG = 6;
+  const OPEARATION_UN_INSTALL = 4;
+  const OPEARATION_REPAIR = 5;
+  const OPEARATION_DEVICE_INSTALL_LOG = 6;
+  const OPEARATION_VEHICLE_INSTALL_LOG = 7;
 
   const onUserClick = () => {
     setOpearationContent(OPEARATION_USER);
@@ -36,6 +38,9 @@ const Opearation = () => {
   };
   const onInstallClick = () => {
     setOpearationContent(OPEARATION_INSTALL);
+  };
+  const onUnInstallClick = () => {
+    setOpearationContent(OPEARATION_UN_INSTALL);
   };
   const onRepairClick = () => {
     setOpearationContent(OPEARATION_REPAIR);
@@ -81,6 +86,12 @@ const Opearation = () => {
             </button>
             <button
               class="w-32 bg-warmGray-200 text-sm  text-green-600 hover:bg-warmGray-300 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
+              onClick={onUnInstallClick}
+            >
+              Un-Install
+            </button>
+            <button
+              class="w-32 bg-warmGray-200 text-sm  text-green-600 hover:bg-warmGray-300 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
               onClick={onRepairClick}
             >
               Repair
@@ -91,7 +102,7 @@ const Opearation = () => {
               class="w-32 bg-warmGray-200 text-sm  text-green-600 hover:bg-warmGray-300 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
               onClick={onDeviceLogClick}
             >
-              Install-log
+              Install-log 
             </button>
           </div>
         </div>
@@ -108,6 +119,9 @@ const Opearation = () => {
           }
           else if (opearationContent == OPEARATION_INSTALL) {
             return <Install />;
+          }
+          else if (opearationContent == OPEARATION_UN_INSTALL) {
+            return <Uninstall />;
           }
           else if (opearationContent == OPEARATION_REPAIR) {
             return <Repair />;

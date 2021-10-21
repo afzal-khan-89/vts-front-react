@@ -7,7 +7,7 @@ import deleteButton from "../../../img/pre-apps-imag/delete.png";
 
 
 
-const VehicleList=()=> {
+const VehicleList=(props)=> {
   const[Vehicles, SetVehicles] = useState([])
   useEffect(() => {
     axios.get('http://localhost:8080/spring/api/asset/all')
@@ -31,32 +31,61 @@ const VehicleList=()=> {
   const onGroupChante=()=>{
 
   }
+  const onClickNewVehicle=()=>{
+    props.cb()
+  }
 
   return (
     <div className=" border border-gray-300 flex flex-col gap-3">
-        <div className="w-1/2 h-12 px-3 pt-3 mb-8 flex justify-start gap-3">
-            <div className="flex-1 flex flex-col">
-                <span className=" text-xs  text-green-700">Dealer</span>
+        <div className="w-full h-12 px-3 mt-3 mb-8 flex justify-between items-end">
+            <div className="w-2/4 flex justify-start gap-3">
+                <div className="flex-1 flex flex-col">
+                <span className="pl-1 text-xs  text-green-700">Dealer</span>
                 <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
                     name="user_type" id="user_type" onChange={ onDealerChange }>
                     <option value="Car">All</option>
                 </select>
-            </div>
-            <div className="flex-1 flex flex-col">
-                <span className=" text-xs  text-green-700">User</span>
+                </div>
+                <div className="flex-1 flex flex-col">
+                <span className="pl-1 text-xs  text-green-700">User</span>
                 <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
                     name="user_type" id="user_type" onChange={ onUserChange }>
                     <option value="Car">All</option>
                 </select>
-            </div>
-            <div className="flex-1 flex flex-col">
-                <span className=" text-xs  text-green-700">Group</span>
+                </div>
+                <div className="flex-1 flex flex-col">
+                <span className="pl-1 text-xs  text-green-700">Group</span>
                 <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
                     name="user_type" id="user_type" onChange={ onGroupChante }>
                     <option value="Car">All</option>
                 </select>
+                </div>
+            </div>
+            <div className="w-1/4  flex justify-end gap-3">
+                <div className="w-28 flex flex-col">
+                    <span className="pl-1 text-xs  text-green-700">Status</span>
+                    <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
+                        name="user_type" id="user_type" onChange={ onDealerChange }>
+                        <option value="Car">All</option>
+                        <option value="Car">Active</option>
+                        <option value="Car">Inactive</option>
+                    </select>
+                </div>
+                <div className="w-28 flex flex-col">
+                    <span className="pl-1 text-xs  text-green-700">Is-Installed</span>
+                    <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
+                        name="user_type" id="user_type" onChange={ onUserChange }>
+                        <option value="Car">All</option>
+                        <option value="Car">Installed</option>
+                        <option value="Car">UnInstalled</option>
+                    </select>
+                </div>
+            </div>
+            <div className="h-9  flex justify-end">
+              <button className="w-40 p-2 rounded text-sm text-white bg-yellow-400 " onClick={ onClickNewVehicle }>Create New Vehicle </button>
             </div>
         </div>
+
         <div className="">
             </div>
                 <table className="w-full h-full table-fixed">

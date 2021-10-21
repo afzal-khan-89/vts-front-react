@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./opearation.css";
+import "./device.css";
 
 const CreateDevice = (props) => {    const [imei, setImaei] = useState('')
     const [model, setModel] = useState('')
@@ -39,7 +39,7 @@ const CreateDevice = (props) => {    const [imei, setImaei] = useState('')
     }
 
   return (
-    <div className="w-full h-full  flex justify-center bg-gray-100">
+    <div className="mt-6 w-full h-full  flex justify-center bg-gray-100">
       <form
         className="w-full px-6 py-3 h-auto flex flex-col gap-y-4 border border-gray-300 bg-gray-50"
         onSubmit={onFormSubmit}

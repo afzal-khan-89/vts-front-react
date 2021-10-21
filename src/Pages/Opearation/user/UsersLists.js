@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios'
-import "./opearation.css";
+import "./user.css";
 
-import editButton from "../../img/pre-apps-imag/edit.png";
-import deleteButton from "../../img/pre-apps-imag/delete.png";
-import NewUser from "./NewUser";
+import editButton from "../../../img/pre-apps-imag/edit.png";
+import deleteButton from "../../../img/pre-apps-imag/delete.png";
 
 
-const UsersLists=()=> {
 
+const UsersLists=(props)=> {
   const[users, setUsers] = useState([])
-  const[newUserToCreate, setNewUserToCreate] = useState(0)
 
   useEffect(() => {
     axios.get('http://localhost:8080/spring/api/user/all')
@@ -24,11 +22,31 @@ const UsersLists=()=> {
       })
 
   }, [])
+  const onUserStatusChange=()=>{
 
+  }
+  const createNewUser=()=>{
+    props.cb()
+  }
   return (
-     <div className="w-full h-full border border-gray-200">
-        <table className="w-full h-full table-fixed">
-            <thead>
+    <div className="mx-4 my-6 border border-gray-300 flex flex-col">
+        <div className="w-full h-12 px-3 pt-3 mb-10 flex justify-between">
+            <div className="w-18 flex flex-col">
+                <span className="ml-1 text-xs  text-green-700">Status</span>
+                <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
+                    name="user_type" id="user_type" onChange={ onUserStatusChange }>
+                    <option value="Car">All</option>
+                    <option value="Car">Active</option>
+                    <option value="Car">Inactive</option>
+                </select>
+            </div>
+            <div className="h-20  flex justify-end items-start">
+              <button className="w-40 p-2 rounded text-sm text-white bg-yellow-400 " onClick={ createNewUser }>Create New User </button>
+            </div>
+        </div>
+        <div>
+           <table className="w-full h-full table-fixed">
+                      <thead>
                 <tr className="h-8 bg-green-400 border-b">
                   <th className="w-1/12 p-0.5  border-r cursor-pointer text-sm text-gray-600">
                       #sl
@@ -91,7 +109,14 @@ const UsersLists=()=> {
                 ))}
             </tbody>
         </table>
-    </div>
+        </div>
+  </div>
+      
+                
+        
+
+
+
   );
 }
 export default UsersLists;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios'
-import "./opearation.css";
+import "./user.css";
 
 
 const NewUser=(props)=> {
@@ -95,7 +95,7 @@ const NewUser=(props)=> {
       e.preventDefault();
   }
   return (
-    <div className="w-full h-full  flex justify-center bg-gray-100">
+    <div className="w-full h-full mt-6  flex justify-center bg-gray-100 ">
         <form className="w-full px-6 py-3 h-auto flex flex-col gap-y-4 border border-gray-300 bg-gray-50" onSubmit={onFormSubmit}>
             <div className="flex justify-center gap-6">            
               <div className="flex-1 flex flex-col">

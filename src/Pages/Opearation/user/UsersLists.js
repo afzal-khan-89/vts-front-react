@@ -41,7 +41,7 @@ const UsersLists=(props)=> {
                 </select>
             </div>
             <div className="h-20  flex justify-end items-start">
-              <button className="w-40 p-2 rounded text-sm text-white bg-yellow-400 " onClick={ createNewUser }>Create New User </button>
+              <button className="w-40 p-2 rounded text-sm text-gray-50 transition duration-500 ease-in-out bg-green-500 hover:bg-red-600 transform hover:-translate-y-1 hover:scale-110 " onClick={ createNewUser }>Create New User </button>
             </div>
         </div>
         <div>
@@ -91,9 +91,9 @@ const UsersLists=(props)=> {
                   </td>
                   <td class=" border-r cursor-pointer text-sm text-gray-600"></td>
                 </tr>
-                {users.map((user) => (
-                  <tr className="h-8 bg-gray-100 text-center border-b text-sm text-gray-600">
-                      <td class="border-r">{1}</td>
+                {users.map((user, index) => (
+                  <tr className={`h-8 bg-gray-100 text-center border-b text-sm text-gray-600 ${index % 2 == 0 ? 'bg-gray-200' : 'bg-white' }`}>
+                      <td class="border-r">{index+1}</td>
                       <td className=" border-r">{user.first_name}</td>
                       <td class=" border-r">{ user.type } </td>
                       <td class=" border-r">{ user.email}</td>

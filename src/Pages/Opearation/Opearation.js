@@ -6,14 +6,13 @@ import Install from "./Install/Install";
 import InstallLog from "./InstallLog";
 
 import "./opearation.css";
-import Repair from "./Repair";
+import Repair from "./Repair/Repair";
+import RepairList from "./Repair/RepairList";
 import Uninstall from "./Uninstall/Uninstall";
 import Users from "./user/Users";
 import Vehicles from "./Vehicle/Vehicle";
 
-// import Manager from "./Manager";
-// import Driver from "./Driver";
-// import Profile from "./Profile";
+
 
 const Opearation = () => {
   const [opearationContent, setOpearationContent] = useState(0);
@@ -58,40 +57,40 @@ const Opearation = () => {
         <div className="h-8 w-48  flex justify-start items-center bg-yellow-200">
           <span className="ml-2 text-green-800">Oparation</span>
         </div>
-        <div className="w-full h-24 px-10 flex justify-between  border border-gray-300 bg-gray-100 ">
+        <div className="w-full h-24 px-10 pt-4 flex justify-between  border border-gray-300 bg-gray-100 ">
           <div className="w-3/4 h-full flex justify-start items-end gap-1">
             <button
-              class="w-20 bg-warmGray-200 text-sm  text-green-600 hover:bg-warmGray-300 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
+              class="w-20 bg-warmGray-300 rounded-tl-xl text-sm  text-green-700 hover:bg-warmGray-300 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
               onClick={onUserClick}
             >
               User
             </button>
             <button
-              class="w-32 bg-warmGray-200 text-sm  text-green-600 hover:bg-warmGray-300 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
+              class="w-32 bg-warmGray-300 text-sm  text-green-700 hover:bg-warmGray-700 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
               onClick={onDeviceClick}
             >
               Device
             </button>
             <button
-              class="w-32 bg-warmGray-200 text-sm  text-green-600 hover:bg-warmGray-300 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
+              class="w-32 bg-warmGray-300 text-sm  text-green-600 hover:bg-warmGray-700 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
               onClick={onVehicleClick}
             >
               Vehicle
             </button>
             <button
-              class="w-32 bg-warmGray-200 text-sm  text-green-600 hover:bg-warmGray-300 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
+              class="w-32 bg-warmGray-300 text-sm  text-green-600 hover:bg-warmGray-700 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
               onClick={onInstallClick}
             >
               Install
             </button>
             <button
-              class="w-32 bg-warmGray-200 text-sm  text-green-600 hover:bg-warmGray-300 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
+              class="w-32 bg-warmGray-300 text-sm  text-green-600 hover:bg-warmGray-700 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
               onClick={onUnInstallClick}
             >
               Un-Install
             </button>
             <button
-              class="w-32 bg-warmGray-200 text-sm  text-green-600 hover:bg-warmGray-300 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
+              class="w-32 rounded-tr-xl bg-warmGray-300 text-sm  text-green-700 hover:bg-warmGray-300 hover:red-500  px-2 py-2  outline-none focus:shadow-outline"
               onClick={onRepairClick}
             >
               Repair

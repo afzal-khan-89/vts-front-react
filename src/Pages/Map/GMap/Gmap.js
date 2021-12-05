@@ -162,7 +162,7 @@ const Tr = ()=>{
         <div className = "tracking-container fixed  w-screen  m-auto mt-14">    
             <div style={{ height: '100vh', width: '100%' }}>
                 <GoogleMapReact
-                    bootstrapURLKeys={{ key: 'AIzaSyDMUvZIh4hmB-yhE0C6Evu4dWdhNqD8ceo',
+                    bootstrapURLKeys={{ key: '',
                                         libraries:['places', 'geometry', 'drawing', 'visualization'] }}
                     defaultCenter={startPosition}
                     defaultZoom={12}

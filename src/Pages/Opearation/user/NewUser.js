@@ -17,6 +17,16 @@ const NewUser=(props)=> {
   const[userName, setUserName] = useState('')
   const[password, setPassword] = useState('')
   const[confirmPassword, setConfirmPassword] = useState('')
+  const[client, setClient]=useState('')
+  const[marcheant, setMarcheant]=useState('')
+  const[vtsUser, setVtsUser]=useState('')
+
+  const[newUserType, setNewUserType] = useState('VTS_USER')
+
+  const userRole = ["CLIENT", "CLIENT_ADMIN","MARCHEANT", "MARCHEANT_SUPERVISOR", "VTS_USER", "VTS_USER_SUPERVISOR"]
+  const clients = ["maradona", "pele", "messi"];
+  const marcheants = ["barcelona", "manu"];
+  const vtsUsers = [ 'ronaldo', 'naymer', 'mbape']
 
 
   const onSetFirstName=(e)=>{
@@ -57,7 +67,7 @@ const NewUser=(props)=> {
   }
 
   const onFormSubmit=(e)=>{
-     console.log(firstName)
+      console.log(firstName)
       console.log(lastName)
       console.log(middleName)
       console.log(email)
@@ -68,10 +78,10 @@ const NewUser=(props)=> {
       console.log(password)
       console.log(confirmPassword)
       console.log(userName)
-       console.log(phone)
+      console.log(phone)
       console.log('on form submit ')
       console.log(e.name)
-      axios.post('http://localhost:8080/spring/api/user/register', {
+      axios.post('http://localhost:8080/api/v1/user/register', {
         "first_name" : firstName,
         "last_name": lastName,
         "middle_name": middleName,
@@ -79,11 +89,14 @@ const NewUser=(props)=> {
         "address_line_one": addressLineOne,
         "address_line_two": addressLineTwo,
         "address_line_three": addressLineThree,
-        "user_type": 'Admin',//userType,
         "password":password,
         "confirm_password":confirmPassword,
         "user_name":userName,
-        "phone":phone
+        "phone":phone,
+        "client" : "messi",
+        "consortium":"dmaria",
+        "user_type":"VTS_USER",
+
       })
       .then(function (response) {
           props.cb()
@@ -113,6 +126,11 @@ const NewUser=(props)=> {
                     <input className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
                     id="endtime" type="text" onChange={ onSetMiddleName }/>
               </div>
+              <div className="flex-1 flex flex-col">
+                    <span className="text-xs  text-green-700">Email</span>
+                    <input className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
+                    id="endtime" type="text" onChange={ onSetEmail }/>
+                </div>
             </div>
             <div className="flex justify-center gap-6">      
                 <div className="flex-1 flex flex-col">
@@ -125,35 +143,27 @@ const NewUser=(props)=> {
                     <input className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
                     id="endtime" type="text" onChange={ onSetAddressLineTwo }/>
                 </div>
-                  <div className="flex-1 flex flex-col">
+                <div className="flex-1 flex flex-col">
                     <span className=" text-xs  text-green-700">Address_Line_three</span>
                     <input className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
                     id="endtime" type="text" onChange={ onSetAddressLineThree }/>
-                </div>
-            </div>
-            <div className="flex justify-center gap-6">  
-                <div className="flex-1 flex flex-col">
-                    <span className="text-xs  text-green-700">Email</span>
-                    <input className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
-                    id="endtime" type="text" onChange={ onSetEmail }/>
                 </div>
                 <div className="flex-1 flex flex-col">
                     <span className="text-xs  text-green-700">Phone</span>
                     <input className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
                     id="endtime" type="text" onChange={ onSetPhoneNo }/>
-                </div>          
-                <div className="flex-1 flex flex-col">
-                    <span className="text-xs text-green-700">User Type</span>
-                        <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
-                            name="user_type" id="user_type" onChange={ onSetUserType }>
-                            <option value="general_report">ADMIN</option>
-                            <option value="graph_report">USER</option>
-                            <option value="graph_report">SEMIADMIN</option>
-                     </select>
-                </div>
-
+                </div> 
             </div>
             <div className="flex justify-center gap-6">  
+                <div className="flex-1 flex flex-col">
+                    <span className="text-xs text-green-700">User Type</span>
+                      <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
+                        name="user_type" id="user_type" onChange={ onSetUserType }>
+                        { userRole.map((item, index)=>(
+                          <option value={item} key={index}>{item}</option>
+                        ))}
+                      </select>              
+                </div>
                 <div className="flex-1 flex flex-col">
                     <span className="text-xs text-green-600">User Name</span>
                     <input className="w-full text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded "
@@ -170,6 +180,77 @@ const NewUser=(props)=> {
                     id="endtime" type="text" onChange={ onSetConfirmPassword }/>
                 </div>
 
+            </div>
+            <div className="flex justify-center gap-6">  
+                <div className="flex-1 flex flex-col">  
+                  {(()=>{
+                    if(userType.includes('CLIENT_ADMIN')){
+                      return(
+                        <div className="flex-1 flex flex-col">
+                        <span className="text-xs text-green-700">User Type</span>
+                          <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
+                            name="user_type" id="user_type" onChange={ onSetUserType }>
+                            { clients.map((item, index)=>(
+                              <option value={item} key={index}>{item}</option>
+                            ))}
+                          </select>              
+                        </div>
+                      )
+                    }
+                    else if(userType.includes('MARCHEANT')){
+                      return(
+                        <div className="flex-1 flex flex-col">
+                        <span className="text-xs text-green-700">User Type</span>
+                          <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
+                            name="user_type" id="user_type" onChange={ onSetUserType }>
+                            { clients.map((item, index)=>(
+                              <option value={item} key={index}>{item}</option>
+                            ))}
+                          </select>              
+                        </div>
+                      )
+                    }
+                    else if(userType.includes('MARCHEANT_SUPERVISOR')){
+                      return(
+                        <div className="flex-1 flex flex-col">
+                        <span className="text-xs text-green-700">User Type</span>
+                          <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
+                            name="user_type" id="user_type" onChange={ onSetUserType }>
+                            { clients.map((item, index)=>(
+                              <option value={item} key={index}>{item}</option>
+                            ))}
+                          </select>              
+                        </div>
+                      )
+                    }
+                    else if(userType.includes('VTS_USER')){
+                      return(
+                        <div className="flex-1 flex flex-col">
+                        <span className="text-xs text-green-700">User Type</span>
+                          <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
+                            name="user_type" id="user_type" onChange={ onSetUserType }>
+                            { clients.map((item, index)=>(
+                              <option value={item} key={index}>{item}</option>
+                            ))}
+                          </select>              
+                        </div>
+                      )
+                    }
+                    else if(userType.includes('VTS_USER_SUPERVISOR')){
+                      return(
+                        <div className="flex-1 flex flex-col">
+                        <span className="text-xs text-green-700">User Type</span>
+                          <select className="text-gray-700 text-sm bg-gray-50 border border-gray-300 focus:outline-none py-1.5 px-2 rounded cursor-pointer"
+                            name="user_type" id="user_type" onChange={ onSetUserType }>
+                            { clients.map((item, index)=>(
+                              <option value={item} key={index}>{item}</option>
+                            ))}
+                          </select>              
+                        </div>
+                      )
+                    }
+                  })()}          
+                </div>
             </div>
             <div className="flex justify-end gap-6"> 
                 <button className="p-2 w-32  h-8 text-sm text-white bg-yellow-400 rounded-md" onClick={()=>(props.cb())}>Cancel</button>

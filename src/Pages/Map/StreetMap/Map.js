@@ -1,22 +1,25 @@
-import React, {  useState, useRef, useEffect }  from 'react'
+import React, {  useState, useEffect }  from 'react'
 import axios from 'axios';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { Icon } from "leaflet";
-import '../Components/Tracking/TrMap.css'
+import '../../../Components/Tracking/TrMap.css'
 import { Polyline } from 'react-leaflet';
 import L from "leaflet";
 import "leaflet-polylinedecorator";
 import { Map, GeoJSON, useLeaflet } from "react-leaflet";
 
-import PolylineDecorator from '../Components/Tracking/PlotHIstoryData'
+import PolylineDecorator from '../../../Components/Tracking/PlotHIstoryData'
 
-import UserSelectionView from '../Components/UserSelectonView';
-import Monitor from '../Components/Tracking/LeftMenu/Monitor';
-import History from '../Components/Tracking/LeftMenu/History';
-import Notifications from '../Components/Tracking/LeftMenu/Notificatons';
-import PlotHistoryData from '../Components/Tracking/PlotHIstoryData';
-import ShowLastLocation from '../Components/Tracking/ShowLastLocation';
+
+
+import PlotHistoryData from '../../../Components/Tracking/PlotHIstoryData';
+import ShowLastLocation from '../../../Components/Tracking/ShowLastLocation';
+
+import UserSelectionView from '../../../Components/UserSelectonView';
+import Monitor from '../../../Components/Tracking/LeftMenu/Monitor';
+import History from '../../../Components/Tracking/LeftMenu/History';
+import Notifications from '../../../Components/Tracking/LeftMenu/Notificatons';
 
 
 const Tr = ()=>{

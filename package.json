@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.2",
+    "google-map-react": "^2.1.10",
     "google-maps-react": "^2.0.6",
     "leaflet": "^1.7.1",
     "leaflet-polylinedecorator": "^1.6.0",
@@ -48,8 +49,8 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^9.8.6",
-    "postcss": "^7.0.36",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
+    "autoprefixer": "^9.8.8",
+    "postcss": "^7.0.39",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
   }
 }

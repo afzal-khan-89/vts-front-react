@@ -4,7 +4,7 @@ import Home from './Pages/Home/Home'
 import Reports from './Pages/Reports/Reports';
 import Opearation from './Pages/Opearation/Opearation'
 import Tr from './Pages/Map/StreetMap/Map.js';
-import Gmap from './Pages/Map/GMap/GoogleMapr'
+import Gmap from './Pages/Map/Googlemap/GMap.js'
 
 
 import { BrowserRouter as Router, Switch, router, Route }  from 'react-router-dom'

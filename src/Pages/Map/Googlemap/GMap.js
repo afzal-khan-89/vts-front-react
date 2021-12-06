@@ -1,21 +1,20 @@
 import { react, useRef, useEffect } from 'react'
 import MapContent from './MapContent';
 
-const GoogleMapr = () => {
+const GMap = () => {
   const googleMapRef = useRef();
   let googleMap;
-  useEffect(() => {
-    const googleMapScript = document.createElement("script");
-    googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places`;
-    googleMapScript.async = true;
-    window.document.body.appendChild(googleMapScript);
-    googleMapScript.addEventListener("load", () => {
-      //getLatLng();
-      createGoogleMap()
-    });
-  }, []);
+//   useEffect(() => {
+//     const googleMapScript = document.createElement("script");
+//     googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places`;
+//     googleMapScript.async = true;
+//     window.document.body.appendChild(googleMapScript);
+//     googleMapScript.addEventListener("load", () => {
+//       createGoogleMap()
+//     });
+//   }, []);
  const createGoogleMap = () =>
-    new window.google.maps.Map(googleMapRef.current, {
+    googleMap = new window.google.maps.Map(googleMapRef.current, {
       zoom: 16,
       center: {
         lat: 43.642567,
@@ -59,15 +58,11 @@ const GoogleMapr = () => {
   // };
   return (
     <div className = "tracking-container fixed  w-screen  m-auto mt-14">
-      <div id="google-map" ref={googleMapRef} style={{ height: '100vh', width: '100%'}}>
-
-       
-
-      </div>
+      <div id="google-map" ref={googleMapRef} style={{ height: '100vh', width: '100%'}} />
       <MapContent />
     </div>
 
   );
 };
 
-export default GoogleMapr
+export default GMap

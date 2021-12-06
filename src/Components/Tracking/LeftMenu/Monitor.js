@@ -2,31 +2,39 @@ import Vehicle from '../Vehicle'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 
+import { getUserAllVehicle } from '../../../api/VehicleApi.js'
+import { fetchAssetGroup }    from '../../../api/VehicleGroupApi.js'
+import { getUsersVehicleByGroup } from '../../../api/VehicleApi'
+
 const Monitor = (props)=> {
     
-    const [userAsset, setUserAsset] = useState([])
+    const [savedAsset, setSavedAsset] = useState([])
     const [assets, setAssets] = useState([]);
+    const [assetGroup, setAssetGroup] = useState([])
 
     const[assetsQueue, setAssetsQueue] = useState([])
 
 
     useEffect(() => {
-        getUserAssets()
+        getUserAllVehicle('ovaga').then((data)=>{
+            //console.log("::Monitor::")
+            //console.log(data)
+            setSavedAsset(data)
+            setAssets(data)
+        })
 
     }, [])
 
-    function getUserAssets(){
-        axios.get('http://localhost:8080/spring/api/asset/all', 
-          )
-          .then(function (response) {
-            setUserAsset(response.data)
-            setAssets(response.data)
-            console.log(response)
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-    }
+    useEffect(() => {
+        fetchAssetGroup('ovaga').then((data)=>{
+            //console.log("::Monitor::assetgrpup::")
+            //console.log(data)
+            setAssetGroup(data)
+        })
+
+    }, [])
+
+
     const callFromVehicleClick=(vehicle)=>{
         var tempAssets = assetsQueue 
         console.log('::Monitor :: last vehicle queue'+ tempAssets)
@@ -59,18 +67,43 @@ const Monitor = (props)=> {
             }
         })
         if(mData.length<=0){
-            setAssets(userAsset)
+            setAssets(savedAsset)
         }else{
             setAssets(tempArray)
+        }
+    }
+    const onVehicleGroupChange=(e)=>{
+        console.log('group ::: ')
+        console.log(e.target.value)
+        if(e.target.value.includes('all_vehicles')){
+            getUserAllVehicle('ovaga').then((data)=>{
+                //console.log("::Monitor::")
+                //console.log(data)
+                setSavedAsset(data)
+                setAssets(data)
+            })
+    
+        }else{
+            getUsersVehicleByGroup('ovaga', e.target.value).then((data)=>{
+                console.log(data)
+                if(data.length < 0){
+                    setAssets([])
+                }
+                else setAssets(data)
+            })
         }
     }
     return (
         <div class="flex flex-col justify-content w-full bg-white flex-wrap">
             <div className="flex-none flex flex-col border border-gray-200 p-4">
                 <span className="ml-1 text-xs text-yellow-600">Select Group</span>
-                <select className="text-gray-800 text-sm bg-white border border-gray-200 focus:outline-none p-1.5 rounded cursor-pointer">
-                    <option value="1">group x</option>
-                    <option value="1">group y</option>
+                <select className="text-gray-800 text-sm bg-white border border-gray-200 focus:outline-none p-1.5 
+                    rounded cursor-pointer" name="vehicle_group" id="vehicle_group" onChange={onVehicleGroupChange}>
+                        <option value={'all_vehicles'}>{'all vehicles'}</option>   
+                    {assetGroup.map((item)=>(
+                        <option value={item.group_name}>{item.group_name}</option>
+                    ))} 
+                    
                 </select>
             </div>       
             <div className="flex-grow border-l border-r border-b border-gray-200 p-2">
@@ -84,12 +117,6 @@ const Monitor = (props)=> {
                 <div className = "h-80 overflow-y-auto mt-4">
                     {assets.map(item=>(
                         <Vehicle key={item.id} item={item} cbVehicleClick={callFromVehicleClick} cbVehicleFollowClick={callFromVehicleFollowClick}/>
-                    ))}
-                                {assets.map(item=>(
-                    <Vehicle key={item.id} item={item} cbVehicleClick={callFromVehicleClick} cbVehicleFollowClick={callFromVehicleFollowClick}/>
-                    ))}
-                                {assets.map(item=>(
-                    <Vehicle key={item.id} item={item} cbVehicleClick={callFromVehicleClick} cbVehicleFollowClick={callFromVehicleFollowClick}/>
                     ))}
                 </div>
             </div>

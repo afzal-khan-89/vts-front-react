@@ -1,6 +1,7 @@
 import React, {  useState, useEffect }  from 'react'
 import axios from 'axios';
-
+import { getLastLocation } from '../../../api/LocationApi.js'
+import { getUserAllVehicle} from '../../../api/VehicleApi'
 
 
 import UserSelectionView from '../../../Components/UserSelectonView';
@@ -24,15 +25,20 @@ const MapContent=()=> {
     const SHOW_NOTIFICATIONS = 'show_notifications'
  
     let intervalTimerStatus ;
-    let userType = 'admin'
+    let userType = 'VTS_USER'
 
     let vehicleArray=[]
     let locationDatas = []
     
     console.log("+++++++++++++++++++RE RENDER ++++++++++++++++++++++++++++++++++" )
-
-    const startPosition = [23.809405, 90.361806]
-    const AnyReactComponent = ({ text }) => <div>{text}</div>;
+    useEffect(() => {
+        getLastLocation().then(
+           (data)=> {
+               console.log(data)
+           }
+        )
+    }, [])
+  
 
 
     const lastLocation=(retFunction)=>{
@@ -168,7 +174,7 @@ const MapContent=()=> {
                         return (
                             <div  className="bg-white pl-2 pt-2 pr-2">
                                 <div className = "w-full">
-                                    <UserSelectionView  userType = {"admin"} /> 
+                                    <UserSelectionView  userType = {'VTS_USER'} /> 
                                 </div> 
                             </div> 
                         )

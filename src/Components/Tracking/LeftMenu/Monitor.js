@@ -16,21 +16,21 @@ const Monitor = (props)=> {
 
 
     useEffect(() => {
-        getUserAllVehicle('ovaga').then((data)=>{
-            //console.log("::Monitor::")
-            //console.log(data)
-            setSavedAsset(data)
-            setAssets(data)
-        })
+        // getUserAllVehicle('ovaga').then((data)=>{
+        //     //console.log("::Monitor::")
+        //     //console.log(data)
+        //     setSavedAsset(data)
+        //     setAssets(data)
+        // })
 
     }, [])
 
     useEffect(() => {
-        fetchAssetGroup('ovaga').then((data)=>{
-            //console.log("::Monitor::assetgrpup::")
-            //console.log(data)
-            setAssetGroup(data)
-        })
+        // fetchAssetGroup('ovaga').then((data)=>{
+        //     //console.log("::Monitor::assetgrpup::")
+        //     //console.log(data)
+        //     setAssetGroup(data)
+        // })
 
     }, [])
 

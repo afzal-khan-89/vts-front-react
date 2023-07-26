@@ -13,96 +13,96 @@ import Notifications from '../../../Components/Tracking/LeftMenu/Notificatons';
 
 const MapContent=()=> {
 
-    let[mapTask, setMapTask] = useState({action:'', currentLocation:[], previousLocation:[], historyData:[]})
-    const[recentData, setRecentData] = useState([])
-    const[trackintOption, setTrackingOption]=useState('monitor');
-    const[intervalId, setIntervalId]=useState()
+     let[mapTask, setMapTask] = useState({action:'', currentLocation:[], previousLocation:[], historyData:[]})
+     const[recentData, setRecentData] = useState([])
+     const[trackintOption, setTrackingOption]=useState('monitor');
+     const[intervalId, setIntervalId]=useState()
 
-    const NO_ACTION = ''
-    const FOLLOW_VEHICLE = 'follow'
-    const SHOW_LAST_LOCATION = 'last_location'
-    const PLOT_HISTORY = 'plot_history'
-    const SHOW_NOTIFICATIONS = 'show_notifications'
+    // const NO_ACTION = ''
+    // const FOLLOW_VEHICLE = 'follow'
+    // const SHOW_LAST_LOCATION = 'last_location'
+    // const PLOT_HISTORY = 'plot_history'
+    // const SHOW_NOTIFICATIONS = 'show_notifications'
  
-    let intervalTimerStatus ;
-    let userType = 'VTS_USER'
+    // let intervalTimerStatus ;
+     let userType = 'admin'
 
-    let vehicleArray=[]
-    let locationDatas = []
+     let vehicleArray=[]
+    // let locationDatas = []
     
-    console.log("+++++++++++++++++++RE RENDER ++++++++++++++++++++++++++++++++++" )
-    useEffect(() => {
-        getLastLocation().then(
-           (data)=> {
-               console.log(data)
-           }
-        )
-    }, [])
+    // console.log("+++++++++++++++++++RE RENDER ++++++++++++++++++++++++++++++++++" )
+    // useEffect(() => {
+    //     // getLastLocation().then(
+    //     //    (data)=> {
+    //     //        console.log(data)
+    //     //    }
+    //     // )
+    // }, [])
   
 
 
     const lastLocation=(retFunction)=>{
-        axios.post('http://localhost:8080/spring/api/location/last-location', {
-            assets : vehicleArray
-        })
-        .then(function (response) {
-            retFunction(response)
-        })
-        .catch(function (error) {
-            console.log(error);
-        })
+        // axios.post('http://localhost:8080/spring/api/location/last-location', {
+        //     assets : vehicleArray
+        // })
+        // .then(function (response) {
+        //     retFunction(response)
+        // })
+        // .catch(function (error) {
+        //     console.log(error);
+        // })
     }
     const loadHistoryData=(historyParams)=>{
-        axios.get('http://localhost:8080/spring/api/location/location-history',{
-            params:{
-                vehicle : historyParams.vehicle,
-                startTime : historyParams.startTime,
-                endTime : historyParams.endTime
-            }
-        }).then(response=>{
-            console.log(response)
-            response.data.map((item)=>{
+        // axios.get('http://localhost:8080/spring/api/location/location-history',{
+        //     params:{
+        //         vehicle : historyParams.vehicle,
+        //         startTime : historyParams.startTime,
+        //         endTime : historyParams.endTime
+        //     }
+        // }).then(response=>{
+        //     console.log(response)
+        //     response.data.map((item)=>{
                 
-                locationDatas.push([item.latitude, item.longitude])
-            })
-            setMapTask({
-                action:PLOT_HISTORY,
-                historyData:locationDatas
-            })
-        }).catch()
+        //         locationDatas.push([item.latitude, item.longitude])
+        //     })
+        //     setMapTask({
+        //         action:PLOT_HISTORY,
+        //         historyData:locationDatas
+        //     })
+        // }).catch()
     }
-    const loadNotificatinData=()=>{
+    // const loadNotificatinData=()=>{
 
-    }
+    // }
 
     useEffect(() => {
-        console.log('Action : '+ FOLLOW_VEHICLE)
-        console.log('LASTlocation : ' + mapTask.previousLocation)
-        console.log('CURRENTlocation : ' + mapTask.currentLocation)
-        var cLocation = mapTask.currentLocation
-        setMapTask({
-            action:FOLLOW_VEHICLE,
-            previousLocation :cLocation,
-            currentLocation : recentData
-        })
+        // console.log('Action : '+ FOLLOW_VEHICLE)
+        // console.log('LASTlocation : ' + mapTask.previousLocation)
+        // console.log('CURRENTlocation : ' + mapTask.currentLocation)
+        // var cLocation = mapTask.currentLocation
+        // setMapTask({
+        //     action:FOLLOW_VEHICLE,
+        //     previousLocation :cLocation,
+        //     currentLocation : recentData
+        // })
     }, [recentData])
 
     const followVehicle =(response)=>{
-        console.log('++++++++Follow++++++++++')
-        console.log(response);
+        // console.log('++++++++Follow++++++++++')
+        // console.log(response);
 
-        var lat = response.data.latitude
-        var lon = response.data.longitude
-        var coord = [lat, lon]
+        // var lat = response.data.latitude
+        // var lon = response.data.longitude
+        // var coord = [lat, lon]
 
-        console.log('??????????????????????????');
+        // console.log('??????????????????????????');
 
-        if(coord.length === 2){
-            setRecentData(coord)
-        } 
+        // if(coord.length === 2){
+        //     setRecentData(coord)
+        // } 
     }
     const follow=()=>{
-        lastLocation(followVehicle)
+ //       lastLocation(followVehicle)
     }
 
 
@@ -174,7 +174,7 @@ const MapContent=()=> {
                         return (
                             <div  className="bg-white pl-2 pt-2 pr-2">
                                 <div className = "w-full">
-                                    <UserSelectionView  userType = {'VTS_USER'} /> 
+                                    <UserSelectionView  userType = {'admin'} /> 
                                 </div> 
                             </div> 
                         )

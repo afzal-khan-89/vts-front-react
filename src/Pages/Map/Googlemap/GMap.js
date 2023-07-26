@@ -11,56 +11,120 @@ const GMap = () => {
     window.document.body.appendChild(googleMapScript);
     googleMapScript.addEventListener("load", () => {
       createGoogleMap()
+      plotObjectHistory()
     });
   }, []);
- const createGoogleMap = () =>
+
+  useEffect(() => {
+    // getUserAllVehicle('ovaga').then((data)=>{
+    //     //console.log("::Monitor::")
+    //     //console.log(data)
+    //     setSavedAsset(data)
+    //     setAssets(data)
+    // })
+
+   }, [])
+
+
+
+   
+
+   useEffect(() => {
+    // fetchAssetGroup('ovaga').then((data)=>{
+    //     //console.log("::Monitor::assetgrpup::")
+    //     //console.log(data)
+    //     setAssetGroup(data)
+    // })
+
+}, [])
+
+
+
+
+
+
+
+  const createGoogleMap = () =>{
     googleMap = new window.google.maps.Map(googleMapRef.current, {
-      // zoom: 16,
-      // center: {
-      //   lat: 43.642567,
-      //   lng: -79.387054,
-      // },
+      zoom: 16,
+      center: {
+        lat: 23.3453453,
+        lng: 90.543433,
+      },
       disableDefaultUI: true,
   })
-  // const createGoogleMap = (coordinates) => {
-  //   googleMap = new window.google.maps.Map(googleMapRef.current, {
-  //     zoom: 16,
-  //     center: {
-  //       lat: coordinates.lat(),
-  //       lng: coordinates.lng(),
-  //     },
-  //     disableDefaultUI: true,
-  //   });
-  // };
-  // const getLatLng = () => {
-  //   let lat, lng, placeId;
-  //   new window.google.maps.Geocoder().geocode(
-  //     { address: `dhaka` },
-  //     function (results, status) {
-  //       if (status === window.google.maps.GeocoderStatus.OK) {
-  //         placeId = results[0].place_id;
-  //         createGoogleMap(results[0].geometry.location);
-  //         lat = results[0].geometry.location.lat();
-  //         lng = results[0].geometry.location.lng();
-  //         new window.google.maps.Marker({
-  //           position: { lat, lng },
-  //           map: googleMap,
-  //           animation: window.google.maps.Animation.DROP,
-  //           title: `dhaka`,
-  //         });
-  //       } else {
-  //         alert(
-  //           "Geocode was not successful for the following reason: " + status
-  //         );
-  //       }
-  //     }
-  //   );
-  // };
-  return (
-    <div className = "tracking-container fixed  w-screen  m-auto mt-14">
-      <div id="google-map" ref={googleMapRef} style={{ height: '100vh', width: '100%'}} />
-      <MapContent />
-    </div>
+  googleMap.addListener("click", onMarkerClicke);
+ }
+
+ const onMarkerClicke =  (e) =>{
+      
+  console.log("map clicked ")
+  var coordinates = {
+   lat:  23.3453453,
+   lng:  90.543433
+ };
+  var marker = new window.google.maps.Marker({
+   position: coordinates,
+   map: googleMap,
+   icon: {
+     url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+     labelOrigin: new window.google.maps.Point(75, 32),
+     size: new window.google.maps.Size(32, 32),
+     anchor: new window.google.maps.Point(16, 32)
+   },
+   label: {
+     text: "5409 Madison St",
+     color: "#C70E20",
+     fontWeight: "bold"
+   }
+ });
+} 
+
+
+
+
+const showObjects = (objects) => {
+
+
+
+
+}
+const plotObjectRoute= (object) => {
+
+  const flightPlanCoordinates = [
+    { lat: 23.31422,   lng: 90.354542 },
+    { lat: 23.5632324, lng: 90.438991 },
+    { lat: 23.213444,  lng: 90.085653 },
+    { lat: 23.623244,  lng: 90.567868 },
+  ];
+  const flightPath = new window.google.maps.Polyline({
+    path: flightPlanCoordinates,
+    geodesic: true,
+    strokeColor: "#FF0000",
+    strokeOpacity: 1.0,
+    strokeWeight: 2,
+  });
+
+  flightPath.setMap(googleMap);
+}
+
+const monitorObject = (object) =>{
+
+
+
+
+}
+const refeshMap = () => {
+
+
+
+
+}
+return (
+  <div className = "tracking-container fixed  w-screen  m-auto mt-14">
+    <div id="google-map" ref={googleMapRef} style={{ height: '100vh', width: '100%'}} />
+    <MapContent monitorObjectCB = { monitorObject }  showObjectCB = { showObjects }  plotObjectRout = { plotObjectRoute } />
+  </div>
 
   );
 };

@@ -1,0 +1,83 @@
+
+/*==========================================
+			       MEDIA CSS
+==========================================*/
+
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { ... }
+
+/* Medium devices (desktops, 992px and 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+	#top_bar {
+		width: 100%;
+		text-align: right;
+	}
+	.header_righ {
+		padding-right: 15px;
+	}
+}
+
+/* Small devices (tablets, 768px and 991px) */
+@media (min-width: 768px) and (max-width: 991px) { 
+	#top_bar {
+		width: 100%;
+		text-align: right;
+	}
+	.header_righ {
+		padding-right: 15px;
+	}
+}
+
+/* Extra small devices (phones, up to 767px) */
+@media (max-width: 767px) { 
+	#header {
+	    position: relative;
+	    z-index: 9999;
+	}
+	.navbar-inverse .navbar-toggle {
+		margin-top: -52px;
+	}
+	.main-menu ul li {
+		width: 100%;
+	}
+	.navbar-inverse .navbar-nav>.active>a, 
+	.navbar-inverse .navbar-nav>.active>a:focus, 
+	.navbar-inverse .navbar-nav>.active>a:hover {
+		border: none; 
+	}
+	.main-menu ul li a:link, 
+	.main-menu ul li a:active, 
+	.main-menu ul li a:visited {
+		padding: 5px 0;
+	}
+	.navbar-inverse .navbar-toggle,
+	.navbar-inverse .navbar-toggle:hover, 
+	.navbar-inverse .navbar-toggle:focus {
+		background-color: #000;
+	}
+	.navbar-inverse .navbar-toggle .icon-bar {
+		background-color: #fff;
+	}
+
+	#top_bar {
+		display: none;
+	}
+
+	.header_right {
+		position: absolute;
+		top: 0;
+		left: 100px;
+		right: 100px;
+	}
+	.header_right span {
+		text-align: center;
+	}
+
+}
+
+/* Extra small devices (phones, up to 480px) */
+@media (max-width: 480px) { ... }
+
+
+

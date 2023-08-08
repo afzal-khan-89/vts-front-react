@@ -1,11 +1,25 @@
-import { react, useRef, useEffect } from 'react'
-import MapContent from './MapContent';
+import { react, useState, useRef, useEffect } from 'react'
 import axios from 'axios';
-
+import UserSelectionView from '../../../Components/UserSelectonView';
+import Monitor from '../../../Components/Tracking/LeftMenu/Monitor';
+import History from '../../../Components/Tracking/LeftMenu/History';
+import Notifications from '../../../Components/Tracking/LeftMenu/Notificatons';
 
 const GMap = () => {
-  const googleMapRef = useRef();
   let googleMap;
+  const googleMapRef = useRef();
+  let[object, setObject] = useState({
+                                      imei:'', 
+                                      currentLocation: '', 
+                                      nearby_location:'',
+                                      historyData:[]
+                                    })
+
+  const[trackintOption, setTrackingOption]=useState('monitor');                                 
+  let userType = 'admin'
+  let vehicleArray=[]
+
+
   useEffect(() => {
     const googleMapScript = document.createElement("script");
     googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places`;
@@ -13,36 +27,20 @@ const GMap = () => {
     window.document.body.appendChild(googleMapScript);
     googleMapScript.addEventListener("load", () => {
       createGoogleMap()
- //     plotObjectRoute()
     });
   }, []);
 
   useEffect(() => {
-        axios.post('http://localhost:8000/api/v1/location/last', { })
-             .then(function (response) {
-                  console.log('api ok ')
-                  console.log(response.data)
-                  console.log( response.data.latitude )
-                  console.log( response.data.longitude )
-                  showObjects(response.data)
-             })
-            .catch(function (error) {
-                  console.log(error);
-             })
+        // axios.post('http://localhost:8000/api/v1/location/last', { })
+        //      .then(function (response) {
+        //           console.log('api ok ')
+        //           console.log(response.data)
+        //           showObjects(response.data)
+        //      })
+        //     .catch(function (error) {
+        //           console.log(error);
+        //      })
   }, [])
-  useEffect(() => {
-    // getUserAllVehicle('ovaga').then((data)=>{
-    //     //console.log("::Monitor::")
-    //     //console.log(data)
-    //     setSavedAsset(data)
-    //     setAssets(data)
-    // })
-
-   }, [])
-
-
-
-   
 
    useEffect(() => {
     // fetchAssetGroup('ovaga').then((data)=>{
@@ -55,41 +53,34 @@ const GMap = () => {
 
 
 
-
-
-
-
   const createGoogleMap = () =>{
-    googleMap = new window.google.maps.Map(googleMapRef.current, {
-      zoom: 8,
-      center: {
-        lat: 23.3453453,
-        lng: 90.543433,
-      },
-      disableDefaultUI: true,
-    })
-    googleMap.addListener("click", onMapClick);
- }
-
- const onMapClick =  (e) =>{
+      googleMap = new window.google.maps.Map(googleMapRef.current, {
+        zoom: 8,
+        center: {
+          lat: 23.3453453,
+          lng: 90.543433,
+        },
+        disableDefaultUI: true,
+      })
+      googleMap.addListener("click", onMapClick);
+  }
+  const onMapClick =  (e) =>{
       
 
-} 
-
-
-const showObjects = (objects) => {
-  //  console.log("object view")
-  //  console.log( objects.latitude )
-  //  console.log( objects)
- 
-  objects.data.map(e => {
-      console.log(e.latitude )
-      console.log(e.longitude)
+  } 
+  const showObjects = (objects) => {
+    //  console.log("object view")
+    //  console.log( objects.latitude )
+    //  console.log( objects)
+    var lastOpenedInfoWindow 
+    objects.data.map(e => {
+//      console.log(e.latitude )
+//      console.log(e.longitude)
       var coordinates = {
           lat:  parseFloat(e.latitude),
           lng:  parseFloat(e.longitude),
       };
-
+    
       var infowindow = new window.google.maps.InfoWindow({
         content: 'hello world',
         ariaLabel: "Uluru",
@@ -110,11 +101,27 @@ const showObjects = (objects) => {
           fontWeight: "bold"
         }
       });
-      marker.addListener("click", () => {
+      marker.addListener("click", (e) => {
+        if (lastOpenedInfoWindow) {
+          lastOpenedInfoWindow.close();
+        }
         infowindow.open({
+
           anchor: marker,
           googleMap,
+
         });
+        
+        lastOpenedInfoWindow = infowindow
+        setObject(
+          {
+            
+              imei:e.imei, 
+              currentLocation: 'EEQWRQEWR', 
+              nearby_location:'QWERQER',
+              historyData:["ADSAF","ASFDSAF","ASFDFDS"]
+          }         
+        )
       });
   })
 }
@@ -137,22 +144,102 @@ const plotObjectRoute= (object) => {
   flightPath.setMap(googleMap);
 }
 
-const monitorObject = (object) =>{
 
 
 
-
-}
-const refeshMap = () => {
-
-
+const cbFromNotification=(vehicle)=>{
 
 
 }
+const cbFromHistory=(historyParam)=>{
+
+}
+const cbFromMonitor=(vehicles, message)=>{
+    console.log('asdffffffffffffffffffffffffffffffffffff')
+    if(message.includes('follow'))
+    {
+
+    }
+    else if(message.includes('show'))
+    {
+      console.log('in ------')
+      console.log(vehicles)
+
+      axios.post('http://localhost:8000/api/v1/location/last', { 
+          objects : vehicles
+      })
+      .then(function (response) {
+            console.log('api ok ')
+            console.log(response.data)
+            showObjects(response.data)
+      })
+      .catch(function (error) {
+            console.log(error);
+      })
+    }
+}
+
+
+
+
+
+
+
+
+
+
 return (
   <div className = "tracking-container fixed  w-screen  m-auto mt-14">
     <div id="google-map" ref={googleMapRef} style={{ height: '100vh', width: '100%'}} />
-    <MapContent monitorObjectCB = { monitorObject }  showObjectCB = { showObjects }  plotObjectRout = { plotObjectRoute } />
+    <div  className="inline-block absolute  z-10000  w-1/5 rounded-t-lg inset-y-28 left-0 bg-white border border-gray-200 shadow-xl">              
+                <div class="flex  rounded-lg text-sm gap-0.5" role="group">
+                        <button class="flex-1 bg-warmGray-200 text-red-500 hover:bg-warmGray-300 hover:red-500  px-4  py-2  rounded-tl-lg outline-none focus:shadow-outline"
+                            onClick={()=>{setTrackingOption('monitor')}}>Monitor</button>
+                        <button class="flex-1 bg-warmGray-200 text-red-500 hover:bg-warmGray-300 hover:red-500  px-4  py-1.5  outline-none focus:shadow-outline"
+                            onClick={()=>{setTrackingOption('history')}}>History</button>
+                        <button class="flex-1 bg-warmGray-200 text-red-500 hover:bg-warmGray-300 hover:red-500  px-4  py-1.5  rounded-tr-lg outline-none focus:shadow-outline"
+                            onClick={()=>{setTrackingOption('notifications')}}>Noitfications</button>
+                 </div>
+                {(()=>{
+                    if(userType.includes('admin')){
+                        return (
+                            <div  className="bg-white pl-2 pt-2 pr-2">
+                                <div className = "w-full">
+                                    <UserSelectionView  userType = {'admin'} /> 
+                                </div> 
+                            </div> 
+                        )
+                    }
+                    else{
+                        return(
+                            <div  className="bg-white p-1">
+           
+                            </div>
+                        )
+                    }
+                })()}
+                <div class="w-full px-2 ">
+                    {(()=>{
+                        if(trackintOption.includes('monitor')){
+                            return  <Monitor cb={cbFromMonitor}/>
+                        }else if(trackintOption.includes('history')){
+                            return  <History cb={cbFromHistory}/>
+                        }else{
+                            return  <Notifications cb={cbFromNotification}/>
+                        }
+                    })()}
+                </div>  
+            </div>  
+            <div className="inline-block bg-white absolute  z-10000  w-2/5 mx-48 p-5 rounded-t-md inset-x-96 bottom-2 border border-gray-200 shadow-xl" >
+                    <span className="text-sm font-light ">Vehicle: {object.imei}</span>
+                    <hr />
+                    <span className="text-sm font-light ">Location: {object.currentLocation}</span>
+                    <hr />
+                    <span className="text-sm font-light ">Vehicle: {vehicleArray}</span>
+                    <hr />
+                    <span className="text-sm font-light ">Location: {vehicleArray}</span>
+                    <hr />
+            </div>  
   </div>
 
   );

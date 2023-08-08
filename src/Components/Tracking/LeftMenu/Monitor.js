@@ -14,6 +14,30 @@ const Monitor = (props)=> {
 
     const[assetsQueue, setAssetsQueue] = useState([])
 
+    let objects = [] 
+    let strObj = ""
+    useEffect(() => {
+        axios.post('http://localhost:8000/api/v1/object/info', { })
+             .then(function (response) {
+                  console.log(response.data.data)
+                  response.data.data.map(e => {
+                    e.objects.map(p=>{
+                        console.log(p.object)
+//                        console.log(p.status)
+                        objects.push(p.object)
+                        strObj += p.object
+                        strObj += '#'
+                    })
+                  })
+                  console.log(strObj)
+                  setAssets(objects)
+                  props.cb(strObj, 'show')
+             })
+            .catch(function (error) {
+                  console.log(error);
+             })
+    }, [])
+
 
     useEffect(() => {
         // getUserAllVehicle('ovaga').then((data)=>{

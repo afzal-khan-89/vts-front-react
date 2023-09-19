@@ -9,45 +9,110 @@ import { getUsersVehicleByGroup } from '../../../api/VehicleApi'
 const Monitor = (props)=> {
     
     const [savedAsset, setSavedAsset] = useState([])
-    const [assets, setAssets] = useState([]);
+    const [assets, setAssets] = useState([{
+        object: "",
+        imei: "",
+        status :"",
+        latitude: "",
+        longitude: "",
+        speed: "",
+        date : ""
+      }]);
     const [assetGroup, setAssetGroup] = useState([])
 
     const[assetsQueue, setAssetsQueue] = useState([])
 
-    let objects = [] 
-    let strObj = ""
-    useEffect(() => {
+    const [usersAllAssets, setusersAllAssets] = useState([
+        {
+          object: "",
+          imei: "",
+          status :"",
+          latitude: "",
+          longitude: "",
+          speed: "",
+          date : ""
+        }
+      ]);
+    const [selectedAssets, setselectedAssets] = useState([
+        {
+          object: "",
+          action: ""  
+        }
+      ]);
+
+      let fObjects = [[
+        {
+          object: "",
+          imei: "",
+          status :"",
+          latitude: "",
+          longitude: "",
+          speed: "",
+          date : ""
+        }
+      ]] 
+    
+      useEffect(() => {
         axios.post('http://localhost:8000/api/v1/object/info', { })
              .then(function (response) {
                   console.log(response.data.data)
                   response.data.data.map(e => {
-                    e.objects.map(p=>{
-                        console.log(p.object)
-//                        console.log(p.status)
-                        objects.push(p.object)
-                        strObj += p.object
-                        strObj += '#'
+                      e.objects.map(p=>{
+     //                   console.log(p.object)
+                      fObjects.push(p)
+    
                     })
                   })
-                  console.log(strObj)
-                  setAssets(objects)
-                  props.cb(strObj, 'show')
+                  setAssets(fObjects)
              })
             .catch(function (error) {
                   console.log(error);
              })
     }, [])
-
-
+    
+    
     useEffect(() => {
-        // getUserAllVehicle('ovaga').then((data)=>{
-        //     //console.log("::Monitor::")
-        //     //console.log(data)
-        //     setSavedAsset(data)
-        //     setAssets(data)
-        // })
+      const intervalCall = setInterval(() => {
+          axios.post('http://localhost:8000/api/v1/object/info', { })
+          .then(function (response) {
+             console.log(response.data.data)
+          })
+          .catch(function (error) {
+             console.log(error);
+           })
+      }, 5000);
+      return () => {
+        clearInterval(intervalCall);
+      };
+    }, []);
+    
 
-    }, [])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // useEffect(() => {
+    //     setusersAllAssets(props.objects)
+    // }, [])
 
     useEffect(() => {
         // fetchAssetGroup('ovaga').then((data)=>{
@@ -60,21 +125,38 @@ const Monitor = (props)=> {
 
 
     const callFromVehicleClick=(vehicle)=>{
-        var tempAssets = assetsQueue 
-        console.log('::Monitor :: last vehicle queue'+ tempAssets)
-        console.log('::Monitor ::vehicle clicked '+ vehicle)
-        const index = tempAssets.indexOf(vehicle);
-        if (index > -1) {
-            tempAssets.splice(index, 1);
-            console.log('::Monitor ::vvehicle removed '+ vehicle)
-        }
-        else{
-            tempAssets.push(vehicle);
-        }
-        setAssetsQueue(tempAssets)
-        console.log('::Monitor ::vehicle to track  '+ tempAssets)
-        props.cb(assetsQueue, 'track')
+        // var tempAssets = assetsQueue 
+        // console.log('::Monitor :: last vehicle queue'+ tempAssets)
+        // console.log('::Monitor ::vehicle clicked '+ vehicle)
+        // const index = tempAssets.indexOf(vehicle);
+        // if (index > -1) {
+        //     tempAssets.splice(index, 1);
+        //     console.log('::Monitor ::vvehicle removed '+ vehicle)
+        // }
+        // else{
+        //     tempAssets.push(vehicle);
+        // }
+        // setAssetsQueue(tempAssets)
+        // console.log('::Monitor ::vehicle to track  '+ tempAssets)
+        // props.cb(assetsQueue, 'track')
 
+        var tempAsstes = selectedAssets 
+        let flag = 0 
+        let temObje = { object: "", action: ""  }
+        for (let i = 0; i < tempAsstes.length; i++) {
+            if (tempAsstes[i].object.includes(vehicle)) {
+                tempAsstes.splice(i, 1);
+                flag =1 
+                break;
+            }
+        }
+        if(flag==0){
+            temObje.object = vehicle
+            temObje.action = "show"
+            tempAsstes.push(temObje)
+        }
+        setselectedAssets(tempAsstes)
+        props.cb(selectedAssets, 'track')
     }
     const callFromVehicleFollowClick=(vehicle)=>{
         setAssetsQueue([])

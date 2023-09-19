@@ -8,17 +8,23 @@ import Notifications from '../../../Components/Tracking/LeftMenu/Notificatons';
 const GMap = () => {
   let googleMap;
   const googleMapRef = useRef();
-  let[object, setObject] = useState({
-                                      imei:'', 
-                                      currentLocation: '', 
-                                      nearby_location:'',
-                                      historyData:[]
-                                    })
+  let[object, setObject] = useState({ imei:'', currentLocation: '', nearby_location:'',historyData:[] })
 
   const[trackintOption, setTrackingOption]=useState('monitor');                                 
   let userType = 'admin'
   let vehicleArray=[]
 
+  const [assets, setAssets] = useState([
+    {
+      object: "",
+      imei: "",
+      status :"",
+      latitude: "",
+      longitude: "",
+      speed: "",
+      date : ""
+    }
+  ]);
 
   useEffect(() => {
     const googleMapScript = document.createElement("script");
@@ -154,29 +160,36 @@ const cbFromNotification=(vehicle)=>{
 const cbFromHistory=(historyParam)=>{
 
 }
-const cbFromMonitor=(vehicles, message)=>{
-    console.log('asdffffffffffffffffffffffffffffffffffff')
-    if(message.includes('follow'))
-    {
-
+const cbFromMonitor=(objects, message)=>{
+  objects.map((o)=>{
+    console.log(o.object)
+    console.log(o.action)
+    if(o.action.includes('show')){
+      console.log('to show '+o.object)
     }
-    else if(message.includes('show'))
-    {
-      console.log('in ------')
-      console.log(vehicles)
+  })
+    // console.log('asdffffffffffffffffffffffffffffffffffff')
+    // if(message.includes('follow'))
+    // {
 
-      axios.post('http://localhost:8000/api/v1/location/last', { 
-          objects : vehicles
-      })
-      .then(function (response) {
-            console.log('api ok ')
-            console.log(response.data)
-            showObjects(response.data)
-      })
-      .catch(function (error) {
-            console.log(error);
-      })
-    }
+    // }
+    // else if(message.includes('show'))
+    // {
+    //   console.log('in ------')
+    //   console.log(vehicles)
+
+    //   axios.post('http://localhost:8000/api/v1/location/last', { 
+    //       objects : vehicles
+    //   })
+    //   .then(function (response) {
+    //         console.log('api okkk ')
+    //         console.log(response.data)
+    //         showObjects(response.data)
+    //   })
+    //   .catch(function (error) {
+    //         console.log(error);
+    //   })
+    // }
 }
 
 
@@ -221,7 +234,7 @@ return (
                 <div class="w-full px-2 ">
                     {(()=>{
                         if(trackintOption.includes('monitor')){
-                            return  <Monitor cb={cbFromMonitor}/>
+                            return  <Monitor cb={cbFromMonitor} objects = { assets }/>
                         }else if(trackintOption.includes('history')){
                             return  <History cb={cbFromHistory}/>
                         }else{

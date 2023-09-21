@@ -14,17 +14,8 @@ const GMap = () => {
   let userType = 'admin'
   let vehicleArray=[]
 
-  const [assets, setAssets] = useState([
-    {
-      object: "",
-      imei: "",
-      status :"",
-      latitude: "",
-      longitude: "",
-      speed: "",
-      date : ""
-    }
-  ]);
+  const [assets, setAssets] = useState([{}])
+  const [selectedAssets, setSelectedAssets] = useState([])
 
   useEffect(() => {
     const googleMapScript = document.createElement("script");
@@ -36,26 +27,26 @@ const GMap = () => {
     });
   }, []);
 
+
+
+  let fObjects = [{ group: "", object: "", active :""}]
   useEffect(() => {
-        // axios.post('http://localhost:8000/api/v1/location/last', { })
-        //      .then(function (response) {
-        //           console.log('api ok ')
-        //           console.log(response.data)
-        //           showObjects(response.data)
-        //      })
-        //     .catch(function (error) {
-        //           console.log(error);
-        //      })
+    axios.post('http://localhost:8000/api/v1/object/info', { })
+         .then(function (response) {
+ //             console.log(response.data.data)
+              response.data.data.map(e => {
+                e.objects.map(p=>{
+  //                console.log(p.object)
+                  fObjects.push(p)
+                })
+              })
+              setAssets(fObjects)
+         })
+        .catch(function (error) {
+              console.log(error);
+         })
   }, [])
 
-   useEffect(() => {
-    // fetchAssetGroup('ovaga').then((data)=>{
-    //     //console.log("::Monitor::assetgrpup::")
-    //     //console.log(data)
-    //     setAssetGroup(data)
-    // })
-
-}, [])
 
 
 
@@ -153,6 +144,70 @@ const plotObjectRoute= (object) => {
 
 
 
+
+
+
+
+
+
+    // useEffect(() => {
+    //   const intervalCall = setInterval(() => {
+    //     console.log('==============================')
+    //     selectedAssets.map((e)=>{
+    //       console.log(e.object)
+    //       console.log(e.action)
+    //       console.log('==============================')
+    //       if(e.action.includes('follow'))
+    //       {
+    //           axios.post('http://localhost:8000/api/v1/location/last', { 
+    //               //objects : vehicles
+    //           })
+    //           .then(function (response) {
+    //               console.log('api okkk ')
+    //               console.log(response.data)
+    //               showObjects(response.data)
+    //           })
+    //           .catch(function (error) {
+    //               console.log(error);
+    //           })
+    //       }
+    //       else if(e.action.includes('show'))
+    //       {
+    //           axios.post('http://localhost:8000/api/v1/location/last', { 
+    //             //  objects : vehicles
+    //           })
+    //           .then(function (response) {
+    //               console.log('api okkk ')
+    //               console.log(response.data)
+    //               showObjects(response.data)
+    //           })
+    //           .catch(function (error) {
+    //               console.log(error);
+    //           })
+    //       }
+    //       else
+    //       {
+    //          console.log('no vehicle selected ')
+    //       }
+    //     })
+    //   }, 5000)
+    //   return () => {
+    //     clearInterval(intervalCall);
+    //   };
+    // }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
 const cbFromNotification=(vehicle)=>{
 
 
@@ -160,43 +215,62 @@ const cbFromNotification=(vehicle)=>{
 const cbFromHistory=(historyParam)=>{
 
 }
-const cbFromMonitor=(objects, message)=>{
-  objects.map((o)=>{
-    console.log(o.object)
-    console.log(o.action)
-    if(o.action.includes('show')){
-      console.log('to show '+o.object)
+const cbFromMonitor=(s)=>{
+  let tObject = []
+  s.map((item)=>{
+    console.log('------------')
+    console.log(item.object)
+    console.log(item.action)
+    console.log('------------')
+   })
+  s.map((item)=>{
+    if(item.object !== ""){
+      tObject.push(item)
     }
-  })
-    // console.log('asdffffffffffffffffffffffffffffffffffff')
-    // if(message.includes('follow'))
-    // {
-
-    // }
-    // else if(message.includes('show'))
-    // {
-    //   console.log('in ------')
-    //   console.log(vehicles)
-
-    //   axios.post('http://localhost:8000/api/v1/location/last', { 
-    //       objects : vehicles
-    //   })
-    //   .then(function (response) {
-    //         console.log('api okkk ')
-    //         console.log(response.data)
-    //         showObjects(response.data)
-    //   })
-    //   .catch(function (error) {
-    //         console.log(error);
-    //   })
-    // }
+   })
+   setSelectedAssets(s)
 }
 
 
 
 
 
+const OnClickMonitor=()=>
+{
+  console.log('Monitor Clicked')
+  setTrackingOption('monitor')
+}
+const OnClickHistory=()=>
+{
+  console.log('History Clicked')
+  setTrackingOption('hostory')
+}
 
+const OnClickNotification=()=>
+{
+  console.log('Notification Clicked')
+  setTrackingOption('notification')
+}
+
+const onClickTrackingMenu=((value)=>
+{
+  let m=[] ;
+  setSelectedAssets(m)
+  if(value.includes('monitor'))
+  {
+    console.log('monitor selected')
+    setTrackingOption('monitor')
+  }
+  else if(value.includes('history'))
+  {
+    setTrackingOption('history')
+  }
+  else if(value.includes('notifications'))
+  {
+    setTrackingOption('notifications')
+  }
+ // setSelectedAssets([])
+})
 
 
 
@@ -207,11 +281,11 @@ return (
     <div  className="inline-block absolute  z-10000  w-1/5 rounded-t-lg inset-y-28 left-0 bg-white border border-gray-200 shadow-xl">              
                 <div class="flex  rounded-lg text-sm gap-0.5" role="group">
                         <button class="flex-1 bg-warmGray-200 text-red-500 hover:bg-warmGray-300 hover:red-500  px-4  py-2  rounded-tl-lg outline-none focus:shadow-outline"
-                            onClick={()=>{setTrackingOption('monitor')}}>Monitor</button>
+                            onClick={()=>{onClickTrackingMenu('monitor')}}>Monitor</button>
                         <button class="flex-1 bg-warmGray-200 text-red-500 hover:bg-warmGray-300 hover:red-500  px-4  py-1.5  outline-none focus:shadow-outline"
-                            onClick={()=>{setTrackingOption('history')}}>History</button>
+                            onClick={()=>{onClickTrackingMenu('history')}}>History</button>
                         <button class="flex-1 bg-warmGray-200 text-red-500 hover:bg-warmGray-300 hover:red-500  px-4  py-1.5  rounded-tr-lg outline-none focus:shadow-outline"
-                            onClick={()=>{setTrackingOption('notifications')}}>Noitfications</button>
+                            onClick={()=>{onClickTrackingMenu('notifications')}}>Noitfications</button>
                  </div>
                 {(()=>{
                     if(userType.includes('admin')){

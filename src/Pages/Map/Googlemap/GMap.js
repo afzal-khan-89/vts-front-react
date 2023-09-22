@@ -6,37 +6,25 @@ import History from '../../../Components/Tracking/LeftMenu/History';
 import Notifications from '../../../Components/Tracking/LeftMenu/Notificatons';
 
 const GMap = () => {
-  let googleMap;
+  let googleMap ;
   const googleMapRef = useRef();
-  let[object, setObject] = useState({ imei:'', currentLocation: '', nearby_location:'',historyData:[] })
 
+  const[gMap, setGMap] = useState({})
   const[trackintOption, setTrackingOption]=useState('monitor');                                 
   let userType = 'admin'
   let vehicleArray=[]
 
-  const [assets, setAssets] = useState([{}])
-  const [selectedAssets, setSelectedAssets] = useState([])
-
-  useEffect(() => {
-    const googleMapScript = document.createElement("script");
-    googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places`;
-    googleMapScript.async = true;
-    window.document.body.appendChild(googleMapScript);
-    googleMapScript.addEventListener("load", () => {
-      createGoogleMap()
-    });
-  }, []);
+  const [assets, setAssets] = useState([])
+  let [objectsInfo, setObjectsInfo] = useState({latitude : "", longitude : ""})
+  let fObjects = []
 
 
 
-  let fObjects = [{ group: "", object: "", active :""}]
   useEffect(() => {
     axios.post('http://localhost:8000/api/v1/object/info', { })
          .then(function (response) {
- //             console.log(response.data.data)
               response.data.data.map(e => {
                 e.objects.map(p=>{
-  //                console.log(p.object)
                   fObjects.push(p)
                 })
               })
@@ -48,7 +36,25 @@ const GMap = () => {
   }, [])
 
 
+  useEffect(() => {
+    const googleMapScript = document.createElement("script");
+    googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places`;
+    googleMapScript.async = true;
+    window.document.body.appendChild(googleMapScript);
+    googleMapScript.addEventListener("load", () => {
+      createGoogleMap()
+      setGMap(googleMap)
+      //showObjects({latitude : '23.030202', longitude: '90.2344322'})
+     
+    });
+  }, []);
 
+
+
+  useEffect(() => {
+    console.log('----map use effect l-----')
+    showObjects({latitude : '23.330202', longitude: '90.2344322'})
+  }, [objectsInfo])
 
   const createGoogleMap = () =>{
       googleMap = new window.google.maps.Map(googleMapRef.current, {
@@ -63,65 +69,55 @@ const GMap = () => {
   }
   const onMapClick =  (e) =>{
       
-
+     console.log('map clicked')
   } 
-  const showObjects = (objects) => {
-    //  console.log("object view")
-    //  console.log( objects.latitude )
-    //  console.log( objects)
+
+  const showObjects = (e) => {
+    console.log(`let show ${e.latitude}  ${e.longitude}`)
     var lastOpenedInfoWindow 
-    objects.data.map(e => {
-//      console.log(e.latitude )
-//      console.log(e.longitude)
-      var coordinates = {
-          lat:  parseFloat(e.latitude),
-          lng:  parseFloat(e.longitude),
-      };
-    
-      var infowindow = new window.google.maps.InfoWindow({
-        content: 'hello world',
-        ariaLabel: "Uluru",
+    var coordinates = {
+      lat:  parseFloat(e.latitude),
+      lng:  parseFloat(e.longitude),
+    }
+    var infowindow = new window.google.maps.InfoWindow({
+      content: 'hello world',
+      ariaLabel: "Uluru",
+    });
+    var marker = new window.google.maps.Marker({
+      position: coordinates,
+      map: gMap,
+      title: 'Hello World!'
+      // icon: {
+      // url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+      //   labelOrigin: new window.google.maps.Point(15, -5),
+      //   size: new window.google.maps.Size(32, 32),
+      //   anchor: new window.google.maps.Point(16, 32)
+      // },
+      // label: {
+      //   text: "dk-metro-cha-005",
+      //   color: "#D70E20",
+      //   fontWeight: "bold"
+      // }
+    });
+    marker.addListener("click", (e) => {
+      if (lastOpenedInfoWindow) {
+        lastOpenedInfoWindow.close();
+      }
+      infowindow.open({
+        anchor: marker,
+        gMap,
       });
+      lastOpenedInfoWindow = infowindow
+      // setObject({
+      //   imei:e.imei, 
+      //   currentLocation: 'EEQWRQEWR', 
+      //   nearby_location:'QWERQER',
+      //   historyData:["ADSAF","ASFDSAF","ASFDFDS"]
+      // })
+    });
+  }
 
-      var marker = new window.google.maps.Marker({
-        position: coordinates,
-        map: googleMap,
-        icon: {
-          url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-          labelOrigin: new window.google.maps.Point(15, -5),
-          // size: new window.google.maps.Size(32, 32),
-          anchor: new window.google.maps.Point(16, 32)
-        },
-        label: {
-          text: "dk-metro-cha-005",
-          color: "#D70E20",
-          fontWeight: "bold"
-        }
-      });
-      marker.addListener("click", (e) => {
-        if (lastOpenedInfoWindow) {
-          lastOpenedInfoWindow.close();
-        }
-        infowindow.open({
 
-          anchor: marker,
-          googleMap,
-
-        });
-        
-        lastOpenedInfoWindow = infowindow
-        setObject(
-          {
-            
-              imei:e.imei, 
-              currentLocation: 'EEQWRQEWR', 
-              nearby_location:'QWERQER',
-              historyData:["ADSAF","ASFDSAF","ASFDFDS"]
-          }         
-        )
-      });
-  })
-}
 const plotObjectRoute= (object) => {
 
   const flightPlanCoordinates = [
@@ -144,69 +140,17 @@ const plotObjectRoute= (object) => {
 
 
 
+const followObject=(s)=>{
+  console.log(`to follow : ${s.object}`)
 
-
-
-
-
-
-    // useEffect(() => {
-    //   const intervalCall = setInterval(() => {
-    //     console.log('==============================')
-    //     selectedAssets.map((e)=>{
-    //       console.log(e.object)
-    //       console.log(e.action)
-    //       console.log('==============================')
-    //       if(e.action.includes('follow'))
-    //       {
-    //           axios.post('http://localhost:8000/api/v1/location/last', { 
-    //               //objects : vehicles
-    //           })
-    //           .then(function (response) {
-    //               console.log('api okkk ')
-    //               console.log(response.data)
-    //               showObjects(response.data)
-    //           })
-    //           .catch(function (error) {
-    //               console.log(error);
-    //           })
-    //       }
-    //       else if(e.action.includes('show'))
-    //       {
-    //           axios.post('http://localhost:8000/api/v1/location/last', { 
-    //             //  objects : vehicles
-    //           })
-    //           .then(function (response) {
-    //               console.log('api okkk ')
-    //               console.log(response.data)
-    //               showObjects(response.data)
-    //           })
-    //           .catch(function (error) {
-    //               console.log(error);
-    //           })
-    //       }
-    //       else
-    //       {
-    //          console.log('no vehicle selected ')
-    //       }
-    //     })
-    //   }, 5000)
-    //   return () => {
-    //     clearInterval(intervalCall);
-    //   };
-    // }, []);
-
-
-
-
-
-
-
-
-
-
-
-
+}
+const showObject=(s)=>{
+  console.log(`.................................................`)
+  console.log(`to show : ${s.latitude}  ${s.longitude}`)
+  console.log(`.................................................`)
+  showObjects({latitude: "23.4566345", longitude: '90.243439'})
+  setObjectsInfo(s)
+}
 
 const cbFromNotification=(vehicle)=>{
 
@@ -214,21 +158,6 @@ const cbFromNotification=(vehicle)=>{
 }
 const cbFromHistory=(historyParam)=>{
 
-}
-const cbFromMonitor=(s)=>{
-  let tObject = []
-  s.map((item)=>{
-    console.log('------------')
-    console.log(item.object)
-    console.log(item.action)
-    console.log('------------')
-   })
-  s.map((item)=>{
-    if(item.object !== ""){
-      tObject.push(item)
-    }
-   })
-   setSelectedAssets(s)
 }
 
 
@@ -255,7 +184,6 @@ const OnClickNotification=()=>
 const onClickTrackingMenu=((value)=>
 {
   let m=[] ;
-  setSelectedAssets(m)
   if(value.includes('monitor'))
   {
     console.log('monitor selected')
@@ -308,7 +236,7 @@ return (
                 <div class="w-full px-2 ">
                     {(()=>{
                         if(trackintOption.includes('monitor')){
-                            return  <Monitor cb={cbFromMonitor} objects = { assets }/>
+                            return  <Monitor follow = { followObject } show = { showObject }  objects = { assets }/>
                         }else if(trackintOption.includes('history')){
                             return  <History cb={cbFromHistory}/>
                         }else{
@@ -318,9 +246,9 @@ return (
                 </div>  
             </div>  
             <div className="inline-block bg-white absolute  z-10000  w-2/5 mx-48 p-5 rounded-t-md inset-x-96 bottom-2 border border-gray-200 shadow-xl" >
-                    <span className="text-sm font-light ">Vehicle: {object.imei}</span>
+                    <span className="text-sm font-light ">Vehicle: {objectsInfo.object}</span>
                     <hr />
-                    <span className="text-sm font-light ">Location: {object.currentLocation}</span>
+                    <span className="text-sm font-light ">Location: {objectsInfo.currentLocation}</span>
                     <hr />
                     <span className="text-sm font-light ">Vehicle: {vehicleArray}</span>
                     <hr />

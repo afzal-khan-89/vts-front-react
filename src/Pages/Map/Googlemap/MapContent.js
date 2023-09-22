@@ -28,6 +28,8 @@ const MapContent=()=> {
      let userType = 'admin'
 
      let vehicleArray=[]
+
+
     // let locationDatas = []
     
     // console.log("+++++++++++++++++++RE RENDER ++++++++++++++++++++++++++++++++++" )

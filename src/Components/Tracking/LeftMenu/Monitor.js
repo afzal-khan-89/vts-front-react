@@ -8,59 +8,9 @@ import { getUsersVehicleByGroup } from '../../../api/VehicleApi'
 
 const Monitor = (props)=> {
     const [selectedGroup, setSelectedGroup] = useState('all')
-    const [displayAssets, setDisplayAssets] = useState([{ group: "", object: "", active :"" }])
+    const [displayAssets, setDisplayAssets] = useState([])
     const [assetGroup, setAssetGroup] = useState([])
     const [selectedAssets, setselectedAssets] = useState([]);
-
-
-    //   useEffect(() => {
-    //     axios.post('http://localhost:8000/api/v1/object/info', { })
-    //          .then(function (response) {
-    //               console.log(response.data.data)
-    //               response.data.data.map(e => {
-    //                 console.log(e.group)
-    //                 tempAssetGroup.push(e.group)
-    //                 e.objects.map(p=>{
-    //  //                   console.log(p.object)
-    //                   fObjects.push(p)
-    
-    //                 })
-    //               })
-    //               setAssets(fObjects)
-    //               setAssetGroup(tempAssetGroup)
-    //          })
-    //         .catch(function (error) {
-    //               console.log(error);
-    //          })
-    //   }, [])
-    
-    
-    useEffect(() => {
-      const intervalCall = setInterval(() => {
-        props.cb(selectedAssets)
-      }, 5000);
-      return () => {
-        clearInterval(intervalCall);
-      };
-    }, []);
-    
-
-
-    //   axios.post('http://localhost:8000/api/v1/location/last', { 
-    //       objects : vehicles
-    //   })
-    //   .then(function (response) {
-    //         console.log('api okkk ')
-    //         console.log(response.data)
-    //         showObjects(response.data)
-    //   })
-    //   .catch(function (error) {
-    //         console.log(error);
-    //   })
-
-
-
-
 
     let oGroup = ['all']   
     useEffect(() => {
@@ -76,7 +26,7 @@ const Monitor = (props)=> {
     }, [])
 
     useEffect(() => {
-        let tempDisplayAssets = [{ group: "", object: "", active :"" }]
+        let tempDisplayAssets = []
         if(selectedGroup.includes('all'))
         {
             setDisplayAssets(props.objects)
@@ -92,9 +42,45 @@ const Monitor = (props)=> {
                 }
             })
             setDisplayAssets(tempDisplayAssets)
-        }    
+        }  
+        setselectedAssets([])  
     }, [selectedGroup])
 
+
+    useEffect(() => {
+      const intervalCall = setInterval(() => {
+        selectedAssets.map((e)=>{
+            axios.post('http://localhost:8000/api/v1/location/last', { 
+                objects : e.object
+            })
+            .then(function (response) {
+                console.log(' ---tracking api ok---  ')
+  //              console.log(response.data)
+                var lStatus = []
+                lStatus = response.data.data
+                console.log(lStatus)
+                if(e.action.includes('follow')){
+                    console.log(`=>to follow : ${e.object} `)
+ //                   props.follow(lStatus)
+                }
+                else if(e.action.includes('show')){
+                    console.log(`=>to show : ${e.object} `)
+                    props.show(lStatus)
+                }
+                else{
+                    console.log(`no acton for ohject ${e.object} `)
+                }
+            })
+            .catch(function (error) {
+                console.log(' ---tracking api fail---  ')
+                console.log(error);
+            })
+        })
+      }, 5000)
+      return () => {
+        clearInterval(intervalCall);
+      };
+    });
 
 
 
@@ -118,18 +104,11 @@ const Monitor = (props)=> {
         }
         console.log(tempAsstes)
         setselectedAssets(tempAsstes)
- //       props.cb(selectedAssets)
     }
-
 
     const OnClickVehicleFollw = (vehicle)=>
     {
         console.log(`::Monitor ::vehicle to follow ${vehicle}`)     
-
-        var tempAsstes = selectedAssets 
-        let flag = 0 
-        let temObje = { object: "", action: ""  }
-
         selectedAssets.map(item=>{
             if(item.object.includes(vehicle))
             {
@@ -143,32 +122,6 @@ const Monitor = (props)=> {
                 }
             }
         })
-        // for (let i = 0; i < tempAsstes.length; i++) 
-        // {
-        //     if (tempAsstes[i].object.includes(vehicle)) 
-        //     {
-        //         if(tempAsstes[i].object.action.includes('follow'))
-        //         {
-        //             tempAsstes[i].object.action = 'show'
-        //         }
-        //         else
-        //         {
-        //             tempAsstes[i].object.action = 'follow'
-        //         }
-        //         flag =1 
-        //         break;
-        //     }
-        // }
-        // if(flag==0)
-        // {
-        //     temObje.object = vehicle
-        //     temObje.action = "follow"
-        //     tempAsstes.push(temObje)
-        // }
-
-        console.log(tempAsstes)
- //       setselectedAssets(tempAsstes)
- //       props.cb(selectedAssets, 'track')
     }
     const onVehicleSearch = (e)=>
     {

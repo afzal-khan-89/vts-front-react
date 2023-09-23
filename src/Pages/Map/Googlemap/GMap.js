@@ -6,27 +6,31 @@ import History from '../../../Components/Tracking/LeftMenu/History';
 import Notifications from '../../../Components/Tracking/LeftMenu/Notificatons';
 
 const GMap = () => {
-  let googleMap ;
+
   const googleMapRef = useRef();
 
-  const[gMap, setGMap] = useState({})
-  const[trackintOption, setTrackingOption]=useState('monitor');                                 
+  const[gMap, setGMap] = useState()
+  const[trackintOption, setTrackingOption]=useState('monitor');    
+  const[assets, setAssets] = useState([])
+ 
+  const[assetToPlot, setAssetToPlot] = useState()
+  const[assetToShow, setAssetToShow] = useState()
+
+  const[markerQueue, setMarkerQueue] = useState([])
+   
+  let googleMap ;
   let userType = 'admin'
   let vehicleArray=[]
-
-  const [assets, setAssets] = useState([])
   let [objectsInfo, setObjectsInfo] = useState({latitude : "", longitude : ""})
   let fObjects = []
-
-
 
   useEffect(() => {
     axios.post('http://localhost:8000/api/v1/object/info', { })
          .then(function (response) {
               response.data.data.map(e => {
-                e.objects.map(p=>{
-                  fObjects.push(p)
-                })
+                  e.objects.map(p=>{
+                      fObjects.push(p)
+                  })
               })
               setAssets(fObjects)
          })
@@ -35,88 +39,105 @@ const GMap = () => {
          })
   }, [])
 
-
   useEffect(() => {
     const googleMapScript = document.createElement("script");
     googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places`;
     googleMapScript.async = true;
     window.document.body.appendChild(googleMapScript);
     googleMapScript.addEventListener("load", () => {
-      createGoogleMap()
-      setGMap(googleMap)
-      //showObjects({latitude : '23.030202', longitude: '90.2344322'})
-     
+        createGoogleMap()
+        setGMap(googleMap)
+        //showObjects({latitude : '23.030202', longitude: '90.2344322'})     
     });
   }, []);
 
+  // useEffect(() => {
+  //     console.log('----map use effect l-----')
+  //     //showObjects({latitude : '23.330202', longitude: '90.2344322'})
 
 
-  useEffect(() => {
-    console.log('----map use effect l-----')
-    showObjects({latitude : '23.330202', longitude: '90.2344322'})
-  }, [objectsInfo])
+  // }, [assetToPlot.time])
+
+  // useEffect(() => {
+  //     console.log('----map use effect l-----')
+  //     showOnMap({latitude : '23.330202', longitude: '90.2344322'})
+
+
+
+  // }, [assetToShow.time])
+
+
 
   const createGoogleMap = () =>{
       googleMap = new window.google.maps.Map(googleMapRef.current, {
-        zoom: 8,
-        center: {
-          lat: 23.3453453,
-          lng: 90.543433,
-        },
-        disableDefaultUI: true,
+          zoom: 8,
+          center: {
+              lat: 23.3453453,
+              lng: 90.543433,
+          },
+          disableDefaultUI: true,
       })
       googleMap.addListener("click", onMapClick);
   }
+
   const onMapClick =  (e) =>{
-      
-     console.log('map clicked')
+      console.log('map clicked')
+
+
+
+
+
+
   } 
 
-  const showObjects = (e) => {
-    console.log(`let show ${e.latitude}  ${e.longitude}`)
-    var lastOpenedInfoWindow 
-    var coordinates = {
-      lat:  parseFloat(e.latitude),
-      lng:  parseFloat(e.longitude),
-    }
-    var infowindow = new window.google.maps.InfoWindow({
-      content: 'hello world',
-      ariaLabel: "Uluru",
-    });
-    var marker = new window.google.maps.Marker({
-      position: coordinates,
-      map: gMap,
-      title: 'Hello World!'
-      // icon: {
-      // url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-      //   labelOrigin: new window.google.maps.Point(15, -5),
-      //   size: new window.google.maps.Size(32, 32),
-      //   anchor: new window.google.maps.Point(16, 32)
-      // },
-      // label: {
-      //   text: "dk-metro-cha-005",
-      //   color: "#D70E20",
-      //   fontWeight: "bold"
-      // }
-    });
-    marker.addListener("click", (e) => {
-      if (lastOpenedInfoWindow) {
-        lastOpenedInfoWindow.close();
+  const showOnMap = (e) => {
+      if(gMap){
+          console.log(`let show ${e.latitude}  ${e.longitude}`)
+              var lastOpenedInfoWindow 
+              var coordinates = {
+              lat:  parseFloat(e.latitude),
+              lng:  parseFloat(e.longitude),
+          }
+          var infowindow = new window.google.maps.InfoWindow({
+            content: 'hello world',
+            ariaLabel: "Uluru",
+          });
+          var marker = new window.google.maps.Marker({
+              position: coordinates,
+              map: gMap,
+              title: 'Hello World!', 
+              tag: e.object
+              // icon: {
+              // url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+              //   labelOrigin: new window.google.maps.Point(15, -5),
+              //   size: new window.google.maps.Size(32, 32),
+              //   anchor: new window.google.maps.Point(16, 32)
+              // },
+              // label: {
+              //   text: "dk-metro-cha-005",
+              //   color: "#D70E20",
+              //   fontWeight: "bold"
+              // }
+          });
+          marker.addListener("click", (e) => {
+              if (lastOpenedInfoWindow) {
+                  lastOpenedInfoWindow.close();
+              }
+              infowindow.open({
+                  anchor: marker,
+                  gMap,
+              });
+              lastOpenedInfoWindow = infowindow
+              // setObject({
+              //   imei:e.imei, 
+              //   currentLocation: 'EEQWRQEWR', 
+              //   nearby_location:'QWERQER',
+              //   historyData:["ADSAF","ASFDSAF","ASFDFDS"]
+              // })
+          });
+          setMarkerQueue([...markerQueue, marker]);
       }
-      infowindow.open({
-        anchor: marker,
-        gMap,
-      });
-      lastOpenedInfoWindow = infowindow
-      // setObject({
-      //   imei:e.imei, 
-      //   currentLocation: 'EEQWRQEWR', 
-      //   nearby_location:'QWERQER',
-      //   historyData:["ADSAF","ASFDSAF","ASFDFDS"]
-      // })
-    });
   }
-
 
 const plotObjectRoute= (object) => {
 
@@ -137,49 +158,60 @@ const plotObjectRoute= (object) => {
   flightPath.setMap(googleMap);
 }
 
+const removeObjectFromMap = (e)=>{
+  markerQueue.map((m)=>{
+    if(m.tag){
+      console.log(`"""TAG : ${m.tag}************`)
+      if(m.tag.includes(e.object)){
+          m.setMap(null);
+          setMarkerQueue(markerQueue.filter(item => item === m));
+      }
+    }
+  })
+}
+
 
 
 
 const followObject=(s)=>{
-  console.log(`to follow : ${s.object}`)
+   console.log(`to follow : ${s.object}`)
+
+
+
 
 }
 const showObject=(s)=>{
-  console.log(`.................................................`)
-  console.log(`to show : ${s.latitude}  ${s.longitude}`)
-  console.log(`.................................................`)
-  showObjects({latitude: "23.4566345", longitude: '90.243439'})
-  setObjectsInfo(s)
+    console.log(`To  show : ${s.latitude}  ${s.longitude}`)
+    removeObjectFromMap(s)
+
+    showOnMap(s)
+}
+const removeObject=(object)=>{
+
+
+
+
 }
 
+
+
 const cbFromNotification=(vehicle)=>{
+
+
+
 
 
 }
 const cbFromHistory=(historyParam)=>{
 
+
+
+
+
 }
 
 
 
-
-
-const OnClickMonitor=()=>
-{
-  console.log('Monitor Clicked')
-  setTrackingOption('monitor')
-}
-const OnClickHistory=()=>
-{
-  console.log('History Clicked')
-  setTrackingOption('hostory')
-}
-
-const OnClickNotification=()=>
-{
-  console.log('Notification Clicked')
-  setTrackingOption('notification')
-}
 
 const onClickTrackingMenu=((value)=>
 {
@@ -236,7 +268,7 @@ return (
                 <div class="w-full px-2 ">
                     {(()=>{
                         if(trackintOption.includes('monitor')){
-                            return  <Monitor follow = { followObject } show = { showObject }  objects = { assets }/>
+                            return  <Monitor follow = { followObject } show = { showObject }  remove = { removeObject }   objects = { assets }/>
                         }else if(trackintOption.includes('history')){
                             return  <History cb={cbFromHistory}/>
                         }else{

@@ -13,11 +13,11 @@ const GMap = () => {
   const[trackintOption, setTrackingOption]=useState('monitor');    
   const[assets, setAssets] = useState([])
  
-  const[assetToPlot, setAssetToPlot] = useState()
-  const[assetToShow, setAssetToShow] = useState()
-
   const[markerQueue, setMarkerQueue] = useState([])
-   
+  const[markerQueueToFollow, setMarkerQueueToFollow] = useState([{object: '', markers:[{}]}])
+  
+  const[objectId, setObjectId] = useState(1)
+  
   let googleMap ;
   let userType = 'admin'
   let vehicleArray=[]
@@ -93,14 +93,14 @@ const GMap = () => {
   const showOnMap = (e) => {
       if(gMap){
           console.log(`let show ${e.latitude}  ${e.longitude}`)
-              var lastOpenedInfoWindow 
-              var coordinates = {
+          var lastOpenedInfoWindow 
+          var coordinates = {
               lat:  parseFloat(e.latitude),
               lng:  parseFloat(e.longitude),
           }
           var infowindow = new window.google.maps.InfoWindow({
-            content: 'hello world',
-            ariaLabel: "Uluru",
+              content: 'hello world',
+              ariaLabel: "oppooppo",
           });
           var marker = new window.google.maps.Marker({
               position: coordinates,
@@ -135,62 +135,123 @@ const GMap = () => {
               //   historyData:["ADSAF","ASFDSAF","ASFDFDS"]
               // })
           });
-          setMarkerQueue([...markerQueue, marker]);
+
+          console.log(`ADDED TAG MARKER ${e.object}`)
+          var tempQueue = markerQueue;
+ 
+          for(let  ii=0; ii<tempQueue.length; ii++){
+            if(tempQueue[ii].tag.includes(e.object)){
+                console.log(`Marker exists !!!`)
+                tempQueue[ii].setMap(null);
+                tempQueue.splice(ii, 1); 
+                break;
+            }
+          }
+          tempQueue.push(marker)
+          //setMarkerQueue(prevMarkerQueue => [...prevMarkerQueue, marker]);
+          setMarkerQueue(tempQueue);
+        
+          markerQueue.map(m=>{
+            console.log(`markers Lists : ${m.tag}`)
+          })
       }
   }
 
-const plotObjectRoute= (object) => {
-
-  const flightPlanCoordinates = [
-    { lat: 23.31422,   lng: 90.354542 },
-    { lat: 23.5632324, lng: 90.438991 },
-    { lat: 23.213444,  lng: 90.085653 },
-    { lat: 23.623244,  lng: 90.567868 },
-  ];
-  const flightPath = new window.google.maps.Polyline({
-    path: flightPlanCoordinates,
-    geodesic: true,
-    strokeColor: "#FF0000",
-    strokeOpacity: 1.0,
-    strokeWeight: 2,
-  });
-
-  flightPath.setMap(googleMap);
-}
-
-const removeObjectFromMap = (e)=>{
-  markerQueue.map((m)=>{
-    if(m.tag){
-      console.log(`"""TAG : ${m.tag}************`)
-      if(m.tag.includes(e.object)){
-          m.setMap(null);
-          setMarkerQueue(markerQueue.filter(item => item === m));
-      }
+const plotObjectRoute= (location) => {
+    console.log(`next polt ${location.object}`)
+    var newCoordinate = {
+        lat:  parseFloat(location.latitude),
+        lng:  parseFloat(location.longitude),
     }
-  })
+    var newMarker = new window.google.maps.Marker({
+        position: newCoordinate,
+        map: gMap,
+        title: location.object, 
+        latitude: location.latitude,
+        longitude: location.longitude
+    });
+    newMarker.addListener("click", (e) => {
+
+    });
+
+    var markersArray = markerQueueToFollow
+    var lastCoordinate = null
+    var strokeColor 
+    markersArray.map(e=>{
+        if(e.object.includes(location.object)){
+            console.log(`FIND LAST OBJECT ${e.object} id:${e.id}`)
+            lastCoordinate =  {
+                lat:  parseFloat(e.markers[e.markers.length-1].latitude),
+                lng:  parseFloat(e.markers[e.markers.length-1].longitude)
+            }
+            if(e.id==1) {  strokeColor = '#FF0000'}
+            if(e.id==2) {  strokeColor = '#80ced6'}
+
+            const coordinates = [
+                lastCoordinate,
+                newCoordinate
+            ]
+            const line = new window.google.maps.Polyline({
+                path: coordinates,
+                geodesic: true,
+                strokeColor: strokeColor,
+                strokeOpacity: 1.0,
+                strokeWeight: 5,
+            });               
+            line.setMap(gMap);
+
+            e.markers.push(newMarker)  
+        }
+    })
+    if(!lastCoordinate){
+        console.log(`FIRST SAVE ::::::::  ${location.object}`)
+        var x = {id:objectId, object: location.object, markers:[newMarker]}
+        markersArray.push(x)
+        setObjectId(prevObjectId=>prevObjectId+1)
+    }
+   // console.log(`markers array ${markersArray}`)
+    setMarkerQueueToFollow(markersArray)
 }
 
-
-
+const clearMarker = (marker)=>{
+    console.log(`marker to remove ${marker}`)
+//     var tempQueue = markerQueue;
+//     for(let i=0; i<tempQueue.length; i++){
+//         console.log(`IN TEMP QUEUE ${tempQueue[i].tag} `)
+//         if(tempQueue[i].tag.includes(marker)){
+//  //          tempQueue[i].setMap(null);
+//             tempQueue.splice(i, 1);
+//         }
+//     }
+//    // setMarkerQueue(tempQueue)  
+}
+const clearAllMarkers =() => {
+    // var tempQueue = markerQueue;
+    // for(let i=0; i<tempQueue.length; i++){      
+    //     tempQueue[i].setMap(null);
+    //     console.log(`marker clear for ${tempQueue[i].tag}`)
+    // }
+    // setMarkerQueue([])
+}
 
 const followObject=(s)=>{
-   console.log(`to follow : ${s.object}`)
+ //  console.log(`to follow : ${s.object}`)
 
-
+   plotObjectRoute(s)
 
 
 }
 const showObject=(s)=>{
-    console.log(`To  show : ${s.latitude}  ${s.longitude}`)
-    removeObjectFromMap(s)
-
+ //   console.log(`TO SHOW : `)
+    console.log(s)
+    //clearMarker(s.object)
+    // markerQueue.map((m)=>{
+    //   console.log(` ~~~~~~~~~~Homondir fo : ${m.tag}~~~~~~~~~~~~~~~~~~`)
+    // })
     showOnMap(s)
 }
-const removeObject=(object)=>{
-
-
-
-
+const removeObject=(s)=>{
+  clearMarker(s.object)
 }
 
 
@@ -215,21 +276,43 @@ const cbFromHistory=(historyParam)=>{
 
 const onClickTrackingMenu=((value)=>
 {
-  let m=[] ;
-  if(value.includes('monitor'))
-  {
-    console.log('monitor selected')
-    setTrackingOption('monitor')
-  }
-  else if(value.includes('history'))
-  {
-    setTrackingOption('history')
-  }
-  else if(value.includes('notifications'))
-  {
-    setTrackingOption('notifications')
-  }
- // setSelectedAssets([])
+    if(value.includes('monitor'))
+    {
+        console.log('monitor clicked')
+        if(!trackintOption.includes('monitor')){
+           setTrackingOption('monitor')
+        }
+        else{
+            console.log('do nothing ...')
+        }
+    }
+    else if(value.includes('history'))
+    {
+        console.log('history clicked ')
+        if(!trackintOption.includes('history')){
+            if(trackintOption.includes('monitor')){
+                console.log('markar clear kora lagbe')
+                clearAllMarkers()
+            }               
+            setTrackingOption('history')
+        }
+        else{
+            console.log('do nothing ...')
+        }
+    }
+    else if(value.includes('notifications'))
+    {
+        console.log('notifications clicked ')
+        if(!trackintOption.includes('notifications')){
+            if(trackintOption.includes('monitor')){
+                clearAllMarkers()
+            } 
+            setTrackingOption('notifications')
+        }
+        else{
+            console.log('do nothing ...')
+        }
+    }
 })
 
 

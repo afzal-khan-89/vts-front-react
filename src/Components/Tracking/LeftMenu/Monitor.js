@@ -2,10 +2,6 @@ import Vehicle from '../Vehicle'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 
-import { getUserAllVehicle } from '../../../api/VehicleApi.js'
-import { fetchAssetGroup }    from '../../../api/VehicleGroupApi.js'
-import { getUsersVehicleByGroup } from '../../../api/VehicleApi'
-
 const Monitor = (props)=> {
     const [selectedGroup, setSelectedGroup] = useState('all')
     const [displayAssets, setDisplayAssets] = useState([])
@@ -54,18 +50,18 @@ const Monitor = (props)=> {
                 objects : e.object
             })
             .then(function (response) {
-                console.log(' ---tracking api ok---  ')
-  //              console.log(response.data)
+ //               console.log(' ---tracking api ok---  ')
+//                console.log(response.data)
                 var lStatus = []
                 lStatus = response.data.data
-                console.log(lStatus)
+//              console.log(lStatus)
                 if(e.action.includes('follow')){
-                    console.log(`=>to follow : ${e.object} `)
- //                   props.follow(lStatus)
+ //                   console.log(`=>to follow : ${e.object} `)
+                    props.follow(lStatus)
                 }
                 else if(e.action.includes('show')){
-                    console.log(`=>to show : ${e.object} `)
-                    props.show(lStatus)
+ //                   console.log(`=>to show : ${e.object} `)
+ //                   props.show(lStatus)
                 }
                 else{
                     console.log(`no acton for ohject ${e.object} `)
@@ -93,6 +89,7 @@ const Monitor = (props)=> {
         for (let i = 0; i < tempAsstes.length; i++) {
             if (tempAsstes[i].object.includes(vehicle)) {
                 tempAsstes.splice(i, 1);
+                props.remove(vehicle)
                 flag =1 
                 break;
             }
@@ -123,43 +120,33 @@ const Monitor = (props)=> {
             }
         })
     }
-    const onVehicleSearch = (e)=>
-    {
+    const onVehicleSearch = (e)=>{
         console.log('vehicle search')
         let tempDisplayAssets = [{ group: "", object: "", active :"" }]
-
-        if(e.target.value.length<=0)
-        {
-            if(selectedGroup.includes('all'))
-            {
+        
+        if(e.target.value.length<=0){
+            if(selectedGroup.includes('all')){
                 setDisplayAssets(props.objects)
             }
-            else
-            {
-                props.objects.map((item)=>
-                {
-                    if(item.group.includes(selectedGroup))
-                    {
+            else{
+                props.objects.map((item)=>{
+                    if(item.group.includes(selectedGroup)){
                         tempDisplayAssets.push(item)
                     }
                 })
                 setDisplayAssets(tempDisplayAssets)
             }
         }
-        else
-        {
-            displayAssets.map((item)=>
-            {
-                if(item.object.includes(e.target.value))
-                {
+        else{
+            displayAssets.map((item)=>{
+                if(item.object.includes(e.target.value)){
                     tempDisplayAssets.push(item)
                 }
             })
             setDisplayAssets(tempDisplayAssets)
         }
     }
-    const onChangeVehicleGroup=(e)=>
-    {
+    const onChangeVehicleGroup=(e)=>{
          console.log('group ::: ')
          setSelectedGroup(e.target.value)
     }

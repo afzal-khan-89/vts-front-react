@@ -42,8 +42,16 @@ const VehicleInfo = () => {
                 <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                   {vehicle?.vehicle_code}
                 </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  {vehicle?.status}
+                <td className="whitespace-nowrap">
+                  {vehicle?.status === "Active" ? (
+                    <span className="rounded-full px-2 py-1 bg-green-300 text-xs font-semibold leading-5 text-green-800">
+                      {vehicle?.status}
+                    </span>
+                  ) : (
+                    <span className="rounded-full px-2 py-1 bg-red-300 text-xs font-semibold leading-5 text-red-800">
+                      {vehicle?.status}
+                    </span>
+                  )}
                 </td>
                 <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                   {vehicle?.speed_limit}

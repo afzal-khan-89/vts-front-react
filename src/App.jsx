@@ -5,7 +5,6 @@ import "react-toastify/dist/ReactToastify.min.css";
 import UnderConstruction from "./common/under-construction";
 import Navbar from "./components/Navbar";
 import Footer from "./components/footer";
-import LandingPage from "./components/landing-page";
 import { ROUTESCONSTANTS } from "./constants/Routes";
 import ForgotPassword from "./pages/auth/forgot-password";
 import Login from "./pages/auth/login";
@@ -18,7 +17,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/home" element={<HomePage />} />
-        <Route path="/" element={<LandingPage />} />
+        {/* <Route path="/" element={<LandingPage />} /> */}
         <Route path={ROUTESCONSTANTS.login} element={<Login />} />
         <Route path={ROUTESCONSTANTS.register} element={<Register />} />
         <Route

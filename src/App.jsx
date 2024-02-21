@@ -2,6 +2,8 @@ import "./App.css";
 
 import { Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.min.css";
+
+import { ToastContainer } from "react-toastify";
 import UnderConstruction from "./common/under-construction";
 import Navbar from "./components/Navbar";
 import Footer from "./components/footer";
@@ -14,6 +16,7 @@ import HomePage from "./pages/home";
 const App = () => {
   return (
     <div>
+      <ToastContainer autoClose={3500} />
       <Navbar />
       <Routes>
         <Route path="/home" element={<HomePage />} />

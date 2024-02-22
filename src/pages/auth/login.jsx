@@ -2,19 +2,23 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { axiosOpen } from "../../api/axios";
 import { companyLogo } from "../../assets";
 import { ROUTESCONSTANTS } from "../../constants/Routes";
+import { getLogedInUser } from "../../utils/utility";
 const LOGIN_URL = "user/login";
 
 const Login = () => {
+  const logedInUser = getLogedInUser();
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
   const [visible, setVisible] = useState(false);
+
+  console.log("logedInUser", logedInUser);
 
   // Initial form values
   const initialValues = {
@@ -93,6 +97,11 @@ const Login = () => {
       initialValues.password = savedPassword;
     }
   }, []);
+
+  // Redirect after login
+  if (logedInUser) {
+    return <Navigate to={ROUTESCONSTANTS.home} replace={true} />;
+  }
 
   return (
     <div className="min-h-screen flex justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-500 bg-no-repeat bg-cover relative items-center">

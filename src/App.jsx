@@ -12,6 +12,7 @@ import ForgotPassword from "./pages/auth/forgot-password";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import HomePage from "./pages/home";
+import Profile from "./pages/profile";
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
           element={<UnderConstruction />}
         />
         <Route path={ROUTESCONSTANTS.admin} element={<UnderConstruction />} />
+        <Route path={ROUTESCONSTANTS.profile} element={<Profile />} />
         <Route
           path={ROUTESCONSTANTS.accounting}
           element={<UnderConstruction />}

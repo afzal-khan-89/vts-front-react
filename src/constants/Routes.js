@@ -6,7 +6,7 @@ export const ROUTESCONSTANTS = {
   resetPassword: "/reset-password",
   verifyResetPassToken: "/verify-reset-pass-token",
   dashboard: "/dashboard",
-  profile: "/dashboard/profile",
+  // profile: "/dashboard/profile",
   editProfile: "/dashboard/profile-update",
   updatePassword: "/dashboard/password-update",
 
@@ -14,6 +14,7 @@ export const ROUTESCONSTANTS = {
   tracking: "/tracking",
   operation: "/operation",
   admin: "/admin",
+  profile: "/profile",
   accounting: "/accounting",
   serviceCharge: "/service-charge",
 };

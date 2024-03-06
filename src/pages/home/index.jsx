@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { FaAddressBook } from "react-icons/fa";
 import { FcManager } from "react-icons/fc";
@@ -8,19 +8,44 @@ import {
   MdOutlineQuickreply,
   MdOutlineSms,
 } from "react-icons/md";
+import { axiosOpen } from "../../api/axios";
 import { Tab, Tabs } from "../../common/tabs";
 import DriverTable from "../../components/home/driver";
 import { Manager } from "../../components/home/manager";
 import SMSTable from "../../components/home/sms";
 import VehicleInfo from "../../components/home/vehicle-info";
+const ALL_VEHICLES = "vehicle/users/all";
 
 const HomePage = () => {
+  const [allVehicles, setAllVehicles] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAllVehicles = async () => {
+      try {
+        const response = await axiosOpen.post(ALL_VEHICLES, 10);
+        // setAllVehicles(response.data);
+        console.log("All Vehicles", response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching all vehicles:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchAllVehicles();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="bg-[#E9F8F3B2]">
       <div className="w-full py-14 md:max-w-[1480px] m-auto max-w-[600px] px-4 md:px-0">
         <div className="mt-16">
           <Tabs>
-            <Tab label="Vehicle Info" icon={<FiInfo size={24} color="green" />}>
+            <Tab label="Vehicle" icon={<FiInfo size={24} color="green" />}>
               <div className="py-4">
                 <VehicleInfo />
               </div>

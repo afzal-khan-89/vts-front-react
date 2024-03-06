@@ -13,19 +13,20 @@ const VehicleInfo = () => {
                 SL
               </th>
               <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                Number Plate
+                Vehicle
               </th>
               <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                Vehicle Code
+                Model
               </th>
               <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                Status
+                Type
               </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                Speed Limit
-              </th>
+
               <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                 Driver
+              </th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                is_active
               </th>
             </tr>
           </thead>

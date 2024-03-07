@@ -13,6 +13,7 @@ import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import HomePage from "./pages/home";
 import Profile from "./pages/profile";
+import Tracking from "./pages/tracking/g-map";
 
 const App = () => {
   return (
@@ -29,10 +30,7 @@ const App = () => {
           element={<ForgotPassword />}
         />
 
-        <Route
-          path={ROUTESCONSTANTS.tracking}
-          element={<UnderConstruction />}
-        />
+        <Route path={ROUTESCONSTANTS.tracking} element={<Tracking />} />
         <Route path={ROUTESCONSTANTS.reports} element={<UnderConstruction />} />
         <Route
           path={ROUTESCONSTANTS.operation}

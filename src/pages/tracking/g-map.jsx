@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { FaCarSide } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { Tab, Tabs } from "../../common/tabs";
+import VehicleUi from "../../components/tracking-ui/vehicle";
 
 const Tracking = () => {
   const [formVisible, setFormVisible] = useState(false);
@@ -47,7 +49,7 @@ const Tracking = () => {
               <div
                 className={`formbold-form-wrapper mx-auto ${
                   formVisible ? "" : "hidden"
-                } w-full max-w-[550px] rounded-lg border border-[#e0e0e0] bg-white`}
+                } w-[420px] h-[75vh] rounded-lg border border-[#e0e0e0] bg-white`}
               >
                 <div className="flex items-center justify-between rounded-t-lg bg-[#6A64F1] py-2 px-4">
                   <h3 className="text-xl font-medium text-white">
@@ -62,13 +64,35 @@ const Tracking = () => {
                     label="Vehicle"
                     // icon={<FiInfo size={24} color="green" />}
                   >
-                    <div className="py-4 text-red-700">Vehicle Tab</div>
+                    <VehicleUi />
                   </Tab>
                   <Tab
                     label="Markers"
                     // icon={<FiInfo size={24} color="green" />}
                   >
-                    <div className="py-4 text-red-700">Markers Tab</div>
+                    <h3 className="py-4 text-red-700">
+                      Markers Tab Lorem ipsum dolor sit amet. Markers Tab Lorem
+                      ipsum dolor sit amet.
+                    </h3>
+                    <h3 className="py-4 text-red-700">
+                      Markers Tab Lorem ipsum dolor sit amet. Markers Tab Lorem
+                      ipsum dolor sit amet.
+                    </h3>
+                    <h3 className="py-4 text-red-700">
+                      Markers Tab Lorem ipsum dolor sit amet. Markers Tab Lorem
+                      ipsum dolor sit amet.
+                    </h3>
+                    <h3 className="py-4 text-red-700">
+                      Markers Tab Lorem ipsum dolor sit amet.
+                    </h3>
+                    <h3 className="py-4 text-red-700">
+                      Markers Tab Lorem ipsum dolor sit amet.
+                    </h3>
+                    <h3 className="py-4 text-red-700">Markers Tab</h3>
+                    <h3 className="py-4 text-red-700">Markers Tab</h3>
+                    <h3 className="py-4 text-red-700">Markers Tab</h3>
+                    <h3 className="py-4 text-red-700">Markers Tab</h3>
+                    <h3 className="py-4 text-red-700">Markers Tab</h3>
                   </Tab>
                   <Tab
                     label="History"
@@ -136,10 +160,10 @@ const Tracking = () => {
                 }`}
               >
                 <button
-                  className="flex h-[70px] w-[70px] items-center justify-center rounded-full bg-[#6A64F1] text-white"
+                  className="flex h-[60px] w-[60px] items-center justify-center rounded-full bg-[#6A64F1] text-white"
                   onClick={toggleChatbox}
                 >
-                  Track
+                  <FaCarSide size={30} />
                 </button>
               </div>
             </div>
@@ -151,62 +175,3 @@ const Tracking = () => {
 };
 
 export default Tracking;
-
-// import React, { useEffect, useState } from "react";
-// import TrackingModal from "./tracking-modal";
-
-// const Tracking = () => {
-//   const [trackingModalVisible, setTrackingModalVisible] = useState(true);
-
-//   const toggleTrackingModal = () => {
-//     setTrackingModalVisible((prevState) => !prevState);
-//   };
-
-//   useEffect(() => {
-//     // Load the Google Maps JavaScript API script
-//     const script = document.createElement("script");
-//     script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&libraries=places`;
-//     script.async = true;
-//     window.document.body.appendChild(script);
-
-//     // Initialize the map
-//     script.onload = () => {
-//       const map = new window.google.maps.Map(document.getElementById("map"), {
-//         center: { lat: 23.3453453, lng: 90.543433 },
-//         zoom: 8,
-//       });
-//     };
-
-//     return () => {
-//       window.document.body.removeChild(script);
-//     };
-//   }, []);
-
-//   return (
-//     <div className="bg-[#E9F8F3B2]">
-//       <div className="w-full py-14 m-auto px-4 md:px-0">
-//         <div className="mt-6 relative">
-//           <div id="map" style={{ width: "100%", height: "100vh" }} />
-//         </div>
-//         {/* <button
-//           className="absolute bottom-[50%] left-4 bg-blue-500 text-white py-2 px-4 rounded"
-//           style={{ zIndex: 50 }}
-//         >
-//           Show Modal
-//         </button> */}
-
-//         <div
-//           className="absolute bottom-[50%] left-4 text-white py-2 px-4 rounded"
-//           style={{ zIndex: 50 }}
-//         >
-//           <TrackingModal
-//             toggleTrackingModal={toggleTrackingModal}
-//             trackingModalVisible={trackingModalVisible}
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Tracking;

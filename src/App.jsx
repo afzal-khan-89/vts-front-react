@@ -14,6 +14,7 @@ import Register from "./pages/auth/register";
 import HomePage from "./pages/home";
 import Profile from "./pages/profile";
 import Tracking from "./pages/tracking/g-map";
+import TestComp from "./test-comp";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         {/* <Route path="/" element={<LandingPage />} /> */}
         <Route path={ROUTESCONSTANTS.login} element={<Login />} />
         <Route path={ROUTESCONSTANTS.register} element={<Register />} />
+        <Route path="/test" element={<TestComp />} />
         <Route
           path={ROUTESCONSTANTS.forgetPassword}
           element={<ForgotPassword />}

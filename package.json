@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.19.3",
     "axios": "^1.6.5",
     "formik": "^2.4.5",
     "moment": "^2.30.1",

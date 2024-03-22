@@ -1,4 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { GoogleMap } from "@react-google-maps/api";
+import axios from "axios";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { FaCarSide } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { Tab, Tabs } from "../../common/tabs";
@@ -6,38 +14,76 @@ import HistoryUI from "../../components/tracking-ui/history";
 import VehicleUi from "../../components/tracking-ui/vehicle";
 
 const Tracking = () => {
+  const mapRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
+  const center = useMemo(() => ({ lat: 23.3453453, lng: 90.543433 }), []);
+  const options = useMemo(
+    () => ({
+      mapId: "4e550a138db6cc0a",
+      disableDefaultUI: true,
+      clickableIcons: false,
+    }),
+    []
+  );
+
+  const onload = useCallback((map) => {
+    mapRef.current = map;
+  }, []);
 
   const toggleChatbox = () => {
     setFormVisible((prevState) => !prevState);
   };
 
+  // History Functionalities Start
+  const [vehicleData, setVehicleData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    // Load the Google Maps JavaScript API script
-    const script = document.createElement("script");
-    // eslint-disable-next-line no-undef
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&libraries=places`;
-    script.async = true;
-    window.document.body.appendChild(script);
-
-    // Initialize the map
-    script.onload = () => {
-      const map = new window.google.maps.Map(document.getElementById("map"), {
-        center: { lat: 23.3453453, lng: 90.543433 },
-        zoom: 8,
-      });
+    const fetchData = async () => {
+      try {
+        const response = await axios.post(
+          "http://176.58.99.231/api/v1/location/history"
+        );
+        setVehicleData(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error);
+      }
     };
 
-    return () => {
-      window.document.body.removeChild(script);
-    };
+    fetchData();
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!vehicleData) {
+    return null; // Handle case where data is null
+  }
+
+  // History Functionalities End
+
+  console.log("vehicleData", vehicleData);
 
   return (
     <div className="bg-[#E9F8F3B2]">
       <div className="w-full py-14 m-auto px-4 md:px-0">
         <div className="mt-6 relative">
-          <div id="map" style={{ width: "100%", height: "100vh" }} />
+          <div id="map" style={{ width: "100%", height: "100vh" }}>
+            <GoogleMap
+              zoom={8}
+              center={center}
+              mapContainerClassName="map-container"
+              options={options}
+              onload={onload}
+            ></GoogleMap>
+          </div>
         </div>
 
         {/* Track Modal */}
@@ -100,7 +146,10 @@ const Tracking = () => {
                     label="History"
                     // icon={<FiInfo size={24} color="green" />}
                   >
-                    <HistoryUI />
+                    <HistoryUI
+                      vehicleName={vehicleData.vehicle}
+                      vehicleHistory={vehicleData.data}
+                    />
                   </Tab>
                 </Tabs>
               </div>

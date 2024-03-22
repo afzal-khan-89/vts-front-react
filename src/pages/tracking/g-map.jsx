@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaCarSide } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { Tab, Tabs } from "../../common/tabs";
+import HistoryUI from "../../components/tracking-ui/history";
 import VehicleUi from "../../components/tracking-ui/vehicle";
 
 const Tracking = () => {
@@ -14,6 +15,7 @@ const Tracking = () => {
   useEffect(() => {
     // Load the Google Maps JavaScript API script
     const script = document.createElement("script");
+    // eslint-disable-next-line no-undef
     script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&libraries=places`;
     script.async = true;
     window.document.body.appendChild(script);
@@ -98,61 +100,9 @@ const Tracking = () => {
                     label="History"
                     // icon={<FiInfo size={24} color="green" />}
                   >
-                    <div className="py-4 text-red-700">History Tab</div>
+                    <HistoryUI />
                   </Tab>
                 </Tabs>
-                {/* <form className="py-6 px-9">
-                  <div className="mb-5">
-                    <label
-                      htmlFor="name"
-                      className="mb-3 block text-base font-medium text-[#07074D]"
-                    >
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      placeholder="Enter your name"
-                      className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    />
-                  </div>
-                  <div className="mb-5">
-                    <label
-                      htmlFor="email"
-                      className="mb-3 block text-base font-medium text-[#07074D]"
-                    >
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      placeholder="example@domain.com"
-                      className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    />
-                  </div>
-                  <div className="mb-5">
-                    <label
-                      htmlFor="message"
-                      className="mb-3 block text-base font-medium text-[#07074D]"
-                    >
-                      Message
-                    </label>
-                    <textarea
-                      rows="4"
-                      name="message"
-                      id="message"
-                      placeholder="Explain your queries"
-                      className="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    ></textarea>
-                  </div>
-                  <div>
-                    <button className="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
-                      Start Chat
-                    </button>
-                  </div>
-                </form> */}
               </div>
               <div
                 className={`mx-auto mt-12 flex max-w-[550px] items-center justify-end space-x-5 ${

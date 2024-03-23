@@ -1,4 +1,9 @@
-import { GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
+import {
+  DirectionsService,
+  GoogleMap,
+  InfoWindow,
+  Marker,
+} from "@react-google-maps/api";
 import axios from "axios";
 import React, {
   useCallback,
@@ -84,14 +89,39 @@ const Tracking = () => {
               onload={onload}
             >
               {vehicleData.map((car, i) => (
-                <Marker
-                  key={i}
-                  position={{
-                    lat: parseFloat(car.latitude),
-                    lng: parseFloat(car.longitude),
-                  }}
-                  onClick={() => setSelectedMarker(car)}
-                />
+                <React.Fragment key={i}>
+                  <Marker
+                    position={{
+                      lat: parseFloat(car.latitude),
+                      lng: parseFloat(car.longitude),
+                    }}
+                    icon={{
+                      url: "/src/assets/car-icon.png", // URL to your custom icon image
+                      scaledSize: new window.google.maps.Size(40, 40), // Size of the icon
+                    }}
+                    onClick={() => setSelectedMarker(car)}
+                  />
+                  {i > 0 && (
+                    <DirectionsService
+                      options={{
+                        origin: {
+                          lat: parseFloat(vehicleData[i - 1].latitude),
+                          lng: parseFloat(vehicleData[i - 1].longitude),
+                        },
+                        destination: {
+                          lat: parseFloat(car.latitude),
+                          lng: parseFloat(car.longitude),
+                        },
+                        travelMode: "DRIVING",
+                      }}
+                      callback={(result) => {
+                        if (result !== null) {
+                          console.log(result); // Do something with the directions result
+                        }
+                      }}
+                    />
+                  )}
+                </React.Fragment>
               ))}
 
               {selectedMarker && (

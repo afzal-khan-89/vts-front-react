@@ -1,4 +1,4 @@
-import { GoogleMap } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import axios from "axios";
 import React, {
   useCallback,
@@ -35,7 +35,8 @@ const Tracking = () => {
   };
 
   // History Functionalities Start
-  const [vehicleData, setVehicleData] = useState(null);
+  const [vehicleData, setVehicleData] = useState([]);
+  const [vehicleInfo, setVehicleInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -45,7 +46,7 @@ const Tracking = () => {
         const response = await axios.post(
           "http://176.58.99.231/api/v1/location/history"
         );
-        setVehicleData(response.data);
+        setVehicleInfo(response.data);
         setIsLoading(false);
       } catch (error) {
         setError(error);
@@ -69,8 +70,6 @@ const Tracking = () => {
 
   // History Functionalities End
 
-  console.log("vehicleData", vehicleData);
-
   return (
     <div className="bg-[#E9F8F3B2]">
       <div className="w-full py-14 m-auto px-4 md:px-0">
@@ -82,7 +81,17 @@ const Tracking = () => {
               mapContainerClassName="map-container"
               options={options}
               onload={onload}
-            ></GoogleMap>
+            >
+              {vehicleData.map((car, i) => (
+                <Marker
+                  key={i}
+                  position={{
+                    lat: parseFloat(car.latitude),
+                    lng: parseFloat(car.longitude),
+                  }}
+                />
+              ))}
+            </GoogleMap>
           </div>
         </div>
 
@@ -147,8 +156,9 @@ const Tracking = () => {
                     // icon={<FiInfo size={24} color="green" />}
                   >
                     <HistoryUI
-                      vehicleName={vehicleData.vehicle}
-                      vehicleHistory={vehicleData.data}
+                      vehicleHistory={vehicleInfo.data}
+                      setVehicleData={setVehicleData}
+                      vehicleInfo={vehicleInfo}
                     />
                   </Tab>
                 </Tabs>

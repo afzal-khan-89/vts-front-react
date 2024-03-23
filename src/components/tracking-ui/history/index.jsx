@@ -1,11 +1,15 @@
+/* eslint-disable react/prop-types */
 import moment from "moment";
 import React, { useState } from "react";
 
-const HistoryUI = ({ vehicleName, vehicleHistory }) => {
-  console.log("History UI Rendaring........");
+const HistoryUI = ({ vehicleInfo, setVehicleData, vehicleHistory }) => {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [reportTime, setReportTime] = useState(null);
+
+  const handleSelectAllCars = () => {
+    setVehicleData(vehicleHistory);
+  };
 
   const handleStartDateChange = (date) => {
     const formattedStartDate = moment(date).format("YYYY-MM-DD HH:mm:ss");
@@ -54,7 +58,7 @@ const HistoryUI = ({ vehicleName, vehicleHistory }) => {
         </div> */}
 
         <div>
-          <label
+          {/* <label
             htmlFor="HeadlineAct"
             className="block text-sm font-medium text-gray-900"
           >
@@ -68,7 +72,10 @@ const HistoryUI = ({ vehicleName, vehicleHistory }) => {
           >
             <option value="">Please select</option>
             <option value={vehicleName}>{vehicleName}</option>
-          </select>
+          </select> */}
+          <button className="text-black" onClick={handleSelectAllCars}>
+            {vehicleInfo?.vehicle}
+          </button>
         </div>
 
         {/* <div>

@@ -1,4 +1,4 @@
-import { GoogleMap, Marker } from "@react-google-maps/api";
+import { GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
 import axios from "axios";
 import React, {
   useCallback,
@@ -37,6 +37,7 @@ const Tracking = () => {
   // History Functionalities Start
   const [vehicleData, setVehicleData] = useState([]);
   const [vehicleInfo, setVehicleInfo] = useState(null);
+  const [selectedMarker, setSelectedMarker] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -89,8 +90,29 @@ const Tracking = () => {
                     lat: parseFloat(car.latitude),
                     lng: parseFloat(car.longitude),
                   }}
+                  onClick={() => setSelectedMarker(car)}
                 />
               ))}
+
+              {selectedMarker && (
+                <InfoWindow
+                  position={{
+                    lat: parseFloat(selectedMarker.latitude),
+                    lng: parseFloat(selectedMarker.longitude),
+                  }}
+                  onCloseClick={() => setSelectedMarker(null)}
+                >
+                  <div>
+                    <p>AC: {selectedMarker.ac}</p>
+
+                    <p>Engin: {selectedMarker.engine}</p>
+                    <p>Fuel: {selectedMarker.fuel}</p>
+                    <p>Speed: {selectedMarker.speed}</p>
+                    <p>Time: {selectedMarker.time}</p>
+                    <p>Latitude: {selectedMarker.latitude}</p>
+                  </div>
+                </InfoWindow>
+              )}
             </GoogleMap>
           </div>
         </div>

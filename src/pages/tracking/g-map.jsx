@@ -1,9 +1,4 @@
-import {
-  DirectionsService,
-  GoogleMap,
-  InfoWindow,
-  Marker,
-} from "@react-google-maps/api";
+import { GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
 import axios from "axios";
 import React, {
   useCallback,
@@ -15,13 +10,16 @@ import React, {
 import { FaCarSide } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { Tab, Tabs } from "../../common/tabs";
+import CarDetailsInfo from "../../components/tracking-ui/car-details";
 import HistoryUI from "../../components/tracking-ui/history";
 import VehicleUi from "../../components/tracking-ui/vehicle";
 
 const Tracking = () => {
   const mapRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
-  const center = useMemo(() => ({ lat: 23.3453453, lng: 90.543433 }), []);
+  const [mapZoom, setMapZoom] = useState(8);
+  const [center, setCenter] = useState({ lat: 23.3453453, lng: 90.543433 });
+  // const center = useMemo(() => ({ lat: 23.3453453, lng: 90.543433 }), []);
   const options = useMemo(
     () => ({
       mapId: "4e550a138db6cc0a",
@@ -45,6 +43,10 @@ const Tracking = () => {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [startPointInfoWindowOpen, setStartPointInfoWindowOpen] =
+    useState(true);
+  const [endPointInfoWindowOpen, setEndPointInfoWindowOpen] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,18 +78,55 @@ const Tracking = () => {
 
   // History Functionalities End
 
+  const startPoint = vehicleData[0];
+  const endPoint = vehicleData[vehicleData.length - 1];
+
   return (
     <div className="bg-[#E9F8F3B2]">
       <div className="w-full py-14 m-auto px-4 md:px-0">
         <div className="mt-6 relative">
-          <div id="map" style={{ width: "100%", height: "100vh" }}>
+          <div id="map" style={{ width: "100%", height: "100%" }}>
             <GoogleMap
-              zoom={8}
+              zoom={mapZoom}
               center={center}
               mapContainerClassName="map-container"
               options={options}
               onload={onload}
             >
+              {/* Start Point */}
+              {startPoint && (
+                <InfoWindow
+                  position={{
+                    lat: parseFloat(startPoint.latitude),
+                    lng: parseFloat(startPoint.longitude),
+                  }}
+                  onCloseClick={() => setStartPointInfoWindowOpen(false)}
+                  options={{ maxWidth: 200 }}
+                  visible={startPointInfoWindowOpen}
+                >
+                  <div>
+                    <p>Start Point</p>
+                  </div>
+                </InfoWindow>
+              )}
+
+              {/* End Point */}
+              {endPoint && (
+                <InfoWindow
+                  position={{
+                    lat: parseFloat(endPoint.latitude),
+                    lng: parseFloat(endPoint.longitude),
+                  }}
+                  onCloseClick={() => setEndPointInfoWindowOpen(false)}
+                  options={{ maxWidth: 200 }}
+                  visible={endPointInfoWindowOpen}
+                >
+                  <div>
+                    <p>End Point</p>
+                  </div>
+                </InfoWindow>
+              )}
+
               {vehicleData.map((car, i) => (
                 <React.Fragment key={i}>
                   <Marker
@@ -101,26 +140,6 @@ const Tracking = () => {
                     }}
                     onClick={() => setSelectedMarker(car)}
                   />
-                  {i > 0 && (
-                    <DirectionsService
-                      options={{
-                        origin: {
-                          lat: parseFloat(vehicleData[i - 1].latitude),
-                          lng: parseFloat(vehicleData[i - 1].longitude),
-                        },
-                        destination: {
-                          lat: parseFloat(car.latitude),
-                          lng: parseFloat(car.longitude),
-                        },
-                        travelMode: "DRIVING",
-                      }}
-                      callback={(result) => {
-                        if (result !== null) {
-                          console.log(result); // Do something with the directions result
-                        }
-                      }}
-                    />
-                  )}
                 </React.Fragment>
               ))}
 
@@ -134,7 +153,6 @@ const Tracking = () => {
                 >
                   <div>
                     <p>AC: {selectedMarker.ac}</p>
-
                     <p>Engin: {selectedMarker.engine}</p>
                     <p>Fuel: {selectedMarker.fuel}</p>
                     <p>Speed: {selectedMarker.speed}</p>
@@ -146,6 +164,9 @@ const Tracking = () => {
             </GoogleMap>
           </div>
         </div>
+
+        {/* Single Car Details */}
+        {selectedMarker && <CarDetailsInfo selectedMarker={selectedMarker} />}
 
         {/* Track Modal */}
         <div
@@ -211,6 +232,8 @@ const Tracking = () => {
                       vehicleHistory={vehicleInfo.data}
                       setVehicleData={setVehicleData}
                       vehicleInfo={vehicleInfo}
+                      setMapZoom={setMapZoom}
+                      setCenter={setCenter}
                     />
                   </Tab>
                 </Tabs>

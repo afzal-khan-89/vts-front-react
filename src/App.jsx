@@ -22,7 +22,7 @@ const App = () => {
   return (
     <div>
       <ToastContainer autoClose={3500} />
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/home" element={<HomePage />} />
         {/* <Route path="/" element={<LandingPage />} /> */}

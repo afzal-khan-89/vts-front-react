@@ -1,14 +1,24 @@
 /* eslint-disable react/prop-types */
 import moment from "moment";
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import { SelectTime } from "../../../constants/InfoData";
 
-const HistoryUI = ({ vehicleInfo, setVehicleData, vehicleHistory }) => {
+const HistoryUI = ({
+  vehicleInfo,
+  setVehicleData,
+  vehicleHistory,
+  setMapZoom,
+  setCenter,
+}) => {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [reportTime, setReportTime] = useState(null);
 
   const handleSelectAllCars = () => {
     setVehicleData(vehicleHistory);
+    setMapZoom(18);
+    setCenter({ lat: 23.165907, lng: 90.205648 }); // INITIALLY STATIC DATA ADDED
   };
 
   const handleStartDateChange = (date) => {
@@ -36,7 +46,7 @@ const HistoryUI = ({ vehicleInfo, setVehicleData, vehicleHistory }) => {
   return (
     <div>
       <div className="bg-white border shadow-sm p-4">
-        {/* <div>
+        <div>
           <label
             htmlFor="HeadlineAct"
             className="block text-sm font-medium text-gray-900"
@@ -55,7 +65,7 @@ const HistoryUI = ({ vehicleInfo, setVehicleData, vehicleHistory }) => {
             <option value="BBK">B.B King</option>
             <option value="AK">Albert King</option>
           </select>
-        </div> */}
+        </div>
 
         <div>
           {/* <label
@@ -78,7 +88,7 @@ const HistoryUI = ({ vehicleInfo, setVehicleData, vehicleHistory }) => {
           </button>
         </div>
 
-        {/* <div>
+        <div>
           <label
             htmlFor="HeadlineAct"
             className="block text-sm font-medium text-gray-900"
@@ -97,9 +107,9 @@ const HistoryUI = ({ vehicleInfo, setVehicleData, vehicleHistory }) => {
             <option value="group-3">Group 3</option>
             <option value="group-4">Group 4</option>
           </select>
-        </div> */}
+        </div>
 
-        {/* <div>
+        <div>
           <label
             htmlFor="HeadlineAct"
             className="block text-sm font-medium text-gray-900"
@@ -119,9 +129,9 @@ const HistoryUI = ({ vehicleInfo, setVehicleData, vehicleHistory }) => {
               </option>
             ))}
           </select>
-        </div> */}
+        </div>
 
-        {/* <div>
+        <div>
           <DatePicker
             selected={startTime}
             onChange={handleStartDateChange}
@@ -141,7 +151,7 @@ const HistoryUI = ({ vehicleInfo, setVehicleData, vehicleHistory }) => {
             showTimeInput
             className="mt-1.5 w-full rounded-lg border p-2 border-gray-300 text-gray-700 sm:text-sm"
           />
-        </div> */}
+        </div>
       </div>
       <button
         className="w-2/3 mt-4 object-none object-bottom  active:bg-red-700 focus:bg-yellow-500 focus:text-white hover:bg-green-500 

@@ -10,15 +10,45 @@ const HistoryUI = ({
   vehicleHistory,
   setMapZoom,
   setCenter,
+  setDirections,
+  startPoint,
+  endPoint,
 }) => {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [reportTime, setReportTime] = useState(null);
 
+  console.log("Start Point:- ", startPoint?.latitude);
+  console.log("End Point:- ", endPoint?.latitude);
+
   const handleSelectAllCars = () => {
     setVehicleData(vehicleHistory);
     setMapZoom(18);
     setCenter({ lat: 23.165907, lng: 90.205648 }); // INITIALLY STATIC DATA ADDED
+
+    // Fetch Direction when marker is clicked
+    const directionsService = new window.google.maps.DirectionsService();
+    directionsService.route(
+      {
+        origin: new window.google.maps.LatLng(
+          parseFloat(startPoint?.latitude),
+          parseFloat(startPoint?.longitude)
+        ),
+        destination: new window.google.maps.LatLng(
+          parseFloat(endPoint?.latitude),
+          parseFloat(endPoint?.longitude)
+        ),
+        travelMode: window.google.maps.TravelMode.DRIVING,
+      },
+      (result, status) => {
+        console.log("Final Result--->", { result, status });
+        if (status === window.google.maps.DirectionsStatus.OK) {
+          setDirections(result);
+        } else {
+          console.error(`Directions request failed due to ${status}`);
+        }
+      }
+    );
   };
 
   const handleStartDateChange = (date) => {

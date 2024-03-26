@@ -1,4 +1,9 @@
-import { GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
+import {
+  DirectionsRenderer,
+  GoogleMap,
+  InfoWindow,
+  Marker,
+} from "@react-google-maps/api";
 import axios from "axios";
 import React, {
   useCallback,
@@ -43,10 +48,13 @@ const Tracking = () => {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [directions, setDirections] = useState(null);
 
   const [startPointInfoWindowOpen, setStartPointInfoWindowOpen] =
     useState(true);
   const [endPointInfoWindowOpen, setEndPointInfoWindowOpen] = useState(true);
+
+  console.log("My Directions ----> ", directions);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,6 +101,21 @@ const Tracking = () => {
               options={options}
               onload={onload}
             >
+              {directions && (
+                <DirectionsRenderer
+                  directions={directions}
+                  options={{
+                    polylineOptions: {
+                      zIndex: 50,
+                      strokeColor: "red",
+                      // strokeOpacity: 1,
+                      strokeWeight: 10,
+                    },
+                    suppressMarkers: true,
+                  }}
+                />
+              )}
+
               {/* Start Point */}
               {startPoint && (
                 <InfoWindow
@@ -234,6 +257,9 @@ const Tracking = () => {
                       vehicleInfo={vehicleInfo}
                       setMapZoom={setMapZoom}
                       setCenter={setCenter}
+                      setDirections={setDirections}
+                      startPoint={startPoint}
+                      endPoint={endPoint}
                     />
                   </Tab>
                 </Tabs>

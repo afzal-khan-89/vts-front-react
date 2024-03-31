@@ -1,4 +1,6 @@
+// /* eslint-disable react/prop-types */
 /* eslint-disable react/prop-types */
+
 import moment from "moment";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
@@ -6,7 +8,7 @@ import { SelectTime } from "../../../constants/InfoData";
 
 const HistoryUI = ({
   vehicleInfo,
-  setVehicleData,
+  setSingleCarHistory,
   vehicleHistory,
   setMapZoom,
   setCenter,
@@ -22,7 +24,7 @@ const HistoryUI = ({
   console.log("End Point:- ", endPoint?.latitude);
 
   const handleSelectAllCars = () => {
-    setVehicleData(vehicleHistory);
+    setSingleCarHistory(vehicleHistory);
     setMapZoom(18);
     setCenter({ lat: 23.165907, lng: 90.205648 }); // INITIALLY STATIC DATA ADDED
 
@@ -184,7 +186,7 @@ const HistoryUI = ({
         </div>
       </div>
       <button
-        className="w-2/3 mt-4 object-none object-bottom  active:bg-red-700 focus:bg-yellow-500 focus:text-white hover:bg-green-500 
+        className="w-2/3 mt-4 object-none object-bottom  active:bg-red-700 focus:bg-yellow-500 focus:text-white hover:bg-green-500
                  text-yellow-700 hover:text-white py-1 px-4 border border-yellow-500  rounded"
         onClick={handleShowInformation}
       >

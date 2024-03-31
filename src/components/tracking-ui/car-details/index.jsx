@@ -41,37 +41,37 @@ const CarDetailsInfo = ({ selectedMarker }) => {
           <div className="flex">
             {/* Left column */}
             <div className="flex-1">
-              <div className="border border-gray-200 rounded overflow-hidden">
+              <ul className="border border-gray-200 rounded overflow-hidden">
                 <li className="px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
-                  AC: {selectedMarker.ac}
+                  <strong>AC:</strong> {selectedMarker.ac}
                 </li>
                 <li className="px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
-                  Engin: {selectedMarker.engine}
+                  <strong>Engin:</strong> {selectedMarker.engine}
                 </li>
                 <li className="px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
-                  <p>Fuel: {selectedMarker.fuel}</p>
+                  <strong>Fuel:</strong> {selectedMarker.fuel}
                 </li>
                 <li className="px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
-                  <p>Speed: {selectedMarker.speed}</p>
+                  <strong>Speed:</strong> {selectedMarker.speed}
                 </li>
-              </div>
+              </ul>
             </div>
             {/* Right column */}
             <div className="flex-1">
-              <div className="border border-gray-200 rounded overflow-hidden">
+              <ul className="border border-gray-200 rounded overflow-hidden">
                 <li className="px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
-                  <p>Time: {selectedMarker.time}</p>
+                  <strong>Time:</strong> {selectedMarker.time}
                 </li>
                 <li className="px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
-                  <p>Latitude: {selectedMarker.latitude}</p>
+                  <strong>Latitude:</strong> {selectedMarker.latitude}
                 </li>
                 <li className="px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
-                  <p>Longitude: {selectedMarker.longitude}</p>
+                  <strong>Longitude:</strong> {selectedMarker.longitude}
                 </li>
                 <li className="px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
-                  <p>Satalite: {selectedMarker.satellite}</p>
+                  <strong>Satalite:</strong> {selectedMarker.satellite}
                 </li>
-              </div>
+              </ul>
             </div>
           </div>
         </div>

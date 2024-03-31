@@ -38,13 +38,13 @@ const Tracking = () => {
     mapRef.current = map;
   }, []);
 
-  const toggleChatbox = () => {
+  const toggleTrackModal = () => {
     setFormVisible((prevState) => !prevState);
   };
 
   // History Functionalities Start
-  const [vehicleData, setVehicleData] = useState([]);
-  const [vehicleInfo, setVehicleInfo] = useState(null);
+  const [singleCarHistory, setSingleCarHistory] = useState([]); // store single car history
+  const [vehicleInfo, setVehicleInfo] = useState(null); // store vehicle info
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -54,7 +54,7 @@ const Tracking = () => {
     useState(true);
   const [endPointInfoWindowOpen, setEndPointInfoWindowOpen] = useState(true);
 
-  console.log("My Directions ----> ", directions);
+  console.log("My Directions ----> ", singleCarHistory);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,14 +80,14 @@ const Tracking = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  if (!vehicleData) {
+  if (!singleCarHistory) {
     return null; // Handle case where data is null
   }
 
   // History Functionalities End
 
-  const startPoint = vehicleData[0];
-  const endPoint = vehicleData[vehicleData.length - 1];
+  const startPoint = singleCarHistory[0];
+  const endPoint = singleCarHistory[singleCarHistory.length - 1];
 
   return (
     <div className="bg-[#E9F8F3B2]">
@@ -150,7 +150,7 @@ const Tracking = () => {
                 </InfoWindow>
               )}
 
-              {vehicleData.map((car, i) => (
+              {singleCarHistory.map((car, i) => (
                 <React.Fragment key={i}>
                   <Marker
                     position={{
@@ -208,7 +208,7 @@ const Tracking = () => {
                   <h3 className="text-xl font-medium text-white">
                     All Tracking Info
                   </h3>
-                  <button onClick={toggleChatbox} className="text-white">
+                  <button onClick={toggleTrackModal} className="text-white">
                     <IoMdClose />
                   </button>
                 </div>
@@ -227,25 +227,6 @@ const Tracking = () => {
                       Markers Tab Lorem ipsum dolor sit amet. Markers Tab Lorem
                       ipsum dolor sit amet.
                     </h3>
-                    <h3 className="py-4 text-red-700">
-                      Markers Tab Lorem ipsum dolor sit amet. Markers Tab Lorem
-                      ipsum dolor sit amet.
-                    </h3>
-                    <h3 className="py-4 text-red-700">
-                      Markers Tab Lorem ipsum dolor sit amet. Markers Tab Lorem
-                      ipsum dolor sit amet.
-                    </h3>
-                    <h3 className="py-4 text-red-700">
-                      Markers Tab Lorem ipsum dolor sit amet.
-                    </h3>
-                    <h3 className="py-4 text-red-700">
-                      Markers Tab Lorem ipsum dolor sit amet.
-                    </h3>
-                    <h3 className="py-4 text-red-700">Markers Tab</h3>
-                    <h3 className="py-4 text-red-700">Markers Tab</h3>
-                    <h3 className="py-4 text-red-700">Markers Tab</h3>
-                    <h3 className="py-4 text-red-700">Markers Tab</h3>
-                    <h3 className="py-4 text-red-700">Markers Tab</h3>
                   </Tab>
                   <Tab
                     label="History"
@@ -253,7 +234,7 @@ const Tracking = () => {
                   >
                     <HistoryUI
                       vehicleHistory={vehicleInfo.data}
-                      setVehicleData={setVehicleData}
+                      setSingleCarHistory={setSingleCarHistory}
                       vehicleInfo={vehicleInfo}
                       setMapZoom={setMapZoom}
                       setCenter={setCenter}
@@ -271,7 +252,7 @@ const Tracking = () => {
               >
                 <button
                   className="flex h-[60px] w-[60px] items-center justify-center rounded-full bg-[#6A64F1] text-white"
-                  onClick={toggleChatbox}
+                  onClick={toggleTrackModal}
                 >
                   <FaCarSide size={30} />
                 </button>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaCarSide } from "react-icons/fa";
 import { HiSearch } from "react-icons/hi";
 import { all_cars } from "../../../db";
@@ -7,6 +8,11 @@ const VehicleTable = () => {
   const [searchCar, setSearchCar] = useState("");
   const [selectedCar, setSelectedCar] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [openDropdownId, setOpenDropdownId] = useState(null);
+
+  const handleActionClick = (id) => {
+    setOpenDropdownId(id === openDropdownId ? null : id);
+  };
 
   // When car list api call
 
@@ -132,18 +138,54 @@ const VehicleTable = () => {
                 </td>
                 <th
                   scope="row"
-                  className="!text-left whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   {car?.car_name}
                 </th>
-                <td className="px-6 py-4">{car?.speed}</td>
-                <td className="px-6 py-4 text-right">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                  >
+                <td className="px-6 py-4 flex justify-start items-center">
+                  {car?.speed}
+                  <span className="font-medium text-blue-600 hover:underline ml-1">
                     <FaCarSide />
-                  </a>
+                  </span>
+                </td>
+                <td className="px-6 py-4 text-right">
+                  <div className="relative inline-block text-left">
+                    <button
+                      type="button"
+                      id="options-menu"
+                      aria-haspopup="true"
+                      aria-expanded="true"
+                      onClick={() => handleActionClick(car.id)}
+                    >
+                      <BsThreeDotsVertical />
+                    </button>
+
+                    {openDropdownId === car.id && (
+                      <div
+                        className="z-100 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                        role="menu"
+                        aria-orientation="vertical"
+                        aria-labelledby={`options-menu-${car.id}`}
+                      >
+                        <div className="py-1" role="none">
+                          <button
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                            role="menuitem"
+                            // onClick={() => handleEdit(item.id)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                            role="menuitem"
+                            // onClick={() => handleDelete(item.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

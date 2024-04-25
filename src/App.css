@@ -60,7 +60,7 @@ tbody:hover::-webkit-scrollbar {
 
 /* Style for the scrollbar (optional) */
 tbody::-webkit-scrollbar {
-  width: 8px;
+  width: 1px;
 }
 
 tbody::-webkit-scrollbar-thumb {

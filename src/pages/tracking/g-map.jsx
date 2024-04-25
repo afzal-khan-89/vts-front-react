@@ -54,7 +54,7 @@ const Tracking = () => {
     useState(true);
   const [endPointInfoWindowOpen, setEndPointInfoWindowOpen] = useState(true);
 
-  console.log("My Directions ----> ", singleCarHistory);
+  console.log("My Directions ----> ", vehicleInfo?.data);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -233,7 +233,7 @@ const Tracking = () => {
                     // icon={<FiInfo size={24} color="green" />}
                   >
                     <HistoryUI
-                      vehicleHistory={vehicleInfo.data}
+                      vehicleHistory={vehicleInfo.data.slice(0, 20)}
                       setSingleCarHistory={setSingleCarHistory}
                       vehicleInfo={vehicleInfo}
                       setMapZoom={setMapZoom}

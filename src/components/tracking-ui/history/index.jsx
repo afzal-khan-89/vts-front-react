@@ -22,6 +22,7 @@ const HistoryUI = ({
 
   console.log("Start Point:- ", startPoint?.latitude);
   console.log("End Point:- ", endPoint?.latitude);
+  console.log(vehicleHistory.length);
 
   const handleSelectAllCars = () => {
     setSingleCarHistory(vehicleHistory);
@@ -197,3 +198,77 @@ const HistoryUI = ({
 };
 
 export default HistoryUI;
+
+// import React, { useEffect, useState } from "react";
+
+// const HistoryUI = ({
+//   vehicleInfo,
+//   setSingleCarHistory,
+//   vehicleHistory,
+//   setMapZoom,
+//   setCenter,
+//   setDirections,
+//   startPoint,
+//   endPoint,
+// }) => {
+//   const [fetchingDirections, setFetchingDirections] = useState(false);
+
+//   const fetchDirections = () => {
+//     const directionsService = new window.google.maps.DirectionsService();
+//     directionsService.route(
+//       {
+//         origin: new window.google.maps.LatLng(
+//           parseFloat(startPoint?.latitude),
+//           parseFloat(startPoint?.longitude)
+//         ),
+//         destination: new window.google.maps.LatLng(
+//           parseFloat(endPoint?.latitude),
+//           parseFloat(endPoint?.longitude)
+//         ),
+//         travelMode: window.google.maps.TravelMode.DRIVING,
+//       },
+//       (result, status) => {
+//         if (status === window.google.maps.DirectionsStatus.OK) {
+//           setDirections(result);
+//         } else {
+//           console.error(`Directions request failed due to ${status}`);
+//         }
+//         setFetchingDirections(false); // Reset the fetching state
+//       }
+//     );
+//   };
+
+//   const handleSelectAllCars = () => {
+//     setSingleCarHistory(vehicleHistory);
+//     setMapZoom(18);
+//     setCenter({ lat: 23.165907, lng: 90.205648 }); // INITIALLY STATIC DATA ADDED
+//     setFetchingDirections(true);
+//   };
+
+//   // Fetch directions when fetchingDirections state changes
+//   useEffect(() => {
+//     if (fetchingDirections) {
+//       fetchDirections();
+//     }
+//   }, [fetchingDirections]);
+
+//   return (
+//     <div>
+//       <div className="bg-white border shadow-sm p-4">
+//         <div>
+//           <button className="text-black" onClick={handleSelectAllCars}>
+//             {vehicleInfo?.vehicle}
+//           </button>
+//         </div>
+//       </div>
+//       <button
+//         className="w-2/3 mt-4 object-none object-bottom  active:bg-red-700 focus:bg-yellow-500 focus:text-white hover:bg-green-500
+//                  text-yellow-700 hover:text-white py-1 px-4 border border-yellow-500  rounded"
+//       >
+//         Show
+//       </button>
+//     </div>
+//   );
+// };
+
+// export default HistoryUI;

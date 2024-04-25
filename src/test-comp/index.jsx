@@ -1,130 +1,113 @@
-/* eslint-disable react/prop-types */
+import React, { useState } from "react";
+import SelectField from "./select-field";
 
-function TestComp() {
+const dataProvider = [
+  {
+    id: 1,
+    class: "class1",
+    value: "one",
+    students: [
+      {
+        id: 1,
+        role: 1001,
+        name: "Tuhin Khan",
+        email: "tuhinkhan@gmail.com",
+      },
+      {
+        id: 2,
+        role: 1002,
+        name: "Babu Khan",
+        email: "babukhan@gmail.com",
+      },
+    ],
+  },
+  {
+    id: 2,
+    class: "class2",
+    value: "two",
+    students: [
+      {
+        id: 1,
+        role: 1001,
+        name: "Kawsar Mia",
+        email: "kawsarmia@gmail.com",
+      },
+      {
+        id: 2,
+        role: 1002,
+        name: "Toufik Khan",
+        email: "toufikkhan@gmail.com",
+      },
+    ],
+  },
+  {
+    id: 3,
+    class: "class3",
+    value: "three",
+    students: [
+      {
+        id: 1,
+        role: 1001,
+        name: "Abu Said",
+        email: "abusaid@gmail.com",
+      },
+      {
+        id: 2,
+        role: 1002,
+        name: "Shamim Khan",
+        email: "shamimkhan@gmail.com",
+      },
+    ],
+  },
+  {
+    id: 4,
+    class: "class4",
+    value: "four",
+    students: [
+      {
+        id: 1,
+        role: 1001,
+        name: "Razib Khan",
+        email: "razibkhan@gmail.com",
+      },
+      {
+        id: 2,
+        role: 1002,
+        name: "Tamim Khan",
+        email: "tamimkhan@gmail.com",
+      },
+    ],
+  },
+];
+
+const TestComp = () => {
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
   return (
-    <div className="w-full py-14 md:max-w-[1480px] m-auto max-w-[600px] px-4 md:px-0">
-      <div className="border-b-2 block md:flex py-14">
-        <div className="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-white shadow-md">
-          <div className="flex justify-between">
-            <span className="text-xl font-semibold block">MD BABU KHAN</span>
-            {/* <a
-              href="#"
-              className="-mt-2 text-md font-bold text-white bg-gray-700 rounded-full px-5 py-2 hover:bg-gray-800"
-            >
-              Edit
-            </a> */}
-          </div>
-
-          <span className="text-gray-600">
-            With a passion for safe and comfortable transportation, Babu Khan
-            has been serving as a private car driver for [X years/months].
-            Dedicated to providing exceptional service, he ensures that
-            passengers reach their destinations promptly and securely.
-          </span>
-          <div className="w-full p-8 mx-2 flex justify-center">
-            <img
-              id="showImage"
-              className="max-w-xs w-32 items-center border"
-              src="https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt=""
-            />
-          </div>
+    <div>
+      <h1>Select a class:</h1>
+      <SelectField options={dataProvider} onChange={handleSelectChange} />
+      {selectedOption && (
+        <div>
+          <h2>Selected class: {selectedOption}</h2>
+          <h3>Students:</h3>
+          <ul>
+            {dataProvider
+              .find((option) => option.value === selectedOption)
+              .students.map((student) => (
+                <li key={student.id}>
+                  Name: {student.name}, Email: {student.email}
+                </li>
+              ))}
+          </ul>
         </div>
-
-        <div className="w-full md:w-3/5 p-8 bg-white lg:ml-4 shadow-md">
-          <div className="rounded  shadow p-6">
-            <div className="pb-6">
-              <label
-                htmlFor="name"
-                className="font-semibold text-gray-700 block pb-1"
-              >
-                Name
-              </label>
-              <div className="flex">
-                <input
-                  disabled
-                  id="username"
-                  className="border-1  rounded-r px-4 py-2 w-full"
-                  type="text"
-                  value="Jane Name"
-                />
-              </div>
-            </div>
-
-            <div className="pb-4">
-              <label
-                htmlFor="about"
-                className="font-semibold text-gray-700 block pb-1"
-              >
-                Email
-              </label>
-              <input
-                disabled
-                id="email"
-                className="border-1  rounded-r px-4 py-2 w-full"
-                type="email"
-                value="example@example.com"
-              />
-            </div>
-            <div className="pb-6">
-              <label
-                htmlFor="name"
-                className="font-semibold text-gray-700 block pb-1"
-              >
-                Address
-              </label>
-              <div className="flex">
-                <input
-                  disabled
-                  id="username"
-                  className="border-1  rounded-r px-4 py-2 w-full"
-                  type="text"
-                  value="Lake par, Madaripur, Dhaka"
-                />
-              </div>
-            </div>
-            <div className="pb-6">
-              <label
-                htmlFor="name"
-                className="font-semibold text-gray-700 block pb-1"
-              >
-                Phone No
-              </label>
-              <div className="flex">
-                <input
-                  disabled
-                  id="username"
-                  className="border-1  rounded-r px-4 py-2 w-full"
-                  type="text"
-                  value="+8801751108400"
-                />
-              </div>
-            </div>
-            <div className="pb-6">
-              <label
-                htmlFor="name"
-                className="font-semibold text-gray-700 block pb-1"
-              >
-                Role
-              </label>
-              <div className="flex">
-                <input
-                  disabled
-                  id="username"
-                  className="border-1  rounded-r px-4 py-2 w-full"
-                  type="text"
-                  value="Owner"
-                />
-              </div>
-            </div>
-            <span className="text-gray-600 pt-4 block opacity-70">
-              Personal login information of your account
-            </span>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
-}
+};
 
 export default TestComp;

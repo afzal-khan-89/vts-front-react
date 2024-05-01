@@ -19,12 +19,26 @@ import CarDetailsInfo from "../../components/tracking-ui/car-details";
 import HistoryUI from "../../components/tracking-ui/history";
 import VehicleUi from "../../components/tracking-ui/vehicle";
 
+const fetchData = async (setData, setIsLoading, setError) => {
+  try {
+    const response = await axios.post(
+      "http://176.58.99.231/api/v1/location/history"
+    );
+    setData(response.data);
+    setIsLoading(false);
+  } catch (error) {
+    setError(error);
+    setIsLoading(false); // Ensure loading state is updated even in case of an error
+  }
+};
+
 const Tracking = () => {
   const mapRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [mapZoom, setMapZoom] = useState(8);
   const [center, setCenter] = useState({ lat: 23.3453453, lng: 90.543433 });
   // const center = useMemo(() => ({ lat: 23.3453453, lng: 90.543433 }), []);
+
   const options = useMemo(
     () => ({
       mapId: "4e550a138db6cc0a",
@@ -45,32 +59,43 @@ const Tracking = () => {
   // History Functionalities Start
   const [singleCarHistory, setSingleCarHistory] = useState([]); // store single car history
   const [vehicleInfo, setVehicleInfo] = useState(null); // store vehicle info
+  const [userVehicle, setUserVehicle] = useState([]); // store user vehicle
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [directions, setDirections] = useState(null);
 
+  console.log("User Vehicle", userVehicle);
+
   const [startPointInfoWindowOpen, setStartPointInfoWindowOpen] =
     useState(true);
   const [endPointInfoWindowOpen, setEndPointInfoWindowOpen] = useState(true);
 
-  console.log("My Directions ----> ", vehicleInfo?.data);
+  const fetchDataCallback = useCallback(() => {
+    fetchData(setVehicleInfo, setIsLoading, setError);
+  }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.post(
-          "http://176.58.99.231/api/v1/location/history"
-        );
-        setVehicleInfo(response.data);
-        setIsLoading(false);
-      } catch (error) {
-        setError(error);
-      }
+  // Get individual user all vehicles
+
+  const fetchUserVehicles = useCallback(() => {
+    const requestBody = {
+      id: "5",
     };
 
-    fetchData();
+    axios
+      .post("http://176.58.99.231/api/v1/vehicle/users/all", requestBody)
+      .then((response) => {
+        setUserVehicle(response.data?.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
+
+  useEffect(() => {
+    fetchDataCallback();
+    fetchUserVehicles();
+  }, [fetchDataCallback, fetchUserVehicles]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -217,7 +242,7 @@ const Tracking = () => {
                     label="Vehicle"
                     // icon={<FiInfo size={24} color="green" />}
                   >
-                    <VehicleUi />
+                    <VehicleUi userVehicle={userVehicle} />
                   </Tab>
                   <Tab
                     label="Markers"

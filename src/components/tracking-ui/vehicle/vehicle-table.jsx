@@ -1,10 +1,10 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaCarSide } from "react-icons/fa";
 import { HiSearch } from "react-icons/hi";
-import { all_cars } from "../../../db";
 
-const VehicleTable = () => {
+const VehicleTable = ({ userVehicle }) => {
   const [searchCar, setSearchCar] = useState("");
   const [selectedCar, setSelectedCar] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -38,8 +38,8 @@ const VehicleTable = () => {
   };
 
   // Filter car
-  const filterCar = all_cars.filter((car) => {
-    return car.car_name.toLowerCase().includes(searchCar.toLowerCase());
+  const filterCar = userVehicle?.filter((car) => {
+    return car.driver.toLowerCase().includes(searchCar.toLowerCase());
   });
 
   // Handler for selecting and deselecting all cars;
@@ -47,7 +47,7 @@ const VehicleTable = () => {
     if (selectAll) {
       setSelectedCar([]);
     } else {
-      setSelectedCar(all_cars.map((car) => car.car_name));
+      setSelectedCar(userVehicle?.map((car) => car.driver));
     }
     setSelectAll(!selectAll);
   };
@@ -113,7 +113,7 @@ const VehicleTable = () => {
             </tr>
           </thead>
           <tbody className="bg-white flex flex-col items-center justify-start overflow-y-scroll w-full h-[200px]">
-            {filterCar.map((car, index) => (
+            {filterCar?.map((car, index) => (
               <tr
                 key={index}
                 className="flex justify-between items-center h-[40px] w-full text-black border-b bg-white hover:bg-gray-50"
@@ -123,8 +123,8 @@ const VehicleTable = () => {
                     <input
                       id="checkbox-table-search-1"
                       type="checkbox"
-                      value={car?.car_name}
-                      checked={selectedCar.includes(car?.car_name)}
+                      value={car?.driver}
+                      checked={selectedCar.includes(car?.driver)}
                       onChange={handleSelectCar}
                       className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                     />
@@ -140,10 +140,10 @@ const VehicleTable = () => {
                   scope="row"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  {car?.car_name}
+                  {car?.number_plate}
                 </th>
                 <td className="px-6 py-4 flex justify-start items-center">
-                  {car?.speed}
+                  {car?.speed_limit}
                   <span className="font-medium text-blue-600 hover:underline ml-1">
                     <FaCarSide />
                   </span>

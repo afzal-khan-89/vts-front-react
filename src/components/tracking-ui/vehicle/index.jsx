@@ -1,7 +1,7 @@
 import React from "react";
 import VehicleTable from "./vehicle-table";
 
-const VehicleUi = () => {
+const VehicleUi = ({ userVehicle }) => {
   return (
     <div>
       <div className="bg-white border shadow-sm p-4">
@@ -70,7 +70,7 @@ const VehicleUi = () => {
       </div>
 
       <div>
-        <VehicleTable />
+        <VehicleTable userVehicle={userVehicle} />
       </div>
     </div>
   );

@@ -64,8 +64,11 @@ const Tracking = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [directions, setDirections] = useState(null);
+  const [selectVehicle, setSelectVehicle] = useState([]);
+  const [selectAllVehicle, setSelectAllVehicle] = useState(false);
 
-  console.log("User Vehicle", userVehicle);
+  console.log("Single Select ---> ", selectVehicle);
+  console.log("Multiple Select ---> ", selectAllVehicle);
 
   const [startPointInfoWindowOpen, setStartPointInfoWindowOpen] =
     useState(true);
@@ -113,6 +116,69 @@ const Tracking = () => {
 
   const startPoint = singleCarHistory[0];
   const endPoint = singleCarHistory[singleCarHistory.length - 1];
+
+  // Single Vehicle Select
+  const selectSingleVehicle = async (payload) => {
+    console.log("New Payload: " + payload);
+    try {
+      const response = await axios.post(
+        "http://176.58.99.231/api/v1/location/last",
+        payload
+      );
+      setSelectVehicle(response.data?.data);
+    } catch (error) {
+      console.error("Error fetching vehicle details:", error.message);
+    }
+  };
+
+  const handleSelectCar = (event) => {
+    const carName = event.target.value;
+    const payload = {
+      vehicles: carName,
+    };
+    if (event.target.checked) {
+      selectSingleVehicle(payload);
+    } else {
+      setSelectVehicle(null);
+    }
+  };
+
+  // Handle Select ALl Car
+  const handleSelectAllCar = () => {
+    const payload = {
+      vehicles: selectVehicle,
+    };
+    if (selectAllVehicle) {
+      // setSelectVehicle([]);
+      selectSingleVehicle(payload?.vehicles.join("#"));
+    } else {
+      setSelectVehicle(userVehicle?.map((vehicle) => vehicle.number_plate));
+    }
+    setSelectAllVehicle(!selectAllVehicle);
+  };
+
+  // Sindle Vehicle Select
+
+  // const handleSelectCar = (event) => {
+  //   const carName = event.target.value;
+  //   // if (selectVehicle.includes(carName)) {
+  //   //   setSelectVehicle(selectVehicle.filter((name) => name !== carName));
+  //   // } else {
+  //   //   setSelectVehicle([...selectVehicle, carName]);
+  //   // }
+  //   const payload = {
+  //     vehicles: carName,
+  //   };
+
+  //   axios
+  //     .post("http://176.58.99.231/api/v1/location/last", payload)
+  //     .then((response) => {
+  //       setSelectVehicle(response.data?.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   return (
     <div className="bg-[#E9F8F3B2]">
@@ -209,6 +275,22 @@ const Tracking = () => {
                   </div>
                 </InfoWindow>
               )}
+
+              {selectVehicle.map((vehicle, i) => (
+                <React.Fragment key={i}>
+                  <Marker
+                    position={{
+                      lat: parseFloat(vehicle.latitude),
+                      lng: parseFloat(vehicle.longitude),
+                    }}
+                    icon={{
+                      url: "/src/assets/stop-icon.png", // URL to your custom icon image
+                      scaledSize: new window.google.maps.Size(40, 40), // Size of the icon
+                    }}
+                    // onClick={() => setSelectedMarker(car)}
+                  />
+                </React.Fragment>
+              ))}
             </GoogleMap>
           </div>
         </div>
@@ -242,7 +324,13 @@ const Tracking = () => {
                     label="Vehicle"
                     // icon={<FiInfo size={24} color="green" />}
                   >
-                    <VehicleUi userVehicle={userVehicle} />
+                    <VehicleUi
+                      userVehicle={userVehicle}
+                      handleSelectCar={handleSelectCar}
+                      selectVehicle={selectVehicle}
+                      handleSelectAllCar={handleSelectAllCar}
+                      selectAllVehicle={selectAllVehicle}
+                    />
                   </Tab>
                   <Tab
                     label="Markers"

@@ -4,7 +4,12 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaCarSide } from "react-icons/fa";
 import { HiSearch } from "react-icons/hi";
 
-const VehicleTable = ({ userVehicle }) => {
+const VehicleTable = ({
+  userVehicle,
+  handleSelectCar,
+  handleSelectAllCar,
+  selectAllVehicle,
+}) => {
   const [searchCar, setSearchCar] = useState("");
   const [selectedCar, setSelectedCar] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -39,28 +44,8 @@ const VehicleTable = ({ userVehicle }) => {
 
   // Filter car
   const filterCar = userVehicle?.filter((car) => {
-    return car.driver.toLowerCase().includes(searchCar.toLowerCase());
+    return car.number_plate.toLowerCase().includes(searchCar.toLowerCase());
   });
-
-  // Handler for selecting and deselecting all cars;
-  const handleSelectAll = () => {
-    if (selectAll) {
-      setSelectedCar([]);
-    } else {
-      setSelectedCar(userVehicle?.map((car) => car.driver));
-    }
-    setSelectAll(!selectAll);
-  };
-
-  // Handler for selecting and deselecting a single car
-  const handleSelectCar = (event) => {
-    const carName = event.target.value;
-    if (selectedCar.includes(carName)) {
-      setSelectedCar(selectedCar.filter((name) => name !== carName));
-    } else {
-      setSelectedCar([...selectedCar, carName]);
-    }
-  };
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -92,8 +77,8 @@ const VehicleTable = ({ userVehicle }) => {
                   <input
                     id="checkbox-all-search"
                     type="checkbox"
-                    checked={selectAll}
-                    onChange={handleSelectAll}
+                    checked={selectAllVehicle}
+                    onChange={handleSelectAllCar}
                     className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                   />
                   <label htmlFor="checkbox-all-search" className="sr-only">
@@ -123,9 +108,9 @@ const VehicleTable = ({ userVehicle }) => {
                     <input
                       id="checkbox-table-search-1"
                       type="checkbox"
-                      value={car?.driver}
-                      checked={selectedCar.includes(car?.driver)}
-                      onChange={handleSelectCar}
+                      value={car?.number_plate}
+                      checked={selectedCar.includes(car?.number_plate)}
+                      onChange={(e) => handleSelectCar(e)}
                       className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                     />
                     <label

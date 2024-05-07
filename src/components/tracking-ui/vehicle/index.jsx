@@ -1,7 +1,14 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import VehicleTable from "./vehicle-table";
 
-const VehicleUi = ({ userVehicle }) => {
+const VehicleUi = ({
+  userVehicle,
+  handleSelectCar,
+  selectVehicle,
+  handleSelectAllCar,
+  selectAllVehicle,
+}) => {
   return (
     <div>
       <div className="bg-white border shadow-sm p-4">
@@ -70,7 +77,13 @@ const VehicleUi = ({ userVehicle }) => {
       </div>
 
       <div>
-        <VehicleTable userVehicle={userVehicle} />
+        <VehicleTable
+          userVehicle={userVehicle}
+          handleSelectCar={handleSelectCar}
+          selectVehicle={selectVehicle}
+          handleSelectAllCar={handleSelectAllCar}
+          selectAllVehicle={selectAllVehicle}
+        />
       </div>
     </div>
   );

@@ -4,9 +4,9 @@ import VehicleTable from "./vehicle-table";
 
 const VehicleUi = ({
   userVehicle,
-  handleSelectCar,
+  handleSelectVehicle,
   selectVehicle,
-  handleSelectAllCar,
+  handleSelectAllVehicle,
   selectAllVehicle,
 }) => {
   return (
@@ -79,9 +79,9 @@ const VehicleUi = ({
       <div>
         <VehicleTable
           userVehicle={userVehicle}
-          handleSelectCar={handleSelectCar}
+          handleSelectVehicle={handleSelectVehicle}
           selectVehicle={selectVehicle}
-          handleSelectAllCar={handleSelectAllCar}
+          handleSelectAllVehicle={handleSelectAllVehicle}
           selectAllVehicle={selectAllVehicle}
         />
       </div>

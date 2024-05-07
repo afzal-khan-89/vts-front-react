@@ -64,10 +64,10 @@ const Tracking = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [directions, setDirections] = useState(null);
-  const [selectVehicle, setSelectVehicle] = useState([]);
-  const [selectAllVehicle, setSelectAllVehicle] = useState(false);
+  const [selectVehicle, setSelectVehicle] = useState([]); // store single, multiple select vehicle
+  const [selectAllVehicle, setSelectAllVehicle] = useState(false); // store all select & deselect vehicle
 
-  console.log("selectVehicle ---> ", selectVehicle);
+  console.log("Selected Vehicle ---> ", selectVehicle);
 
   const [startPointInfoWindowOpen, setStartPointInfoWindowOpen] =
     useState(true);
@@ -78,7 +78,6 @@ const Tracking = () => {
   }, []);
 
   // Get individual user all vehicles
-
   const fetchUserVehicles = useCallback(() => {
     const requestBody = {
       id: "5",
@@ -129,17 +128,18 @@ const Tracking = () => {
     }
   };
 
-  const handleSelectCar = (event, numberPlate) => {
+  const handleSelectVehicle = (event, numberPlate) => {
     const isChecked = event.target.checked;
     if (isChecked) {
       setSelectVehicle([...selectVehicle, numberPlate]);
+      console.log("My Selected Vehicle ---> ", selectVehicle);
     } else {
       setSelectVehicle(selectVehicle.filter((plate) => plate !== numberPlate));
     }
   };
 
   // Handle Select ALl Car
-  const handleSelectAllCar = (event) => {
+  const handleSelectAllVehicle = (event) => {
     const isChecked = event.target.checked;
     setSelectAllVehicle(isChecked);
     if (isChecked) {
@@ -299,9 +299,9 @@ const Tracking = () => {
                   >
                     <VehicleUi
                       userVehicle={userVehicle}
-                      handleSelectCar={handleSelectCar}
+                      handleSelectVehicle={handleSelectVehicle}
                       selectVehicle={selectVehicle}
-                      handleSelectAllCar={handleSelectAllCar}
+                      handleSelectAllVehicle={handleSelectAllVehicle}
                       selectAllVehicle={selectAllVehicle}
                     />
                   </Tab>

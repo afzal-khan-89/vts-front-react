@@ -67,7 +67,7 @@ const Tracking = () => {
   const [selectVehicle, setSelectVehicle] = useState([]); // store single, multiple select vehicle
   const [selectAllVehicle, setSelectAllVehicle] = useState(false); // store all select & deselect vehicle
 
-  console.log("Selected Vehicle ---> ", selectVehicle);
+  console.log("Select All Vehicle ---> ", selectVehicle);
 
   const [startPointInfoWindowOpen, setStartPointInfoWindowOpen] =
     useState(true);
@@ -115,26 +115,32 @@ const Tracking = () => {
   const startPoint = singleCarHistory[0];
   const endPoint = singleCarHistory[singleCarHistory.length - 1];
 
-  // Single Vehicle Select
-  const selectSingleVehicle = async (payload) => {
-    try {
-      const response = await axios.post(
-        "http://176.58.99.231/api/v1/location/last",
-        payload
-      );
-      setSelectVehicle(response.data?.data);
-    } catch (error) {
-      console.error("Error fetching vehicle details:", error.message);
-    }
-  };
+  // const handleSelectVehicle = (event, numberPlate) => {
+  //   const isChecked = event.target.checked;
+  //   if (isChecked) {
+  //     setSelectVehicle((prevSelectVehicle) => [
+  //       ...prevSelectVehicle,
+  //       numberPlate,
+  //     ]);
+  //     selectSingleVehicle([...selectVehicle, numberPlate].join("#"));
+  //   } else {
+  //     setSelectVehicle(selectVehicle.filter((plate) => plate !== numberPlate));
+  //     selectSingleVehicle([...selectVehicle, numberPlate].join("#"));
+  //   }
+  // };
 
   const handleSelectVehicle = (event, numberPlate) => {
     const isChecked = event.target.checked;
     if (isChecked) {
-      setSelectVehicle([...selectVehicle, numberPlate]);
-      console.log("My Selected Vehicle ---> ", selectVehicle);
+      const updatedSelectedvehicle = [...selectVehicle, numberPlate];
+      setSelectVehicle(updatedSelectedvehicle);
+      selectSingleVehicle(updatedSelectedvehicle.join("#"));
     } else {
-      setSelectVehicle(selectVehicle.filter((plate) => plate !== numberPlate));
+      const updatedSelectedVehicle = selectVehicle.filter(
+        (plate) => plate !== numberPlate
+      );
+      setSelectVehicle(updatedSelectedVehicle);
+      selectSingleVehicle(updatedSelectedVehicle.join("#"));
     }
   };
 
@@ -147,9 +153,25 @@ const Tracking = () => {
         (vehicle) => vehicle.number_plate
       );
       setSelectVehicle(allNumberPlates);
-      // selectSingleVehicle();
+      selectSingleVehicle(allNumberPlates.join("#"));
     } else {
       setSelectVehicle([]);
+    }
+  };
+
+  // Single Vehicle Select
+  const selectSingleVehicle = async (selectVehicleString) => {
+    try {
+      const response = await axios.post(
+        "http://176.58.99.231/api/v1/location/last",
+        {
+          vehicles: selectVehicleString,
+        }
+      );
+      setSelectVehicle(response.data?.data);
+      console.log("API Response--->", response.data?.data);
+    } catch (error) {
+      console.error("Error fetching vehicle details:", error.message);
     }
   };
 
@@ -257,7 +279,10 @@ const Tracking = () => {
                       lng: parseFloat(vehicle?.longitude),
                     }}
                     icon={{
-                      url: "/src/assets/stop-icon.png", // URL to your custom icon image
+                      url:
+                        vehicle?.engine === "0"
+                          ? "/src/assets/stop-icon.png"
+                          : "/src//assets/on-car.png", // URL to your custom icon image
                       scaledSize: new window.google.maps.Size(40, 40), // Size of the icon
                     }}
                     // onClick={() => setSelectedMarker(car)}

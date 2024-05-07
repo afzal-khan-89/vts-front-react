@@ -67,8 +67,7 @@ const Tracking = () => {
   const [selectVehicle, setSelectVehicle] = useState([]);
   const [selectAllVehicle, setSelectAllVehicle] = useState(false);
 
-  console.log("Single Select ---> ", selectVehicle);
-  console.log("Multiple Select ---> ", selectAllVehicle);
+  console.log("selectVehicle ---> ", selectVehicle);
 
   const [startPointInfoWindowOpen, setStartPointInfoWindowOpen] =
     useState(true);
@@ -119,7 +118,6 @@ const Tracking = () => {
 
   // Single Vehicle Select
   const selectSingleVehicle = async (payload) => {
-    console.log("New Payload: " + payload);
     try {
       const response = await axios.post(
         "http://176.58.99.231/api/v1/location/last",
@@ -131,54 +129,29 @@ const Tracking = () => {
     }
   };
 
-  const handleSelectCar = (event) => {
-    const carName = event.target.value;
-    const payload = {
-      vehicles: carName,
-    };
-    if (event.target.checked) {
-      selectSingleVehicle(payload);
+  const handleSelectCar = (event, numberPlate) => {
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      setSelectVehicle([...selectVehicle, numberPlate]);
     } else {
-      setSelectVehicle(null);
+      setSelectVehicle(selectVehicle.filter((plate) => plate !== numberPlate));
     }
   };
 
   // Handle Select ALl Car
-  const handleSelectAllCar = () => {
-    const payload = {
-      vehicles: selectVehicle,
-    };
-    if (selectAllVehicle) {
-      // setSelectVehicle([]);
-      selectSingleVehicle(payload?.vehicles.join("#"));
+  const handleSelectAllCar = (event) => {
+    const isChecked = event.target.checked;
+    setSelectAllVehicle(isChecked);
+    if (isChecked) {
+      const allNumberPlates = userVehicle.map(
+        (vehicle) => vehicle.number_plate
+      );
+      setSelectVehicle(allNumberPlates);
+      // selectSingleVehicle();
     } else {
-      setSelectVehicle(userVehicle?.map((vehicle) => vehicle.number_plate));
+      setSelectVehicle([]);
     }
-    setSelectAllVehicle(!selectAllVehicle);
   };
-
-  // Sindle Vehicle Select
-
-  // const handleSelectCar = (event) => {
-  //   const carName = event.target.value;
-  //   // if (selectVehicle.includes(carName)) {
-  //   //   setSelectVehicle(selectVehicle.filter((name) => name !== carName));
-  //   // } else {
-  //   //   setSelectVehicle([...selectVehicle, carName]);
-  //   // }
-  //   const payload = {
-  //     vehicles: carName,
-  //   };
-
-  //   axios
-  //     .post("http://176.58.99.231/api/v1/location/last", payload)
-  //     .then((response) => {
-  //       setSelectVehicle(response.data?.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
 
   return (
     <div className="bg-[#E9F8F3B2]">
@@ -280,8 +253,8 @@ const Tracking = () => {
                 <React.Fragment key={i}>
                   <Marker
                     position={{
-                      lat: parseFloat(vehicle.latitude),
-                      lng: parseFloat(vehicle.longitude),
+                      lat: parseFloat(vehicle?.latitude),
+                      lng: parseFloat(vehicle?.longitude),
                     }}
                     icon={{
                       url: "/src/assets/stop-icon.png", // URL to your custom icon image

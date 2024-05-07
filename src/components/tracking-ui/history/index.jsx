@@ -20,10 +20,6 @@ const HistoryUI = ({
   const [endTime, setEndTime] = useState(new Date());
   const [reportTime, setReportTime] = useState(null);
 
-  console.log("Start Point:- ", startPoint?.latitude);
-  console.log("End Point:- ", endPoint?.latitude);
-  console.log(vehicleHistory.length);
-
   const handleSelectAllCars = () => {
     setSingleCarHistory(vehicleHistory);
     setMapZoom(18);

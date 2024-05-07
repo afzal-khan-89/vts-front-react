@@ -9,34 +9,14 @@ const VehicleTable = ({
   handleSelectCar,
   handleSelectAllCar,
   selectAllVehicle,
+  selectVehicle,
 }) => {
   const [searchCar, setSearchCar] = useState("");
-  const [selectedCar, setSelectedCar] = useState([]);
-  const [selectAll, setSelectAll] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
 
   const handleActionClick = (id) => {
     setOpenDropdownId(id === openDropdownId ? null : id);
   };
-
-  // When car list api call
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.post(
-  //         "http://176.58.99.231/api/v1/location/history"
-  //       );
-  //       setAllCars(response.data.data);
-  //     } catch (error) {
-  //       setError(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   const handleSearch = (e) => {
     setSearchCar(e.target.value);
@@ -44,7 +24,7 @@ const VehicleTable = ({
 
   // Filter car
   const filterCar = userVehicle?.filter((car) => {
-    return car.number_plate.toLowerCase().includes(searchCar.toLowerCase());
+    return car.number_plate.toLowerCase()?.includes(searchCar.toLowerCase());
   });
 
   return (
@@ -108,9 +88,9 @@ const VehicleTable = ({
                     <input
                       id="checkbox-table-search-1"
                       type="checkbox"
-                      value={car?.number_plate}
-                      checked={selectedCar.includes(car?.number_plate)}
-                      onChange={(e) => handleSelectCar(e)}
+                      value={car?.id}
+                      checked={selectVehicle?.includes(car?.number_plate)}
+                      onChange={(e) => handleSelectCar(e, car?.number_plate)}
                       className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                     />
                     <label

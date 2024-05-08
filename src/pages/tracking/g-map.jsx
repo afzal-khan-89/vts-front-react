@@ -93,10 +93,23 @@ const Tracking = () => {
       });
   }, []);
 
+  // Will Call Again After 5seconds last location is updated;
   useEffect(() => {
     fetchDataCallback();
     fetchUserVehicles();
+
+    const interval = setInterval(fetchUserVehicles, 5000);
+    return () => clearInterval(interval);
   }, [fetchDataCallback, fetchUserVehicles]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (selectVehicle.length > 0) {
+        selectSingleVehicle(selectVehicle.join("#"));
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [selectVehicle]);
 
   if (isLoading) {
     return <div>Loading...</div>;

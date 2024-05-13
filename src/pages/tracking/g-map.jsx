@@ -16,6 +16,7 @@ import { FaCarSide } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { Tab, Tabs } from "../../common/tabs";
 import CarDetailsInfo from "../../components/tracking-ui/car-details";
+import SingleVehicleLastInfoModal from "../../components/tracking-ui/car-details/vehicle-last-info";
 import HistoryUI from "../../components/tracking-ui/history";
 import VehicleUi from "../../components/tracking-ui/vehicle";
 
@@ -66,8 +67,10 @@ const Tracking = () => {
   const [directions, setDirections] = useState(null);
   const [selectVehicle, setSelectVehicle] = useState([]); // store single, multiple select vehicle
   const [selectAllVehicle, setSelectAllVehicle] = useState(false); // store all select & deselect vehicle
+  const [selectVehicleLastInfo, setSelectVehicleLastInfo] = useState(null);
 
   console.log("Select All Vehicle ---> ", selectVehicle);
+  console.log("selectVehicleLastInfo ---> ", selectVehicleLastInfo);
 
   const [startPointInfoWindowOpen, setStartPointInfoWindowOpen] =
     useState(true);
@@ -182,7 +185,6 @@ const Tracking = () => {
         }
       );
       setSelectVehicle(response.data?.data);
-      console.log("API Response--->", response.data?.data);
     } catch (error) {
       console.error("Error fetching vehicle details:", error.message);
     }
@@ -283,7 +285,12 @@ const Tracking = () => {
                   </div>
                 </InfoWindow>
               )}
+              {/* Single Car Details */}
+              {selectedMarker && (
+                <CarDetailsInfo selectedMarker={selectedMarker} />
+              )}
 
+              {/* Vehicle Last Location Show in Map Functionalities Start */}
               {selectVehicle.map((vehicle, i) => (
                 <React.Fragment key={i}>
                   <Marker
@@ -298,16 +305,39 @@ const Tracking = () => {
                           : "/src//assets/on-car.png", // URL to your custom icon image
                       scaledSize: new window.google.maps.Size(40, 40), // Size of the icon
                     }}
-                    // onClick={() => setSelectedMarker(car)}
+                    onClick={() => setSelectVehicleLastInfo(vehicle)}
                   />
                 </React.Fragment>
               ))}
+
+              {selectVehicleLastInfo && (
+                <InfoWindow
+                  position={{
+                    lat: parseFloat(selectVehicleLastInfo.latitude),
+                    lng: parseFloat(selectVehicleLastInfo.longitude),
+                  }}
+                  onCloseClick={() => setSelectVehicleLastInfo(null)}
+                >
+                  <div>
+                    <p>AC: {selectVehicleLastInfo.ac}</p>
+                    <p>Engin: {selectVehicleLastInfo.engine}</p>
+                    <p>Fuel: {selectVehicleLastInfo.fuel}</p>
+                    <p>Speed: {selectVehicleLastInfo.speed}</p>
+                    <p>Time: {selectVehicleLastInfo.time}</p>
+                    <p>Latitude: {selectVehicleLastInfo.latitude}</p>
+                  </div>
+                </InfoWindow>
+              )}
             </GoogleMap>
           </div>
         </div>
 
-        {/* Single Car Details */}
-        {selectedMarker && <CarDetailsInfo selectedMarker={selectedMarker} />}
+        {/* Select Vehicle Last Info */}
+        {selectVehicleLastInfo && (
+          <SingleVehicleLastInfoModal vehicleInfo={selectVehicleLastInfo} />
+        )}
+
+        {/* Vehicle Last Location Show in Map Functionalities End */}
 
         {/* Track Modal */}
         <div

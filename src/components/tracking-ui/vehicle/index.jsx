@@ -8,6 +8,7 @@ const VehicleUi = ({
   selectVehicle,
   handleSelectAllVehicle,
   selectAllVehicle,
+  checkedVehicle,
 }) => {
   return (
     <div>
@@ -83,6 +84,7 @@ const VehicleUi = ({
           selectVehicle={selectVehicle}
           handleSelectAllVehicle={handleSelectAllVehicle}
           selectAllVehicle={selectAllVehicle}
+          checkedVehicle={checkedVehicle}
         />
       </div>
     </div>

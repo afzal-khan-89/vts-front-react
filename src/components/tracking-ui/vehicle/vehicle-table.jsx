@@ -10,6 +10,7 @@ const VehicleTable = ({
   handleSelectAllVehicle,
   selectAllVehicle,
   selectVehicle,
+  checkedVehicle,
 }) => {
   const [searchCar, setSearchCar] = useState("");
   const [openDropdownId, setOpenDropdownId] = useState(null);
@@ -89,7 +90,7 @@ const VehicleTable = ({
                       id="checkbox-table-search-1"
                       type="checkbox"
                       value={car?.id}
-                      checked={selectVehicle?.includes(car?.number_plate)}
+                      checked={checkedVehicle?.includes(car?.number_plate)}
                       onChange={(e) =>
                         handleSelectVehicle(e, car?.number_plate)
                       }

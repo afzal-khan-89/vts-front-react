@@ -59,18 +59,16 @@ const Tracking = () => {
 
   // History Functionalities Start
   const [singleCarHistory, setSingleCarHistory] = useState([]); // store single car history
-  const [vehicleInfo, setVehicleInfo] = useState(null); // store vehicle info
-  const [userVehicle, setUserVehicle] = useState([]); // store user vehicle
+  const [vehicleInfo, setVehicleInfo] = useState(null); // store vehicle info for history section.
+  const [userVehicle, setUserVehicle] = useState([]); // store logged in user vehicle
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [directions, setDirections] = useState(null);
   const [selectVehicle, setSelectVehicle] = useState([]); // store single, multiple select vehicle
+  const [checkedVehicle, setCheckedVehicle] = useState([]); // Store all Checked vehicle
   const [selectAllVehicle, setSelectAllVehicle] = useState(false); // store all select & deselect vehicle
-  const [selectVehicleLastInfo, setSelectVehicleLastInfo] = useState(null);
-
-  console.log("Select All Vehicle ---> ", selectVehicle);
-  console.log("selectVehicleLastInfo ---> ", selectVehicleLastInfo);
+  const [selectVehicleLastInfo, setSelectVehicleLastInfo] = useState(null); // store checked vehicle information for vehicle section.
 
   const [startPointInfoWindowOpen, setStartPointInfoWindowOpen] =
     useState(true);
@@ -83,7 +81,7 @@ const Tracking = () => {
   // Get individual user all vehicles
   const fetchUserVehicles = useCallback(() => {
     const requestBody = {
-      id: "5",
+      id: "5", // Logged in user ID
     };
 
     axios
@@ -97,22 +95,25 @@ const Tracking = () => {
   }, []);
 
   // Will Call Again After 5seconds last location is updated;
+  // useEffect(() => {
+  //   fetchDataCallback();
+  //   fetchUserVehicles();
+
+  //   const interval = setInterval(fetchUserVehicles, 5000);
+  //   return () => clearInterval(interval);
+  // }, [fetchDataCallback, fetchUserVehicles]);
+
   useEffect(() => {
     fetchDataCallback();
     fetchUserVehicles();
 
-    const interval = setInterval(fetchUserVehicles, 5000);
-    return () => clearInterval(interval);
-  }, [fetchDataCallback, fetchUserVehicles]);
-
-  useEffect(() => {
     const interval = setInterval(() => {
-      if (selectVehicle.length > 0) {
-        selectSingleVehicle(selectVehicle.join("#"));
+      if (checkedVehicle.length > 0) {
+        selectSingleVehicle(checkedVehicle.join("#"));
       }
     }, 5000);
     return () => clearInterval(interval);
-  }, [selectVehicle]);
+  }, [fetchDataCallback, fetchUserVehicles, checkedVehicle]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -131,31 +132,17 @@ const Tracking = () => {
   const startPoint = singleCarHistory[0];
   const endPoint = singleCarHistory[singleCarHistory.length - 1];
 
-  // const handleSelectVehicle = (event, numberPlate) => {
-  //   const isChecked = event.target.checked;
-  //   if (isChecked) {
-  //     setSelectVehicle((prevSelectVehicle) => [
-  //       ...prevSelectVehicle,
-  //       numberPlate,
-  //     ]);
-  //     selectSingleVehicle([...selectVehicle, numberPlate].join("#"));
-  //   } else {
-  //     setSelectVehicle(selectVehicle.filter((plate) => plate !== numberPlate));
-  //     selectSingleVehicle([...selectVehicle, numberPlate].join("#"));
-  //   }
-  // };
-
   const handleSelectVehicle = (event, numberPlate) => {
     const isChecked = event.target.checked;
     if (isChecked) {
-      const updatedSelectedvehicle = [...selectVehicle, numberPlate];
-      setSelectVehicle(updatedSelectedvehicle);
+      const updatedSelectedvehicle = [...checkedVehicle, numberPlate];
+      setCheckedVehicle(updatedSelectedvehicle);
       selectSingleVehicle(updatedSelectedvehicle.join("#"));
     } else {
-      const updatedSelectedVehicle = selectVehicle.filter(
+      const updatedSelectedVehicle = checkedVehicle.filter(
         (plate) => plate !== numberPlate
       );
-      setSelectVehicle(updatedSelectedVehicle);
+      setCheckedVehicle(updatedSelectedVehicle);
       selectSingleVehicle(updatedSelectedVehicle.join("#"));
     }
   };
@@ -168,10 +155,10 @@ const Tracking = () => {
       const allNumberPlates = userVehicle.map(
         (vehicle) => vehicle.number_plate
       );
-      setSelectVehicle(allNumberPlates);
+      setCheckedVehicle(allNumberPlates);
       selectSingleVehicle(allNumberPlates.join("#"));
     } else {
-      setSelectVehicle([]);
+      setCheckedVehicle([]);
     }
   };
 
@@ -291,24 +278,25 @@ const Tracking = () => {
               )}
 
               {/* Vehicle Last Location Show in Map Functionalities Start */}
-              {selectVehicle.map((vehicle, i) => (
-                <React.Fragment key={i}>
-                  <Marker
-                    position={{
-                      lat: parseFloat(vehicle?.latitude),
-                      lng: parseFloat(vehicle?.longitude),
-                    }}
-                    icon={{
-                      url:
-                        vehicle?.engine === "0"
-                          ? "/src/assets/stop-icon.png"
-                          : "/src//assets/on-car.png", // URL to your custom icon image
-                      scaledSize: new window.google.maps.Size(40, 40), // Size of the icon
-                    }}
-                    onClick={() => setSelectVehicleLastInfo(vehicle)}
-                  />
-                </React.Fragment>
-              ))}
+              {checkedVehicle.length > 0 &&
+                selectVehicle?.map((vehicle, i) => (
+                  <React.Fragment key={i}>
+                    <Marker
+                      position={{
+                        lat: parseFloat(vehicle?.latitude),
+                        lng: parseFloat(vehicle?.longitude),
+                      }}
+                      icon={{
+                        url:
+                          vehicle?.engine === "0"
+                            ? "/src/assets/stop-icon.png"
+                            : "/src//assets/on-car.png", // URL to your custom icon image
+                        scaledSize: new window.google.maps.Size(40, 40), // Size of the icon
+                      }}
+                      onClick={() => setSelectVehicleLastInfo(vehicle)}
+                    />
+                  </React.Fragment>
+                ))}
 
               {selectVehicleLastInfo && (
                 <InfoWindow
@@ -371,6 +359,7 @@ const Tracking = () => {
                       selectVehicle={selectVehicle}
                       handleSelectAllVehicle={handleSelectAllVehicle}
                       selectAllVehicle={selectAllVehicle}
+                      checkedVehicle={checkedVehicle}
                     />
                   </Tab>
                   <Tab

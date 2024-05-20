@@ -15,6 +15,7 @@ import Register from "./pages/auth/register";
 import HomePage from "./pages/home";
 import Profile from "./pages/profile";
 // import Tracking from "./pages/tracking/g-map";
+import Reports from "./pages/reports";
 import MapTracking from "./pages/tracking";
 import TestComp from "./test-comp";
 
@@ -22,7 +23,7 @@ const App = () => {
   return (
     <div>
       <ToastContainer autoClose={3500} />
-      {/* <Navbar /> */}
+      <Navbar />
       <Routes>
         <Route path="/home" element={<HomePage />} />
         {/* <Route path="/" element={<LandingPage />} /> */}
@@ -36,7 +37,7 @@ const App = () => {
 
         {/* <Route path={ROUTESCONSTANTS.tracking} element={<Tracking />} /> */}
         <Route path={ROUTESCONSTANTS.tracking} element={<MapTracking />} />
-        <Route path={ROUTESCONSTANTS.reports} element={<UnderConstruction />} />
+        <Route path={ROUTESCONSTANTS.reports} element={<Reports />} />
         <Route
           path={ROUTESCONSTANTS.operation}
           element={<UnderConstruction />}

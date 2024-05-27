@@ -1,6 +1,31 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { SelectTime } from "../../constants/InfoData";
+import { formatDateTime, getTimeRange } from "../../utils/select-time-utility";
 
 const Reports = () => {
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [currentTime, setCurrentTime] = useState("");
+
+  useEffect(() => {
+    const now = new Date();
+    const formattedNow = formatDateTime(now);
+    setCurrentTime(formattedNow);
+  }, []);
+
+  const handleSelectTimes = (e) => {
+    const value = e.target.value;
+    setSelectedTime(value);
+
+    const { startTime, endTime } = getTimeRange(value);
+    setStartTime(startTime);
+    setEndTime(endTime);
+  };
+
+  console.log("selectTime------->", selectedTime);
+  console.log("Start/End Time------->", { startTime, endTime });
+
   return (
     <div className="bg-[#E9F8F3B2]">
       <div className="w-full py-14 md:max-w-[1480px] m-auto max-w-[600px] px-4 md:px-0">
@@ -11,93 +36,107 @@ const Reports = () => {
               <div className="grid gap-6 mb-6 lg:grid-cols-2">
                 <div>
                   <label
-                    htmlFor="first_name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    htmlFor="HeadlineAct"
+                    className="block text-sm font-medium text-gray-900"
                   >
-                    Vehicles:
+                    Vehicles
                   </label>
-                  <input
-                    type="text"
-                    id="first_name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="John"
-                    required
-                  />
+
+                  <select
+                    name="HeadlineAct"
+                    id="HeadlineAct"
+                    className="mt-1.5 w-full rounded-lg border p-2 border-gray-300 text-gray-700 sm:text-sm"
+                  >
+                    <option value="">Please select</option>
+                    <option value="group-1">Group 1</option>
+                    <option value="group-2">Group 2</option>
+                    <option value="group-3">Group 3</option>
+                    <option value="group-4">Group 4</option>
+                  </select>
                 </div>
                 <div>
                   <label
-                    htmlFor="last_name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    htmlFor="HeadlineAct"
+                    className="block text-sm font-medium text-gray-900"
                   >
                     Report Format:
                   </label>
-                  <input
-                    type="text"
-                    id="last_name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Doe"
-                    required
-                  />
+
+                  <select
+                    name="HeadlineAct"
+                    id="HeadlineAct"
+                    className="mt-1.5 w-full rounded-lg border p-2 border-gray-300 text-gray-700 sm:text-sm"
+                  >
+                    <option value="">Please select</option>
+                    <option value="group-1">Group 1</option>
+                    <option value="group-2">Group 2</option>
+                    <option value="group-3">Group 3</option>
+                    <option value="group-4">Group 4</option>
+                  </select>
                 </div>
                 <div>
                   <label
-                    htmlFor="company"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    htmlFor="HeadlineAct"
+                    className="block text-sm font-medium text-gray-900"
                   >
                     Report Types:
                   </label>
+
+                  <select
+                    name="HeadlineAct"
+                    id="HeadlineAct"
+                    className="mt-1.5 w-full rounded-lg border p-2 border-gray-300 text-gray-700 sm:text-sm"
+                  >
+                    <option value="">Please select</option>
+                    <option value="group-1">Group 1</option>
+                    <option value="group-2">Group 2</option>
+                    <option value="group-3">Group 3</option>
+                    <option value="group-4">Group 4</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="HeadlineAct"
+                    className="block text-sm font-medium text-gray-900"
+                  >
+                    Select Time
+                  </label>
+
+                  <select
+                    value={selectedTime}
+                    onChange={handleSelectTimes}
+                    name="HeadlineAct"
+                    id="HeadlineAct"
+                    className="mt-1.5 w-full rounded-lg border p-2 border-gray-300 text-gray-700 sm:text-sm"
+                  >
+                    {SelectTime.map((item, i) => (
+                      <option key={i} value={item.value}>
+                        {item.key}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label>Start Time:</label>
                   <input
+                    className="mt-1.5 w-full rounded-lg border p-2 border-gray-300 text-gray-700 sm:text-sm"
                     type="text"
-                    id="company"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Flowbite"
-                    required
+                    value={startTime}
+                    placeholder={currentTime}
+                    readOnly
                   />
                 </div>
+
                 <div>
-                  <label
-                    htmlFor="phone"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Time Period
-                  </label>
+                  <label>End Time:</label>
                   <input
-                    type="tel"
-                    id="phone"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="123-45-678"
-                    pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="website"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Start Time:
-                  </label>
-                  <input
-                    type="url"
-                    id="website"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="flowbite.com"
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="visitors"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    End Time:
-                  </label>
-                  <input
-                    type="number"
-                    id="visitors"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder=""
-                    required
+                    className="mt-1.5 w-full rounded-lg border p-2 border-gray-300 text-gray-700 sm:text-sm"
+                    type="text"
+                    value={endTime}
+                    placeholder={currentTime}
+                    readOnly
                   />
                 </div>
               </div>

@@ -41,6 +41,30 @@ export const getTimeRange = (value) => {
         new Date(now.setDate(now.getDate() - 1)).setHours(23, 59, 59, 999)
       );
       break;
+    case "this-week":
+      startTime = new Date(now.setDate(now.getDate() - now.getDay()));
+      startTime.setHours(0, 0, 0, 0);
+      endTime = new Date(now.setDate(now.getDate() - now.getDay() + 6));
+      endTime.setHours(23, 59, 59, 999);
+      break;
+    case "last-week":
+      startTime = new Date(now.setDate(now.getDate() - now.getDay() - 7));
+      startTime.setHours(0, 0, 0, 0);
+      endTime = new Date(now.setDate(now.getDate() - now.getDay() - 1));
+      endTime.setHours(23, 59, 59, 999);
+      break;
+    case "this-month":
+      startTime = new Date(now.getFullYear(), now.getMonth(), 1);
+      startTime.setHours(0, 0, 0, 0);
+      endTime = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      endTime.setHours(23, 59, 59, 999);
+      break;
+    case "last-month":
+      startTime = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      startTime.setHours(0, 0, 0, 0);
+      endTime = new Date(now.getFullYear(), now.getMonth(), 0);
+      endTime.setHours(23, 59, 59, 999);
+      break;
     default:
       startTime = "";
       endTime = "";

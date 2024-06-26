@@ -29,6 +29,6 @@ export function convertNormalTimeToUnixTime(dateString) {
 }
 
 // Example usage
-const dateStr = "June 1, 2024 00:00:00";
-const unixTimestamp = convertNormalTimeToUnixTime(dateStr);
-console.log("My Outputs--->", unixTimestamp); // Output: 1717200000
+// const dateStr = "June 1, 2024 00:00:00";
+// const unixTimestamp = convertNormalTimeToUnixTime(dateStr);
+// console.log("My Outputs--->", unixTimestamp); // Output: 1717200000

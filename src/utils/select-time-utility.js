@@ -10,6 +10,76 @@ export const formatDateTime = (date) => {
   });
 };
 
+// export const getTimeRange = (value) => {
+//   const now = new Date();
+//   let startTime = "";
+//   let endTime = "";
+
+//   switch (value) {
+//     case "current-hour":
+//       startTime = new Date(now.setMinutes(0, 0, 0));
+//       endTime = new Date(now.setMinutes(59, 59, 999));
+//       break;
+//     case "last-hour":
+//       startTime = new Date(now.setHours(now.getHours() - 1, 0, 0, 0));
+//       endTime = new Date(now.setMinutes(59, 59, 999));
+//       break;
+//     case "last-2-hour":
+//       startTime = new Date(now.setHours(now.getHours() - 2, 0, 0, 0));
+//       endTime = new Date(now.setMinutes(59, 59, 999));
+//       break;
+//     case "last-3-hour":
+//       startTime = new Date(now.setHours(now.getHours() - 3, 0, 0, 0));
+//       endTime = new Date(now.setMinutes(59, 59, 999));
+//       break;
+//     // Add cases for other time ranges
+//     case "today":
+//       startTime = new Date(now.setHours(0, 0, 0, 0));
+//       endTime = new Date(now.setHours(23, 59, 59, 999));
+//       break;
+//     case "yesterday":
+//       startTime = new Date(
+//         new Date(now.setDate(now.getDate() - 1)).setHours(0, 0, 0, 0)
+//       );
+//       endTime = new Date(
+//         new Date(now.setDate(now.getDate() - 1)).setHours(23, 59, 59, 999)
+//       );
+//       break;
+//     case "this-week":
+//       startTime = new Date(now.setDate(now.getDate() - now.getDay()));
+//       startTime.setHours(0, 0, 0, 0);
+//       endTime = new Date(now.setDate(now.getDate() - now.getDay() + 6));
+//       endTime.setHours(23, 59, 59, 999);
+//       break;
+//     case "last-week":
+//       startTime = new Date(now.setDate(now.getDate() - now.getDay() - 7));
+//       startTime.setHours(0, 0, 0, 0);
+//       endTime = new Date(now.setDate(now.getDate() - now.getDay() - 1));
+//       endTime.setHours(23, 59, 59, 999);
+//       break;
+//     case "this-month":
+//       startTime = new Date(now.getFullYear(), now.getMonth(), 1);
+//       startTime.setHours(0, 0, 0, 0);
+//       endTime = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+//       endTime.setHours(23, 59, 59, 999);
+//       break;
+//     case "last-month":
+//       startTime = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+//       startTime.setHours(0, 0, 0, 0);
+//       endTime = new Date(now.getFullYear(), now.getMonth(), 0);
+//       endTime.setHours(23, 59, 59, 999);
+//       break;
+//     default:
+//       startTime = "";
+//       endTime = "";
+//   }
+
+//   return {
+//     startTime: startTime ? formatDateTime(startTime) : "",
+//     endTime: endTime ? formatDateTime(endTime) : "",
+//   };
+// };
+
 export const getTimeRange = (value) => {
   const now = new Date();
   let startTime = "";
@@ -17,28 +87,131 @@ export const getTimeRange = (value) => {
 
   switch (value) {
     case "current-hour":
-      startTime = new Date(now.setMinutes(0, 0, 0));
-      endTime = new Date(now.setMinutes(59, 59, 999));
+      startTime = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        now.getHours(),
+        0,
+        0,
+        0
+      );
+      endTime = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        now.getHours(),
+        59,
+        59,
+        999
+      );
       break;
     case "last-hour":
-      startTime = new Date(now.setHours(now.getHours() - 1, 0, 0, 0));
-      endTime = new Date(now.setMinutes(59, 59, 999));
+      startTime = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        now.getHours() - 1,
+        0,
+        0,
+        0
+      );
+      endTime = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        now.getHours() - 1,
+        59,
+        59,
+        999
+      );
       break;
     case "last-2-hour":
-      startTime = new Date(now.setHours(now.getHours() - 2, 0, 0, 0));
-      endTime = new Date(now.setMinutes(59, 59, 999));
+      startTime = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        now.getHours() - 2,
+        now.getMinutes(),
+        0,
+        0
+      );
+      endTime = now;
       break;
-    // Add cases for other time ranges
+    case "last-3-hour":
+      startTime = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        now.getHours() - 3,
+        now.getMinutes(),
+        0,
+        0
+      );
+      endTime = now;
+      break;
+    case "last-6-hour":
+      startTime = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        now.getHours() - 6,
+        now.getMinutes(),
+        0,
+        0
+      );
+      endTime = now;
+      break;
+    case "last-12-hour":
+      startTime = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        now.getHours() - 12,
+        now.getMinutes(),
+        0,
+        0
+      );
+      endTime = now;
+      break;
     case "today":
-      startTime = new Date(now.setHours(0, 0, 0, 0));
-      endTime = new Date(now.setHours(23, 59, 59, 999));
+      startTime = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        0,
+        0,
+        0,
+        0
+      );
+      endTime = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        23,
+        59,
+        59,
+        999
+      );
       break;
     case "yesterday":
       startTime = new Date(
-        new Date(now.setDate(now.getDate() - 1)).setHours(0, 0, 0, 0)
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() - 1,
+        0,
+        0,
+        0,
+        0
       );
       endTime = new Date(
-        new Date(now.setDate(now.getDate() - 1)).setHours(23, 59, 59, 999)
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() - 1,
+        23,
+        59,
+        59,
+        999
       );
       break;
     case "this-week":
@@ -54,16 +227,28 @@ export const getTimeRange = (value) => {
       endTime.setHours(23, 59, 59, 999);
       break;
     case "this-month":
-      startTime = new Date(now.getFullYear(), now.getMonth(), 1);
-      startTime.setHours(0, 0, 0, 0);
-      endTime = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-      endTime.setHours(23, 59, 59, 999);
+      startTime = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+      endTime = new Date(
+        now.getFullYear(),
+        now.getMonth() + 1,
+        0,
+        23,
+        59,
+        59,
+        999
+      );
       break;
     case "last-month":
-      startTime = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-      startTime.setHours(0, 0, 0, 0);
-      endTime = new Date(now.getFullYear(), now.getMonth(), 0);
-      endTime.setHours(23, 59, 59, 999);
+      startTime = new Date(
+        now.getFullYear(),
+        now.getMonth() - 1,
+        1,
+        0,
+        0,
+        0,
+        0
+      );
+      endTime = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
       break;
     default:
       startTime = "";

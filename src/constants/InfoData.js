@@ -9,7 +9,7 @@ export const SelectTime = [
   { key: "Yesterday", value: "yesterday" },
   { key: "This Week", value: "this-week" },
   { key: "Last Week", value: "last-week" },
-  { key: "This Month", value: 'this-month"' },
+  { key: "This Month", value: "this-month" },
   { key: "Last Month", value: "last-month" },
   { key: "Specific Day", value: "specific-day" },
   { key: "Between Days", value: "between-two-days" },

@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 
 import { ToastContainer } from "react-toastify";
 import UnderConstruction from "./common/under-construction";
-import Navbar from "./components/Navbar";
+// import Navbar from "./components/Navbar";
 import Footer from "./components/footer";
 import { ROUTESCONSTANTS } from "./constants/Routes";
 import ForgotPassword from "./pages/auth/forgot-password";
@@ -23,7 +23,7 @@ const App = () => {
   return (
     <div>
       <ToastContainer autoClose={3500} />
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/home" element={<HomePage />} />
         {/* <Route path="/" element={<LandingPage />} /> */}

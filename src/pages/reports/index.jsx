@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 import { SelectTime } from "../../constants/InfoData";
+import { calculateDistance } from "../../utils/calculate-distance";
 import { formatDateTime, getTimeRange } from "../../utils/select-time-utility";
 
 const Reports = () => {
@@ -7,6 +9,45 @@ const Reports = () => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [currentTime, setCurrentTime] = useState("");
+  const [reports, setReports] = useState([]);
+  const [distances, setDistances] = useState([]);
+
+  console.log("Start time: " + startTime);
+  console.log("End time: " + endTime);
+
+  const fetchVehicleReports = useCallback(() => {
+    const requestBody = {
+      vehicle: "dk-metro-ka-0007",
+      start_time: "1123123213",
+      end_time: "21323213",
+    };
+
+    axios
+      .post("http://176.58.99.231/api/v1/report/raw-data", requestBody)
+      .then((response) => {
+        setReports(response?.data?.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetchVehicleReports();
+  }, [fetchVehicleReports]);
+
+  useEffect(() => {
+    const calculateAllDistances = () => {
+      const distancesArray = [];
+      for (let i = 1; i < reports.length; i++) {
+        const distance = calculateDistance(reports[i - 1], reports[i]);
+        distancesArray.push(distance);
+      }
+
+      setDistances(distancesArray);
+    };
+    calculateAllDistances();
+  }, [reports]);
 
   useEffect(() => {
     const now = new Date();
@@ -22,9 +63,6 @@ const Reports = () => {
     setStartTime(startTime);
     setEndTime(endTime);
   };
-
-  console.log("selectTime------->", selectedTime);
-  console.log("Start/End Time------->", { startTime, endTime });
 
   return (
     <div className="bg-[#E9F8F3B2]">
@@ -150,6 +188,15 @@ const Reports = () => {
               </div>
             </form>
           </div>
+
+          <h1>Distances Between Points</h1>
+          <ul>
+            {distances.map((distance, index) => (
+              <li key={index}>
+                Distance {index + 1}: {distance.toFixed(2)} meters
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

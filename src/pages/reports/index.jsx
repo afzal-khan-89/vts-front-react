@@ -2,6 +2,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { SelectTime } from "../../constants/InfoData";
 import { calculateDistance } from "../../utils/calculate-distance";
+import { convertNormalTimeToUnixTime } from "../../utils/date-convertar";
 import { formatDateTime, getTimeRange } from "../../utils/select-time-utility";
 
 const Reports = () => {
@@ -13,8 +14,6 @@ const Reports = () => {
   const [reports, setReports] = useState([]);
   const [distances, setDistances] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState("");
-
-  console.log("Distances ----> ", distances);
 
   // Get individual user all vehicles
   const fetchUserVehicles = useCallback(() => {
@@ -68,24 +67,25 @@ const Reports = () => {
     setSelectedVehicle(event.target.value);
   };
 
-  const fetchVehicleReports = useCallback(() => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     const requestBody = {
-      vehicle: "dk-metro-ka-0007",
-      start_time: "1123123213",
-      end_time: "21323213",
-      // start_time: convertNormalTimeToUnixTime(startTime).toString(),
-      // end_time: convertNormalTimeToUnixTime(endTime).toString(),
+      vehicle: selectedVehicle,
+      start_time: convertNormalTimeToUnixTime(startTime).toString(),
+      end_time: convertNormalTimeToUnixTime(endTime).toString(),
     };
-    console.log("requestBody---->", requestBody);
-    axios
-      .post("http://176.58.99.231/api/v1/report/raw-data", requestBody)
-      .then((response) => {
-        setReports(response?.data?.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+
+    try {
+      const response = await axios.post(
+        "http://176.58.99.231/api/v1/report/raw-data",
+        requestBody
+      );
+      setReports(response?.data?.data);
+    } catch (error) {
+      console.log("Error:- ", error);
+    }
+  };
 
   return (
     <div className="bg-[#E9F8F3B2]">
@@ -93,7 +93,7 @@ const Reports = () => {
         <div className="mt-16">
           <h2>This is Report Pages</h2>
           <div className="max-w-full mx-auto bg-white p-16">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="grid gap-6 mb-6 lg:grid-cols-2">
                 <div>
                   <label
@@ -207,7 +207,7 @@ const Reports = () => {
               <div className="flex justify-end items-end">
                 <button
                   type="submit"
-                  onClick={fetchVehicleReports}
+                  // onClick={fetchVehicleReports}
                   className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   Generate Reports

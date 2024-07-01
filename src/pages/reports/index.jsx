@@ -1,4 +1,6 @@
 import axios from "axios";
+import haversine from "haversine-distance";
+import { jsPDF } from "jspdf";
 import { useCallback, useEffect, useState } from "react";
 import { SelectTime } from "../../constants/InfoData";
 import { calculateDistance } from "../../utils/calculate-distance";
@@ -14,6 +16,7 @@ const Reports = () => {
   const [reports, setReports] = useState([]);
   const [distances, setDistances] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState("");
+  const [totalDistance, setTotalDistance] = useState(0);
 
   // Get individual user all vehicles
   const fetchUserVehicles = useCallback(() => {
@@ -81,10 +84,66 @@ const Reports = () => {
         "http://176.58.99.231/api/v1/report/raw-data",
         requestBody
       );
-      setReports(response?.data?.data);
+      const data = response?.data?.data;
+      calciulateTotalDistance(data);
+      setReports(data);
     } catch (error) {
       console.log("Error:- ", error);
     }
+  };
+
+  console.log("My Reports", reports);
+
+  // Calculate Total Distance
+  const calciulateTotalDistance = (data) => {
+    console.log("Data->", data);
+    let distanceSum = 0;
+    for (let i = 1; i < data.length; i++) {
+      const prevPoint = data[i - 1];
+      const currentPoint = data[i];
+
+      const distance = haversine(
+        {
+          lat: parseFloat(prevPoint.latitude),
+          log: parseFloat(prevPoint.longitude),
+        },
+        {
+          lat: parseFloat(currentPoint.latitude),
+          log: parseFloat(currentPoint.longitude),
+        }
+      );
+      distanceSum += distance;
+    }
+    setTotalDistance(distanceSum);
+  };
+
+  // Generate PDF functions
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+
+    const pageHeight = doc.internal.pageSize.height;
+    const marginTop = 20;
+    const lineHeight = 10;
+    let currentHeight = marginTop;
+
+    doc.text("Distances", 20, currentHeight);
+    currentHeight += lineHeight;
+
+    distances.forEach((distance, index) => {
+      if (currentHeight + lineHeight > pageHeight - marginTop) {
+        doc.addPage();
+        currentHeight = marginTop;
+      }
+      doc.text(
+        `Distance ${index + 1}: ${distance?.toFixed(2)} meters`,
+        20,
+        currentHeight
+      );
+      currentHeight += lineHeight;
+    });
+
+    doc.save("distance.pdf");
   };
 
   return (
@@ -215,6 +274,16 @@ const Reports = () => {
               </div>
             </form>
           </div>
+
+          <h3>Total Distance: {totalDistance.toFixed(2)} meters</h3>
+
+          <button
+            type="button"
+            onClick={generatePDF}
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Save as PDF
+          </button>
 
           <h1>Distances Between Points</h1>
           <ul>

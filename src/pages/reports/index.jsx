@@ -146,12 +146,14 @@ const Reports = () => {
     doc.save("distance.pdf");
   };
 
+  // Generate Word file functions
+
   return (
     <div className="bg-[#E9F8F3B2]">
       <div className="w-full py-14 md:max-w-[1480px] m-auto max-w-[600px] px-4 md:px-0">
         <div className="mt-16">
           <h2>This is Report Pages</h2>
-          <div className="max-w-full mx-auto bg-white p-16">
+          <div className="max-w-full mx-auto bg-white p-16 border">
             <form onSubmit={handleSubmit}>
               <div className="grid gap-6 mb-6 lg:grid-cols-2">
                 <div>
@@ -275,6 +277,147 @@ const Reports = () => {
             </form>
           </div>
 
+          <div className="max-w-full mx-auto bg-white p-16 border mt-2">
+            <div className="flex justify-between flex-wrap">
+              <div>
+                <h2 className="text-3xl mb-4">TrustBD Technologies Ltd.</h2>
+                <div className="flow-root">
+                  <dl className="-my-3 divide-y divide-gray-100 text-sm">
+                    <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                      <dt className="font-medium text-gray-900">
+                        Report Title
+                      </dt>
+                      <dd className="text-gray-700 sm:col-span-2">
+                        : Daily Distance and Fuel Consumption Report
+                      </dd>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                      <dt className="font-medium text-gray-900">Vehicle</dt>
+                      <dd className="text-gray-700 sm:col-span-2">
+                        : DM-AU-11-3416(CV)
+                      </dd>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                      <dt className="font-medium text-gray-900">Owner</dt>
+                      <dd className="text-gray-700 sm:col-span-2">
+                        : Milk Vita (milkvita){" "}
+                      </dd>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                      <dt className="font-medium text-gray-900">Report Time</dt>
+                      <dd className="text-gray-700 sm:col-span-2">
+                        : Jul 01, 2024 12:00:00 &apos To Jul 01, 2024 05:13:20
+                        PM
+                      </dd>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                      <dt className="font-medium text-gray-900">Report Date</dt>
+                      <dd className="text-gray-700 sm:col-span-2">
+                        : Jul 01, 2024
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+              </div>
+              <div>
+                <button
+                  className="mt-6 middle none center w-full rounded-lg bg-blue-700 hover:bg-blue-800 py-3 px-6 font-sans text-xs font-bold uppercase text-white focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                  data-ripple-light="true"
+                >
+                  Save as PDF
+                </button>
+
+                <button
+                  className="mt-6 middle none center w-full rounded-lg bg-pink-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                  data-ripple-light="true"
+                >
+                  Save as Word
+                </button>
+
+                <button
+                  className="mt-6 middle none center w-full rounded-lg bg-blue-700 hover:bg-blue-800 py-3 px-6 font-sans text-xs font-bold uppercase text-white focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                  data-ripple-light="true"
+                >
+                  Print Report
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <table
+                className="w-full text-left border border-separate rounded border-slate-200"
+                cellSpacing="0"
+              >
+                <tbody>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="hidden h-12 px-6 text-sm font-medium border-l sm:table-cell first:border-l-0 stroke-slate-700 text-slate-700 bg-slate-100"
+                    >
+                      Date
+                    </th>
+                    <th
+                      scope="col"
+                      className="hidden h-12 px-6 text-sm font-medium border-l sm:table-cell first:border-l-0 stroke-slate-700 text-slate-700 bg-slate-100"
+                    >
+                      Distance Traveled
+                    </th>
+                    <th
+                      scope="col"
+                      className="hidden h-12 px-6 text-sm font-medium border-l sm:table-cell first:border-l-0 stroke-slate-700 text-slate-700 bg-slate-100"
+                    >
+                      Fuel Consumption
+                    </th>
+                  </tr>
+                  <tr className="block border-b sm:table-row last:border-b-0 border-slate-200 sm:border-none">
+                    <td
+                      data-th="Date"
+                      className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 "
+                    >
+                      2024-07-01
+                    </td>
+                    <td
+                      data-th="Distance Traveled"
+                      className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 "
+                    >
+                      53.15 Km
+                    </td>
+                    <td
+                      data-th="Fuel Consumption"
+                      className=" before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 "
+                    >
+                      10.63 Liter
+                    </td>
+                  </tr>
+                  <tr className="block border-b sm:table-row last:border-b-0 border-slate-200 sm:border-none">
+                    <td
+                      data-th="Date"
+                      className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 "
+                    >
+                      Total :
+                    </td>
+                    <td
+                      data-th="Distance Traveled"
+                      className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 "
+                    >
+                      53.15 Km
+                    </td>
+                    <td
+                      data-th="Fuel Consumption"
+                      className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 "
+                    >
+                      10.63 Liter
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <h3>Total Distance: {totalDistance.toFixed(2)} meters</h3>
 
           <button
@@ -284,7 +427,6 @@ const Reports = () => {
           >
             Save as PDF
           </button>
-
           <h1>Distances Between Points</h1>
           <ul>
             {distances.map((distance, index) => (

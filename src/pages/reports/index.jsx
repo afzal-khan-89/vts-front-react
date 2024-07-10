@@ -1,13 +1,13 @@
 import axios from "axios";
 import haversine from "haversine-distance";
-import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
+
 import { useCallback, useEffect, useState } from "react";
 import { SelectTime } from "../../constants/InfoData";
 import { calculateDistance } from "../../utils/calculate-distance";
 import { convertNormalTimeToUnixTime } from "../../utils/date-convertar";
 import { formatDateTime, getTimeRange } from "../../utils/select-time-utility";
 import { report_types } from "../../utils/static-data";
+import DistanceReport from "./distance-report";
 
 const Reports = () => {
   const [userVehicle, setUserVehicle] = useState([]);
@@ -131,37 +131,6 @@ const Reports = () => {
       distanceSum += distance;
     }
   };
-
-  // Generate Word file functions
-
-  const handleDownloadPDF = () => {
-    const input = document.getElementById("pdf-content");
-    html2canvas(input, { scale: 2 }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
-      });
-
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("download.pdf");
-    });
-  };
-
-  // const handleDownloadPDF = () => {
-  //   const input = document.getElementById("pdf-content");
-  //   html2canvas(input).then((canvas) => {
-  //     const imgData = canvas.toDataURL("image/png");
-  //     const pdf = new jsPDF();
-  //     pdf.addImage(imgData, "PNG", 0, 0);
-  //     pdf.save("download.pdf");
-  //   });
-  // };
 
   return (
     <div className="bg-[#E9F8F3B2]">
@@ -298,10 +267,7 @@ const Reports = () => {
           </div>
 
           {isFormValid && (
-            <div
-              className="max-w-full mx-auto bg-white p-16 border mt-2"
-              id="pdf-content"
-            >
+            <div className="max-w-full mx-auto bg-white p-16 border mt-2">
               <div className="flex justify-between flex-wrap">
                 <div>
                   <h2 className="text-3xl mb-4">TrustBD Technologies Ltd.</h2>
@@ -351,112 +317,12 @@ const Reports = () => {
                   </div>
                 </div>
                 {/* Convert All Button */}
-                {/* <div>
-                  <button
-                    className="mt-6 middle none center w-full rounded-lg bg-blue-700 hover:bg-blue-800 py-3 px-6 font-sans text-xs font-bold uppercase text-white focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                    data-ripple-light="true"
-                  >
-                    Save as PDF
-                  </button>
-
-                  <button
-                    className="mt-6 middle none center w-full rounded-lg bg-pink-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                    data-ripple-light="true"
-                  >
-                    Save as Word
-                  </button>
-
-                  <button
-                    className="mt-6 middle none center w-full rounded-lg bg-blue-700 hover:bg-blue-800 py-3 px-6 font-sans text-xs font-bold uppercase text-white focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                    data-ripple-light="true"
-                  >
-                    Print Report
-                  </button>
-                </div> */}
               </div>
 
-              {total > 0 && (
-                <div className="mt-6">
-                  <table
-                    className="w-full text-left border border-separate rounded border-slate-200"
-                    cellSpacing="0"
-                  >
-                    <tbody>
-                      <tr>
-                        <th
-                          scope="col"
-                          className="hidden h-12 px-6 text-sm font-medium border-l sm:table-cell first:border-l-0 stroke-slate-700 text-slate-700 bg-slate-100"
-                        >
-                          Date
-                        </th>
-                        <th
-                          scope="col"
-                          className="hidden h-12 px-6 text-sm font-medium border-l sm:table-cell first:border-l-0 stroke-slate-700 text-slate-700 bg-slate-100"
-                        >
-                          Distance Traveled
-                        </th>
-                        <th
-                          scope="col"
-                          className="hidden h-12 px-6 text-sm font-medium border-l sm:table-cell first:border-l-0 stroke-slate-700 text-slate-700 bg-slate-100"
-                        >
-                          Fuel Consumption
-                        </th>
-                      </tr>
-                      <tr className="block border-b sm:table-row last:border-b-0 border-slate-200 sm:border-none">
-                        <td
-                          data-th="Date"
-                          className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 "
-                        >
-                          2024-07-01
-                        </td>
-                        <td
-                          data-th="Distance Traveled"
-                          className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 "
-                        >
-                          {total.toFixed(2)}
-                        </td>
-                        <td
-                          data-th="Fuel Consumption"
-                          className=" before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 "
-                        >
-                          10.63 Liter
-                        </td>
-                      </tr>
-                      <tr className="block border-b sm:table-row last:border-b-0 border-slate-200 sm:border-none">
-                        <td
-                          data-th="Date"
-                          className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 "
-                        >
-                          Total :
-                        </td>
-                        <td
-                          data-th="Distance Traveled"
-                          className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 "
-                        >
-                          {total.toFixed(2)}
-                        </td>
-                        <td
-                          data-th="Fuel Consumption"
-                          className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 "
-                        >
-                          10.63 Liter
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              )}
+              {total > 0 && <DistanceReport total={total} />}
             </div>
           )}
         </div>
-
-        <button
-          className="mt-6 middle none center w-full rounded-lg bg-blue-700 hover:bg-blue-800 py-3 px-6 font-sans text-xs font-bold uppercase text-white focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-          data-ripple-light="true"
-          onClick={handleDownloadPDF}
-        >
-          New Save as PDF
-        </button>
       </div>
     </div>
   );

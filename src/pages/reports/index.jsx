@@ -1,7 +1,7 @@
 import axios from "axios";
-import haversine from "haversine-distance";
 
 import { useCallback, useEffect, useState } from "react";
+import ReportHeader from "../../components/ReportHeader";
 import { SelectTime } from "../../constants/InfoData";
 import { calculateDistance } from "../../utils/calculate-distance";
 import { convertNormalTimeToUnixTime } from "../../utils/date-convertar";
@@ -104,31 +104,9 @@ const Reports = () => {
         requestBody
       );
       const data = response?.data?.data;
-      calciulateTotalDistance(data);
       setReports(data);
     } catch (error) {
       console.log("Error:- ", error);
-    }
-  };
-
-  // Calculate Total Distance
-  const calciulateTotalDistance = (data) => {
-    let distanceSum = 0;
-    for (let i = 1; i < data.length; i++) {
-      const prevPoint = data[i - 1];
-      const currentPoint = data[i];
-
-      const distance = haversine(
-        {
-          lat: parseFloat(prevPoint.latitude),
-          log: parseFloat(prevPoint.longitude),
-        },
-        {
-          lat: parseFloat(currentPoint.latitude),
-          log: parseFloat(currentPoint.longitude),
-        }
-      );
-      distanceSum += distance;
     }
   };
 
@@ -265,60 +243,15 @@ const Reports = () => {
               </div>
             </form>
           </div>
-
           {isFormValid && (
             <div className="max-w-full mx-auto bg-white p-16 border mt-2">
-              <div className="flex justify-between flex-wrap">
-                <div>
-                  <h2 className="text-3xl mb-4">TrustBD Technologies Ltd.</h2>
-                  <div className="flow-root">
-                    <dl className="-my-3 divide-y divide-gray-100 text-sm">
-                      <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-                        <dt className="font-medium text-gray-900">
-                          Report Title
-                        </dt>
-                        <dd className="text-gray-700 sm:col-span-2">
-                          : {selectReport}
-                        </dd>
-                      </div>
-
-                      <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-                        <dt className="font-medium text-gray-900">Vehicle</dt>
-                        <dd className="text-gray-700 sm:col-span-2">
-                          : {selectedVehicle}
-                        </dd>
-                      </div>
-
-                      <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-                        <dt className="font-medium text-gray-900">Owner</dt>
-                        <dd className="text-gray-700 sm:col-span-2">
-                          : Milk Vita (milkvita){" "}
-                        </dd>
-                      </div>
-
-                      <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-                        <dt className="font-medium text-gray-900">
-                          Report Time
-                        </dt>
-                        <dd className="text-gray-700 sm:col-span-2">
-                          : {startTime} To {endTime}
-                        </dd>
-                      </div>
-
-                      <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-                        <dt className="font-medium text-gray-900">
-                          Report Date
-                        </dt>
-                        <dd className="text-gray-700 sm:col-span-2">
-                          : {todayFormattedDate}
-                        </dd>
-                      </div>
-                    </dl>
-                  </div>
-                </div>
-                {/* Convert All Button */}
-              </div>
-
+              <ReportHeader
+                selectReport={selectReport}
+                selectedVehicle={selectedVehicle}
+                startTime={startTime}
+                endTime={endTime}
+                todayFormattedDate={todayFormattedDate}
+              />
               {total > 0 && <DistanceReport total={total} />}
             </div>
           )}

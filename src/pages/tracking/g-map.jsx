@@ -23,7 +23,7 @@ import VehicleUi from "../../components/tracking-ui/vehicle";
 const fetchData = async (setData, setIsLoading, setError) => {
   try {
     const response = await axios.post(
-      "http://176.58.99.231/api/v1/location/history"
+      `${import.meta.env.VITE_BASE_URL}location/history`
     );
     setData(response.data);
     setIsLoading(false);
@@ -85,7 +85,7 @@ const Tracking = () => {
     };
 
     axios
-      .post("http://176.58.99.231/api/v1/vehicle/users/all", requestBody)
+      .post(`${import.meta.env.VITE_BASE_URL}vehicle/users/all`, requestBody)
       .then((response) => {
         setUserVehicle(response.data?.data);
       })
@@ -166,7 +166,7 @@ const Tracking = () => {
   const selectSingleVehicle = async (selectVehicleString) => {
     try {
       const response = await axios.post(
-        "http://176.58.99.231/api/v1/location/last",
+        `${import.meta.env.VITE_BASE_URL}location/last`,
         {
           vehicles: selectVehicleString,
         }

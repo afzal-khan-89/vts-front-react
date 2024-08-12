@@ -40,7 +40,7 @@ const Reports = () => {
     };
 
     axios
-      .post("http://176.58.99.231/api/v1/vehicle/users/all", requestBody)
+      .post(`${import.meta.env.VITE_BASE_URL}vehicle/users/all`, requestBody)
       .then((response) => {
         setUserVehicle(response.data?.data);
       })
@@ -100,7 +100,7 @@ const Reports = () => {
 
     try {
       const response = await axios.post(
-        "http://176.58.99.231/api/v1/report/raw-data",
+        `${import.meta.env.VITE_BASE_URL}report/raw-data`,
         requestBody
       );
       const data = response?.data?.data;
